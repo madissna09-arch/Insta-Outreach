@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1F2A4A">
+<title>TAPVIEW Akquise</title>
+<style>
+  :root{
+    --navy:#1F2A4A; --navy-hell:#2C3A61; --creme:#F4F2ED; --creme-tief:#E7E3DA;
+    --messing:#C6A15B; --messing-dunkel:#8A6A28;
+    --grau:#6D7385; --rot:#8E3B33; --gruen:#3B6B4A;
+    --rand:rgba(31,42,74,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--creme); color:var(--navy);
+    font:16px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  .versalien{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:600}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:var(--messing-dunkel)}
+
+  /* ---------- Anmeldung ---------- */
+  #anmeldung{min-height:100dvh;display:grid;place-items:center;padding:24px}
+  #anmeldung form{
+    width:100%;max-width:340px;background:#fff;padding:28px 24px 24px;
+    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);
+    box-shadow:0 18px 40px -28px rgba(31,42,74,.55);
+  }
+  .marke{font-size:22px;letter-spacing:.3em;font-weight:600;margin:0 0 2px}
+  .marke-unter{margin:0 0 22px;color:var(--grau);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  label{display:block;margin:0 0 14px}
+  label span{display:block;margin-bottom:5px;color:var(--grau);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  input,select,textarea{
+    width:100%;padding:11px 12px;border:1px solid var(--rand);
+    background:var(--creme);border-radius:0;
+  }
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--messing);outline-offset:-2px}
+  .knopf-voll{
+    width:100%;background:var(--navy);color:var(--creme);padding:13px;
+    letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:600;
+    clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  }
+  .knopf-voll:disabled{opacity:.5}
+  .fehler{color:var(--rot);font-size:13px;margin:10px 0 0;min-height:18px}
+
+  /* ---------- Rahmen ---------- */
+  header{
+    position:sticky;top:0;z-index:20;background:var(--navy);color:var(--creme);
+    padding:10px 14px calc(10px + env(safe-area-inset-top)) ;padding-top:calc(10px + env(safe-area-inset-top));
+    display:flex;align-items:center;gap:12px;
+  }
+  header .titel{font-size:15px;letter-spacing:.26em;font-weight:600}
+  header .zaehler{margin-left:auto;font-size:12px;letter-spacing:.1em;color:var(--messing)}
+  header button{color:var(--creme);opacity:.7;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+
+  nav{display:flex;background:var(--navy-hell);position:sticky;top:0;z-index:19}
+  nav button{
+    flex:1;padding:12px 4px;color:rgba(244,242,237,.6);
+    text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:600;
+    border-bottom:2px solid transparent;
+  }
+  nav button[aria-selected="true"]{color:var(--creme);border-bottom-color:var(--messing)}
+
+  main{padding:14px 12px 40px;max-width:640px;margin:0 auto}
+  .leer{text-align:center;color:var(--grau);padding:48px 16px;font-size:14px}
+
+  /* ---------- Lead-Karte ---------- */
+  .karte{
+    background:#fff;margin:0 0 14px;padding:16px;
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);
+    box-shadow:0 10px 26px -22px rgba(31,42,74,.6);
+  }
+  .karte.nachfassen{border-left:3px solid var(--messing)}
+  .karte h2{margin:0;font-size:18px;line-height:1.25}
+  .meta{color:var(--grau);font-size:13px;margin:5px 0 0}
+  .marker{
+    display:inline-block;background:var(--messing);color:var(--navy);
+    padding:2px 7px;margin:0 6px 8px 0;font-size:10px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  .marker.warnung{background:var(--rot);color:var(--creme)}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0 0}
+  .chip{background:var(--creme-tief);padding:3px 8px;font-size:11px;letter-spacing:.04em}
+  .verweise{display:flex;flex-wrap:wrap;gap:14px;margin:11px 0 0;font-size:13px}
+  textarea{margin:12px 0 0;min-height:170px;resize:vertical;line-height:1.55;font-size:15px}
+  .zeichen{text-align:right;color:var(--grau);font-size:11px;margin:3px 0 0}
+  .aktionen{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+  .haupt{
+    flex:1 1 100%;background:var(--navy);color:var(--creme);text-align:center;
+    padding:14px;text-decoration:none;letter-spacing:.12em;text-transform:uppercase;
+    font-size:12px;font-weight:600;
+    clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  }
+  .neben{
+    flex:1;border:1px solid var(--rand);padding:10px 6px;background:var(--creme);
+    text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:600;
+  }
+  .neben.stark{background:var(--messing);border-color:var(--messing)}
+  .neben.warn{color:var(--rot)}
+
+  /* ---------- Liste ---------- */
+  .werkzeuge{display:flex;gap:8px;margin:0 0 12px}
+  .werkzeuge input{flex:2} .werkzeuge select{flex:1}
+  .zeile{
+    background:#fff;padding:11px 13px;margin:0 0 7px;display:flex;align-items:center;gap:10px;
+    box-shadow:0 6px 16px -14px rgba(31,42,74,.6);
+  }
+  .zeile .wer{flex:1;min-width:0}
+  .zeile .wer b{display:block;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .zeile .wer small{color:var(--grau);font-size:12px}
+  .zeile select{width:auto;flex:0 0 auto;padding:6px 8px;font-size:12px}
+
+  /* ---------- Nachschub ---------- */
+  .block{background:#fff;padding:16px;margin:0 0 14px;
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);}
+  .block h3{margin:0 0 4px;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+  .block p{margin:0 0 12px;color:var(--grau);font-size:13px}
+  .zahlen{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rand)}
+  .zahlen div{background:#fff;padding:11px 12px}
+  .zahlen b{display:block;font-size:21px;font-weight:600}
+  .zahlen span{color:var(--grau);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .protokoll{
+    background:var(--navy);color:var(--creme);padding:11px;margin:12px 0 0;
+    font-family:ui-monospace,Consolas,monospace;font-size:11.5px;line-height:1.6;
+    max-height:230px;overflow:auto;white-space:pre-wrap;
+  }
+  .hinweis{
+    background:var(--creme-tief);border-left:3px solid var(--messing);
+    padding:11px 13px;margin:0 0 14px;font-size:13px;color:var(--navy)
+  }
+  @media(min-width:620px){ .zahlen{grid-template-columns:repeat(3,1fr)} }
+</style>
+</head>
+<body>
+
+<div id="anmeldung">
+  <form id="formAnmeldung">
+    <p class="marke">TAPVIEW</p>
+    <p class="marke-unter">Akquise-Konsole</p>
+    <label><span>E-Mail</span><input type="email" id="email" autocomplete="username" required></label>
+    <label><span>Passwort</span><input type="password" id="passwort" autocomplete="current-password" required></label>
+    <button class="knopf-voll" type="submit">Anmelden</button>
+    <p class="fehler" id="anmeldeFehler"></p>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <span class="titel">TAPVIEW</span>
+    <span class="zaehler" id="zaehler">–</span>
+    <button id="abmelden">Abmelden</button>
+  </header>
+  <nav>
+    <button data-reiter="senden" aria-selected="true">Senden</button>
+    <button data-reiter="liste" aria-selected="false">Liste</button>
+    <button data-reiter="nachschub" aria-selected="false">Nachschub</button>
+  </nav>
+
+  <main>
+    <section id="reiter-senden"></section>
+
+    <section id="reiter-liste" hidden>
+      <div class="werkzeuge">
+        <input type="search" id="suche" placeholder="Name suchen">
+        <select id="filterStatus">
+          <option value="">alle Status</option>
+          <option value="bereit">bereit</option>
+          <option value="gesendet">gesendet</option>
+          <option value="nachgefasst">nachgefasst</option>
+          <option value="geantwortet">geantwortet</option>
+          <option value="muster">Muster zugesagt</option>
+          <option value="kunde">Kunde</option>
+          <option value="kein_interesse">kein Interesse</option>
+          <option value="blockiert">nie wieder</option>
+          <option value="neu">neu (ohne Text)</option>
+        </select>
+      </div>
+      <div id="listeInhalt"></div>
+    </section>
+
+    <section id="reiter-nachschub" hidden>
+      <div class="zahlen" id="zahlen"></div>
+
+      <div class="block" style="margin-top:14px">
+        <h3>Betriebe holen</h3>
+        <p>Fragt OpenStreetMap im 25-km-Umkreis ab und legt neue Betriebe an.
+           Bereits vorhandene bleiben unangetastet.</p>
+        <div class="werkzeuge">
+          <select id="gruppe">
+            <option value="gastro">Gastro &amp; Café</option>
+            <option value="beauty">Beauty, Friseur, Studio</option>
+            <option value="fahrschule">Fahrschulen</option>
+            <option value="praxis">Praxen</option>
+            <option value="hotel">Hotels</option>
+          </select>
+          <button class="neben stark" id="btnErnte">Starten</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Websites prüfen</h3>
+        <p>Ruft die Websites noch ungeprüfter Betriebe ab und sucht dort den
+           Instagram-Handle. Läuft in Runden zu 20.</p>
+        <button class="neben stark" id="btnAnreichern" style="width:100%">Runde starten</button>
+      </div>
+
+      <div class="block">
+        <h3>Passwort ändern</h3>
+        <div class="werkzeuge">
+          <input type="password" id="neuesPasswort" placeholder="neues Passwort" autocomplete="new-password">
+          <button class="neben" id="btnPasswort">Speichern</button>
+        </div>
+      </div>
+
+      <div class="protokoll" id="protokoll">bereit.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+const BASIS = "https://vkrrpdkhhdrjodzyrqnj.supabase.co";
+const ANON  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrcnJwZGtoaGRyam9kenlycW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTUwNjAsImV4cCI6MjEwMTA5MTA2MH0.RV1LnlXQY8EBVdJy7skErNTLZV9-rkGt0v97_GnHYu8";
+
+const BRANCHEN = {gastro:"Gastro", beauty:"Beauty", fahrschule:"Fahrschule", praxis:"Praxis", hotel:"Hotel", sonstiges:"Sonstiges"};
+const SIGNALE  = {speisekarte:"Speisekarte", karte_als_pdf:"Karte als PDF", buchung:"Terminbuchung",
+                  lieferung:"Lieferung", shop:"Shop", gutschein:"Gutscheine"};
+const STATUS   = ["bereit","gesendet","nachgefasst","geantwortet","muster","kunde","kein_interesse","blockiert"];
+
+let sitzung   = JSON.parse(localStorage.getItem("tapview_sitzung") || "null");
+let warteschlange = [];
+let uebersprungen = new Set();
+
+const $ = (s) => document.querySelector(s);
+const text = (s) => String(s ?? "").replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+
+/* ---------- Zugriff ---------- */
+async function erneuern(){
+  if(!sitzung?.refresh_token) return false;
+  const r = await fetch(BASIS+"/auth/v1/token?grant_type=refresh_token",{
+    method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
+    body: JSON.stringify({refresh_token: sitzung.refresh_token})
+  });
+  if(!r.ok) return false;
+  sitzung = await r.json();
+  localStorage.setItem("tapview_sitzung", JSON.stringify(sitzung));
+  return true;
+}
+
+async function api(pfad, opt = {}){
+  const kopf = Object.assign({apikey:ANON,"Content-Type":"application/json"}, opt.headers||{});
+  if(sitzung?.access_token) kopf.Authorization = "Bearer "+sitzung.access_token;
+  let r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
+  if(r.status === 401 && await erneuern()){
+    kopf.Authorization = "Bearer "+sitzung.access_token;
+    r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
+  }
+  if(r.status === 401){ abmelden(); throw new Error("Sitzung abgelaufen"); }
+  return r;
+}
+
+async function hole(pfad){
+  const r = await api(pfad);
+  if(!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+function wer(){
+  return sitzung?.user?.user_metadata?.name || sitzung?.user?.email?.split("@")[0] || "unbekannt";
+}
+
+function abmelden(){
+  localStorage.removeItem("tapview_sitzung");
+  sitzung = null;
+  $("#app").hidden = true;
+  $("#anmeldung").style.display = "grid";
+}
+
+$("#formAnmeldung").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const knopf = e.target.querySelector("button");
+  knopf.disabled = true; $("#anmeldeFehler").textContent = "";
+  try{
+    const r = await fetch(BASIS+"/auth/v1/token?grant_type=password",{
+      method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
+      body: JSON.stringify({email:$("#email").value.trim(), password:$("#passwort").value})
+    });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error_description || d.msg || "Anmeldung fehlgeschlagen");
+    sitzung = d;
+    localStorage.setItem("tapview_sitzung", JSON.stringify(d));
+    starten();
+  }catch(err){
+    $("#anmeldeFehler").textContent = err.message;
+  }finally{ knopf.disabled = false; }
+});
+
+$("#abmelden").addEventListener("click", abmelden);
+
+/* ---------- Reiter ---------- */
+document.querySelectorAll("nav button").forEach((b) => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("nav button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+    ["senden","liste","nachschub"].forEach((n) => { $("#reiter-"+n).hidden = (n !== b.dataset.reiter); });
+    if(b.dataset.reiter === "liste") listeLaden();
+    if(b.dataset.reiter === "nachschub") standLaden();
+  });
+});
+
+/* ---------- Senden ---------- */
+async function standLaden(){
+  const [s] = await hole("/rest/v1/stand?select=*");
+  $("#zaehler").textContent = s.heute_gesendet+" / "+s.limit_heute+" heute";
+  $("#zahlen").innerHTML = [
+    ["Betriebe gesamt", s.leads_gesamt], ["mit Website", s.mit_website],
+    ["mit Instagram", s.mit_instagram], ["Websites offen", s.offen_pruefung],
+    ["wartet auf Text", s.wartet_auf_text], ["sendebereit", s.bereit],
+    ["Nachfassen fällig", s.nachfassen_faellig], ["heute gesendet", s.heute_gesendet+" / "+s.limit_heute],
+  ].map(([b,z]) => `<div><b>${text(z)}</b><span>${text(b)}</span></div>`).join("");
+  return s;
+}
+
+async function warteschlangeLaden(){
+  warteschlange = await hole(
+    "/rest/v1/warteschlange?select=*&order=reihenfolge.asc,entfernung_km.asc.nullslast,name.asc&limit=60");
+  sendenZeichnen();
+}
+
+function sendenZeichnen(){
+  const liste = warteschlange.filter((l) => !uebersprungen.has(l.id));
+  const ziel = $("#reiter-senden");
+  if(!liste.length){
+    ziel.innerHTML = `<p class="leer">Nichts in der Warteschlange.<br>
+      Unter <b>Nachschub</b> Betriebe holen und Websites prüfen &ndash;
+      die Texte schreibt Claude Code in die Datenbank.</p>`;
+    return;
+  }
+  ziel.innerHTML = liste.map(karte).join("");
+}
+
+function karte(l){
+  const nachfassen = l.aktion === "nachfassen";
+  const nachricht  = nachfassen ? (l.nachfass_text || "") : (l.nachricht || "");
+  const signale = Object.entries(l.signale || {})
+    .filter(([k,v]) => v && SIGNALE[k]).map(([k]) => `<span class="chip">${SIGNALE[k]}</span>`).join("");
+  const meta = [BRANCHEN[l.branche] || l.branche, l.kueche, l.ort,
+                l.entfernung_km != null ? l.entfernung_km+" km" : null].filter(Boolean).join(" · ");
+  // Websites verlinken oft den Account des Trägers statt des Betriebs – vor dem
+  // Senden einmal hinschauen, sonst grüßt man das falsche Unternehmen.
+  const warnungen = [
+    nachfassen ? '<span class="marker">Nachfassen</span>' : "",
+    l.handle_passt === false ? '<span class="marker warnung">Handle prüfen</span>' : "",
+    l.handle_mehrfach ? '<span class="marker warnung">Handle mehrfach vergeben</span>' : "",
+  ].join("");
+  return `
+  <article class="karte ${nachfassen ? "nachfassen":""}" data-id="${l.id}">
+    ${warnungen}
+    <h2>${text(l.name)}</h2>
+    <p class="meta">${text(meta)}</p>
+    ${signale ? `<div class="chips">${signale}</div>` : ""}
+    <div class="verweise">
+      ${l.instagram ? `<a href="https://instagram.com/${encodeURIComponent(l.instagram)}" target="_blank" rel="noopener">Profil ansehen</a>` : ""}
+      ${l.website ? `<a href="${text(l.website)}" target="_blank" rel="noopener">Website</a>` : ""}
+      <a href="https://www.google.com/maps/search/${encodeURIComponent((l.name||"")+" "+(l.ort||"Osnabrück"))}" target="_blank" rel="noopener">Bei Google</a>
+    </div>
+    <textarea data-feld="nachricht">${text(nachricht)}</textarea>
+    <p class="zeichen"><span>${nachricht.length}</span> Zeichen</p>
+    <div class="aktionen">
+      <a class="haupt" data-tun="kopieren"
+         href="https://ig.me/m/${encodeURIComponent(l.instagram||"")}" target="_blank" rel="noopener">
+        Kopieren &amp; DM öffnen</a>
+      <button class="neben stark" data-tun="gesendet">Gesendet</button>
+      <button class="neben" data-tun="spaeter">Später</button>
+      <button class="neben warn" data-tun="nie">Nie wieder</button>
+    </div>
+  </article>`;
+}
+
+$("#reiter-senden").addEventListener("input", (e) => {
+  if(e.target.tagName !== "TEXTAREA") return;
+  e.target.closest(".karte").querySelector(".zeichen span").textContent = e.target.value.length;
+});
+
+$("#reiter-senden").addEventListener("focusout", async (e) => {
+  if(e.target.tagName !== "TEXTAREA") return;
+  const karteEl = e.target.closest(".karte");
+  const lead = warteschlange.find((l) => l.id === karteEl.dataset.id);
+  if(!lead) return;
+  const feld = lead.aktion === "nachfassen" ? "nachfass_text" : "nachricht";
+  if(lead[feld] === e.target.value) return;
+  lead[feld] = e.target.value;
+  await api("/rest/v1/leads?id=eq."+lead.id, {
+    method:"PATCH", body: JSON.stringify({[feld]: e.target.value})
+  });
+});
+
+$("#reiter-senden").addEventListener("click", async (e) => {
+  const knopf = e.target.closest("[data-tun]");
+  if(!knopf) return;
+  const karteEl = knopf.closest(".karte");
+  const lead = warteschlange.find((l) => l.id === karteEl.dataset.id);
+  if(!lead) return;
+  const tun = knopf.dataset.tun;
+
+  if(tun === "kopieren"){
+    const txt = karteEl.querySelector("textarea").value;
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
+    if(!lead.instagram){ e.preventDefault(); alert("Für diesen Betrieb ist kein Instagram-Handle hinterlegt."); }
+    return; // der Link öffnet Instagram selbst
+  }
+
+  e.preventDefault();
+
+  if(tun === "spaeter"){ uebersprungen.add(lead.id); sendenZeichnen(); return; }
+
+  if(tun === "nie"){
+    if(!confirm(text(lead.name)+" dauerhaft sperren? Der Betrieb taucht auch nach neuen Durchläufen nie wieder auf.")) return;
+    await api("/rest/v1/leads?id=eq."+lead.id, {method:"PATCH", body: JSON.stringify({status:"blockiert"})});
+    warteschlange = warteschlange.filter((l) => l.id !== lead.id);
+    sendenZeichnen(); standLaden();
+    return;
+  }
+
+  if(tun === "gesendet"){
+    knopf.disabled = true;
+    const r = await api("/rest/v1/rpc/dm_gesendet", {
+      method:"POST",
+      body: JSON.stringify({p_lead: lead.id, p_aktion: lead.aktion === "nachfassen" ? "nachfassen":"erstkontakt", p_nutzer: wer()})
+    });
+    const d = await r.json().catch(() => null);
+    knopf.disabled = false;
+    if(!r.ok){ alert(d?.message || "Konnte nicht gespeichert werden."); return; }
+    warteschlange = warteschlange.filter((l) => l.id !== lead.id);
+    sendenZeichnen(); standLaden();
+  }
+});
+
+/* ---------- Liste ---------- */
+let listeZeit;
+["#suche","#filterStatus"].forEach((s) =>
+  $(s).addEventListener("input", () => { clearTimeout(listeZeit); listeZeit = setTimeout(listeLaden, 250); }));
+
+async function listeLaden(){
+  const suche = $("#suche").value.trim();
+  const status = $("#filterStatus").value;
+  let pfad = "/rest/v1/leads?select=id,name,ort,branche,status,instagram,entfernung_km&order=name.asc&limit=200";
+  if(status) pfad += "&status=eq."+encodeURIComponent(status);
+  if(suche)  pfad += "&name=ilike."+encodeURIComponent("*"+suche+"*");
+  const daten = await hole(pfad);
+  $("#listeInhalt").innerHTML = daten.length ? daten.map((l) => `
+    <div class="zeile" data-id="${l.id}">
+      <span class="wer">
+        <b>${text(l.name)}</b>
+        <small>${text([BRANCHEN[l.branche]||l.branche, l.ort, l.instagram ? "@"+l.instagram : "kein Instagram"].filter(Boolean).join(" · "))}</small>
+      </span>
+      <select>${STATUS.map((s) => `<option value="${s}"${s===l.status?" selected":""}>${s}</option>`).join("")}
+        ${STATUS.includes(l.status)?"":`<option value="${l.status}" selected>${l.status}</option>`}
+      </select>
+    </div>`).join("") : `<p class="leer">Keine Treffer.</p>`;
+}
+
+$("#listeInhalt").addEventListener("change", async (e) => {
+  if(e.target.tagName !== "SELECT") return;
+  const id = e.target.closest(".zeile").dataset.id;
+  await api("/rest/v1/leads?id=eq."+id, {method:"PATCH", body: JSON.stringify({status:e.target.value})});
+  standLaden();
+});
+
+/* ---------- Nachschub ---------- */
+function melden(zeile){
+  const p = $("#protokoll");
+  p.textContent += "\n" + zeile;
+  p.scrollTop = p.scrollHeight;
+}
+
+async function funktion(name, koerper){
+  const r = await api("/functions/v1/"+name, {method:"POST", body: JSON.stringify(koerper)});
+  return r.json();
+}
+
+$("#btnErnte").addEventListener("click", async (e) => {
+  const knopf = e.target, gruppe = $("#gruppe").value;
+  knopf.disabled = true;
+  $("#protokoll").textContent = "Ernte "+gruppe+" …";
+  let teil = 0, gesamt = 0;
+  try{
+    while(teil !== null){
+      let d = null;
+      for(let versuch = 1; versuch <= 4 && !d; versuch++){
+        const a = await funktion("ernte", {gruppe, teil, radius_km: 25});
+        if(a.fehler){ melden(`  Schritt ${teil}, Versuch ${versuch}: Server überlastet`); await new Promise((f)=>setTimeout(f,6000)); }
+        else d = a;
+      }
+      if(!d){ melden(`Schritt ${teil} aufgegeben – später nochmal starten.`); break; }
+      gesamt += d.neu_angelegt;
+      melden(`  ${d.filter}: ${d.gefunden} gefunden, ${d.ketten_gefiltert} Ketten raus, ${d.neu_angelegt} neu`);
+      teil = d.naechster_teil;
+    }
+    melden(`fertig – ${gesamt} neue Betriebe.`);
+    standLaden();
+  }finally{ knopf.disabled = false; }
+});
+
+$("#btnAnreichern").addEventListener("click", async (e) => {
+  const knopf = e.target;
+  knopf.disabled = true;
+  $("#protokoll").textContent = "Websites prüfen …";
+  try{
+    for(let runde = 1; runde <= 5; runde++){
+      const d = await funktion("anreichern", {anzahl: 20});
+      if(d.fehler){ melden("  Fehler: "+d.fehler); break; }
+      melden(`  Runde ${runde}: ${d.geprueft} geprüft, ${d.instagram_gefunden} mit Instagram, ${d.noch_offen} offen`);
+      if(!d.noch_offen || !d.geprueft) break;
+    }
+    melden("fertig.");
+    standLaden();
+  }finally{ knopf.disabled = false; }
+});
+
+$("#btnPasswort").addEventListener("click", async () => {
+  const neu = $("#neuesPasswort").value;
+  if(neu.length < 8){ alert("Mindestens 8 Zeichen."); return; }
+  const r = await api("/auth/v1/user", {method:"PUT", body: JSON.stringify({password:neu})});
+  alert(r.ok ? "Passwort geändert." : "Hat nicht geklappt: "+(await r.text()));
+  $("#neuesPasswort").value = "";
+});
+
+/* ---------- Start ---------- */
+async function starten(){
+  $("#anmeldung").style.display = "none";
+  $("#app").hidden = false;
+  await standLaden();
+  await warteschlangeLaden();
+}
+
+if(sitzung){ starten().catch(abmelden); }
+</script>
+</body>
+</html>
