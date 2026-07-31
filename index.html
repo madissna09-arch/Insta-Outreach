@@ -211,6 +211,13 @@
       </div>
 
       <div class="block">
+        <h3>Inhalte auslesen</h3>
+        <p>Holt zu den gefundenen Instagram-Betrieben die Speisekarten-, Leistungs- und
+           Über-uns-Seiten. Das ist das Material, aus dem die Nachrichten entstehen.</p>
+        <button class="neben stark" id="btnVertiefen" style="width:100%">Runde starten</button>
+      </div>
+
+      <div class="block">
         <h3>Passwort ändern</h3>
         <div class="werkzeuge">
           <input type="password" id="neuesPasswort" placeholder="neues Passwort" autocomplete="new-password">
@@ -516,6 +523,22 @@ $("#btnAnreichern").addEventListener("click", async (e) => {
       if(d.fehler){ melden("  Fehler: "+d.fehler); break; }
       melden(`  Runde ${runde}: ${d.geprueft} geprüft, ${d.instagram_gefunden} mit Instagram, ${d.noch_offen} offen`);
       if(!d.noch_offen || !d.geprueft) break;
+    }
+    melden("fertig.");
+    standLaden();
+  }finally{ knopf.disabled = false; }
+});
+
+$("#btnVertiefen").addEventListener("click", async (e) => {
+  const knopf = e.target;
+  knopf.disabled = true;
+  $("#protokoll").textContent = "Inhalte auslesen …";
+  try{
+    for(let runde = 1; runde <= 6; runde++){
+      const d = await funktion("vertiefen", {anzahl: 10});
+      if(d.fehler){ melden("  Fehler: "+d.fehler); break; }
+      melden(`  Runde ${runde}: ${d.vertieft} Betriebe, ${d.mit_inhalt} mit Text (Ø ${d.schnitt_zeichen} Zeichen), ${d.noch_offen} offen`);
+      if(!d.noch_offen || !d.vertieft) break;
     }
     melden("fertig.");
     standLaden();
