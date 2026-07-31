@@ -57,6 +57,7 @@
   }
   header .titel{font-size:15px;letter-spacing:.26em;font-weight:600}
   header .zaehler{margin-left:auto;font-size:12px;letter-spacing:.1em;color:var(--messing)}
+  header .zaehler.drueber{color:#E9A79B}
   header button{color:var(--creme);opacity:.7;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 
   nav{display:flex;background:var(--navy-hell);position:sticky;top:0;z-index:19}
@@ -338,7 +339,9 @@ document.querySelectorAll("nav button").forEach((b) => {
 /* ---------- Senden ---------- */
 async function standLaden(){
   const [s] = await hole("/rest/v1/stand?select=*");
+  // Richtwert, keine Sperre: das Senden passiert in Instagram, nicht hier.
   $("#zaehler").textContent = s.heute_gesendet+" / "+s.limit_heute+" heute";
+  $("#zaehler").classList.toggle("drueber", s.heute_gesendet > s.limit_heute);
   $("#zahlen").innerHTML = [
     ["Betriebe gesamt", s.leads_gesamt], ["mit Website", s.mit_website],
     ["mit Instagram", s.mit_instagram], ["Websites offen", s.offen_pruefung],
@@ -518,6 +521,11 @@ $("#reiter-senden").addEventListener("click", async (e) => {
     const d = await r.json().catch(() => null);
     knopf.disabled = false;
     if(!r.ok){ alert(d?.message || "Konnte nicht gespeichert werden."); return; }
+    if(d?.ueber_limit){
+      alert("Eingetragen. Hinweis: "+d.heute+" Erstkontakte heute, Richtwert sind "+d.limit+
+            ".\n\nInstagram stuft junge Konten mit vielen Erstnachrichten schnell als Spam ein — "+
+            "und auf @tapvio_os zeigt der QR eurer Visitenkarten. Morgen weiterzumachen ist sicherer.");
+    }
     warteschlange = warteschlange.filter((l) => l.id !== lead.id);
     sendenZeichnen(); standLaden();
   }
