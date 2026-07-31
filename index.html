@@ -98,11 +98,26 @@
     clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
   }
   .neben{
-    flex:1;border:1px solid var(--rand);padding:10px 6px;background:var(--creme);
+    flex:1 1 auto;min-width:88px;border:1px solid var(--rand);padding:10px 6px;
+    background:var(--creme);
     text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:600;
   }
   .neben.stark{background:var(--messing);border-color:var(--messing)}
   .neben.warn{color:var(--rot)}
+
+  /* ---------- Rückmeldung zu einem Text ---------- */
+  .rueckmeldung{
+    margin:12px 0 0;padding:13px;background:var(--creme-tief);
+    border-left:3px solid var(--navy);
+  }
+  .rueckmeldung p{margin:0 0 9px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grau)}
+  .gruende{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+  .grund{
+    border:1px solid var(--rand);background:#fff;padding:6px 10px;font-size:12px;
+    line-height:1.2;
+  }
+  .grund[aria-pressed="true"]{background:var(--navy);color:var(--creme);border-color:var(--navy)}
+  .rueckmeldung textarea{min-height:74px;margin:0;font-size:14px;background:#fff}
 
   /* ---------- Liste ---------- */
   .werkzeuge{display:flex;gap:8px;margin:0 0 12px}
@@ -171,6 +186,7 @@
         <select id="filterStatus">
           <option value="">alle Status</option>
           <option value="bereit">bereit</option>
+          <option value="ueberarbeiten">zur Nachbesserung</option>
           <option value="gesendet">gesendet</option>
           <option value="nachgefasst">nachgefasst</option>
           <option value="geantwortet">geantwortet</option>
@@ -237,7 +253,7 @@ const ANON  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJl
 const BRANCHEN = {gastro:"Gastro", beauty:"Beauty", fahrschule:"Fahrschule", praxis:"Praxis", hotel:"Hotel", sonstiges:"Sonstiges"};
 const SIGNALE  = {speisekarte:"Speisekarte", karte_als_pdf:"Karte als PDF", buchung:"Terminbuchung",
                   lieferung:"Lieferung", shop:"Shop", gutschein:"Gutscheine"};
-const STATUS   = ["bereit","gesendet","nachgefasst","geantwortet","muster","kunde","kein_interesse","blockiert"];
+const STATUS   = ["bereit","ueberarbeiten","gesendet","nachgefasst","geantwortet","muster","kunde","kein_interesse","blockiert"];
 
 let sitzung   = JSON.parse(localStorage.getItem("tapview_sitzung") || "null");
 let warteschlange = [];
@@ -327,6 +343,7 @@ async function standLaden(){
     ["Betriebe gesamt", s.leads_gesamt], ["mit Website", s.mit_website],
     ["mit Instagram", s.mit_instagram], ["Websites offen", s.offen_pruefung],
     ["wartet auf Text", s.wartet_auf_text], ["sendebereit", s.bereit],
+    ["zur Nachbesserung", s.zu_ueberarbeiten],
     ["Nachfassen fällig", s.nachfassen_faellig], ["heute gesendet", s.heute_gesendet+" / "+s.limit_heute],
   ].map(([b,z]) => `<div><b>${text(z)}</b><span>${text(b)}</span></div>`).join("");
   return s;
@@ -382,19 +399,36 @@ function karte(l){
          href="https://ig.me/m/${encodeURIComponent(l.instagram||"")}" target="_blank" rel="noopener">
         Kopieren &amp; DM öffnen</a>
       <button class="neben stark" data-tun="gesendet">Gesendet</button>
+      <button class="neben" data-tun="neu">Neu schreiben</button>
       <button class="neben" data-tun="spaeter">Später</button>
       <button class="neben warn" data-tun="nie">Nie wieder</button>
+    </div>
+
+    <div class="rueckmeldung" hidden>
+      <p>Was stört? Nichts auswählen heißt einfach neu schreiben.</p>
+      <div class="gruende">
+        ${["zu lang","zu werblich","Aufhänger passt nicht","Ton passt nicht",
+           "Angaben stimmen nicht","zu allgemein"]
+          .map((g) => `<button class="grund" aria-pressed="false">${g}</button>`).join("")}
+      </div>
+      <textarea data-feld="feedback" placeholder="Optional: was soll anders sein?"></textarea>
+      <div class="aktionen">
+        <button class="neben stark" data-tun="rueckmeldung-senden">Zur Nachbesserung</button>
+        <button class="neben" data-tun="rueckmeldung-abbrechen">Abbrechen</button>
+      </div>
     </div>
   </article>`;
 }
 
+// Nur das Nachrichtenfeld zählen und speichern - im selben Kasten sitzt auch
+// das Rückmeldungsfeld, das nichts mit der Nachricht zu tun hat.
 $("#reiter-senden").addEventListener("input", (e) => {
-  if(e.target.tagName !== "TEXTAREA") return;
+  if(e.target.dataset.feld !== "nachricht") return;
   e.target.closest(".karte").querySelector(".zeichen span").textContent = e.target.value.length;
 });
 
 $("#reiter-senden").addEventListener("focusout", async (e) => {
-  if(e.target.tagName !== "TEXTAREA") return;
+  if(e.target.dataset.feld !== "nachricht") return;
   const karteEl = e.target.closest(".karte");
   const lead = warteschlange.find((l) => l.id === karteEl.dataset.id);
   if(!lead) return;
@@ -407,6 +441,13 @@ $("#reiter-senden").addEventListener("focusout", async (e) => {
 });
 
 $("#reiter-senden").addEventListener("click", async (e) => {
+  // Auswahlknöpfe der Rückmeldung schalten nur sich selbst um
+  const grund = e.target.closest(".grund");
+  if(grund){
+    grund.setAttribute("aria-pressed", grund.getAttribute("aria-pressed") === "true" ? "false" : "true");
+    return;
+  }
+
   const knopf = e.target.closest("[data-tun]");
   if(!knopf) return;
   const karteEl = knopf.closest(".karte");
@@ -424,6 +465,41 @@ $("#reiter-senden").addEventListener("click", async (e) => {
   e.preventDefault();
 
   if(tun === "spaeter"){ uebersprungen.add(lead.id); sendenZeichnen(); return; }
+
+  if(tun === "neu"){
+    const feld = karteEl.querySelector(".rueckmeldung");
+    feld.hidden = !feld.hidden;
+    if(!feld.hidden) feld.querySelector("textarea").focus();
+    return;
+  }
+
+  if(tun === "rueckmeldung-abbrechen"){
+    const feld = karteEl.querySelector(".rueckmeldung");
+    feld.hidden = true;
+    feld.querySelector("textarea").value = "";
+    feld.querySelectorAll('.grund[aria-pressed="true"]')
+        .forEach((g) => g.setAttribute("aria-pressed", "false"));
+    return;
+  }
+
+  if(tun === "rueckmeldung-senden"){
+    const feld = karteEl.querySelector(".rueckmeldung");
+    const gruende = [...feld.querySelectorAll('.grund[aria-pressed="true"]')].map((g) => g.textContent);
+    const frei = feld.querySelector("textarea").value.trim();
+    const text = [gruende.join(", "), frei].filter(Boolean).join(" - ") || "ohne Begründung, bitte neu";
+
+    knopf.disabled = true;
+    const r = await api("/rest/v1/leads?id=eq."+lead.id, {
+      method:"PATCH",
+      body: JSON.stringify({status:"ueberarbeiten", feedback:text, feedback_am:new Date().toISOString()})
+    });
+    knopf.disabled = false;
+    if(!r.ok){ alert("Konnte nicht gespeichert werden."); return; }
+
+    warteschlange = warteschlange.filter((l) => l.id !== lead.id);
+    sendenZeichnen(); standLaden();
+    return;
+  }
 
   if(tun === "nie"){
     if(!confirm(text(lead.name)+" dauerhaft sperren? Der Betrieb taucht auch nach neuen Durchläufen nie wieder auf.")) return;
