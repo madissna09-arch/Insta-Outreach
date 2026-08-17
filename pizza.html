@@ -125,10 +125,13 @@
 
     <div class="tafel" id="tafelFormular">
       <h2>Eintragen</h2>
-      <p class="unter">Name und Alter genügen. Die Liste sehen nur die Organisatoren.</p>
+      <p class="unter">Vor- und Nachname und dein Alter genügen. Bitte den Nachnamen
+        mitschreiben – manche Vornamen kommen bei uns mehrfach vor. Die Liste sehen
+        nur die Organisatoren.</p>
       <form id="formEintrag">
-        <label><span>Name</span>
-          <input id="fName" name="name" autocomplete="name" maxlength="60" required>
+        <label><span>Vor- und Nachname</span>
+          <input id="fName" name="name" autocomplete="name" maxlength="60"
+                 placeholder="z. B. Yusuf Demir" required>
         </label>
         <label><span>Alter</span>
           <input id="fAlter" name="alter" type="number" inputmode="numeric" min="1" max="120" required>
@@ -191,7 +194,7 @@ const EVENT = {
   titel:   "Pizzabacken",
   wann:    "Freitag, 21. August – nach dem Freitagsgebet",
   wo:      "in der Tawba-Moschee",
-  hinweis: ""    // z.B. "Bitte bis Donnerstag 20 Uhr eintragen."
+  hinweis: "Anmeldeschluss: Donnerstag, 20. August, 22 Uhr. Danach steht der Einkauf fest."
 };
 
 const $ = (s) => document.querySelector(s);
