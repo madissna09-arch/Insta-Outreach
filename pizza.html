@@ -81,8 +81,8 @@
   .balken .zaehler{margin-left:auto;font-size:12px;color:var(--messing);letter-spacing:.08em}
   .balken button{color:var(--creme);opacity:.7;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 
-  .werkzeuge{display:flex;gap:8px;margin:0 0 12px}
-  .werkzeuge .knopf-schmal{flex:1}
+  .werkzeuge{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+  .werkzeuge .knopf-schmal{flex:1 1 30%}
 
   .zeile{
     background:#fff;padding:10px 12px;margin:0 0 7px;display:flex;align-items:center;gap:11px;
@@ -143,19 +143,16 @@
     </p>
   </section>
 
-  <!-- ---------- Anmeldung für Organisatoren ---------- -->
+  <!-- ---------- Passwort der Organisatoren ---------- -->
   <section id="tor" hidden>
     <div class="tafel">
       <h2>Organisatoren</h2>
-      <p class="unter">Mit dem Zugang der Akquise-Konsole anmelden.</p>
+      <p class="unter">Mit dem gemeinsamen Passwort des Orga-Teams öffnen.</p>
       <form id="formTor">
-        <label><span>E-Mail</span>
-          <input id="tEmail" type="email" autocomplete="username" required>
-        </label>
         <label><span>Passwort</span>
           <input id="tPasswort" type="password" autocomplete="current-password" required>
         </label>
-        <button class="knopf-voll" type="submit">Anmelden</button>
+        <button class="knopf-voll" type="submit">Liste öffnen</button>
         <p class="fehler" id="torFehler"></p>
       </form>
     </div>
@@ -167,7 +164,7 @@
     <div class="balken">
       <span class="titel">Anwesenheit</span>
       <span class="zaehler" id="listeZaehler">–</span>
-      <button id="abmelden">Abmelden</button>
+      <button id="sperren">Sperren</button>
     </div>
 
     <div class="zahlen" id="zahlen"></div>
@@ -175,6 +172,7 @@
     <div class="werkzeuge">
       <button class="knopf-schmal" id="btnNeuLaden">Neu laden</button>
       <button class="knopf-schmal stark" id="btnCsv">CSV laden</button>
+      <button class="knopf-schmal" id="btnPasswort">Passwort ändern</button>
     </div>
 
     <div id="listeInhalt"><p class="leer">Liste wird geladen …</p></div>
@@ -194,13 +192,15 @@ const EVENT = {
   titel:   "Pizzabacken",
   wann:    "Freitag, 21. August – nach dem Freitagsgebet",
   wo:      "in der Tawba-Moschee",
-  hinweis: ""    // z.B. "Bitte eine Schürze mitbringen."
+  hinweis: ""    // z.B. "Bitte bis Donnerstag 20 Uhr eintragen."
 };
 
 const $ = (s) => document.querySelector(s);
 const text = (s) => String(s ?? "").replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 
-let sitzung = JSON.parse(localStorage.getItem("tapview_sitzung") || "null");
+/* Das Gruppenpasswort bleibt auf dem Geraet, damit am Freitag nicht bei jedem
+   Abhaken neu getippt werden muss. Geprueft wird es in der Datenbank. */
+let passwort = localStorage.getItem("pizza_orga") || "";
 let eintraege = [];
 
 /* ---------- Kopf ---------- */
@@ -212,35 +212,12 @@ let eintraege = [];
   if(EVENT.hinweis){ $("#hinweis").textContent = EVENT.hinweis; $("#hinweis").hidden = false; }
 })();
 
-/* ---------- Zugriff ---------- */
-async function erneuern(){
-  if(!sitzung?.refresh_token) return false;
-  const r = await fetch(BASIS+"/auth/v1/token?grant_type=refresh_token",{
-    method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
-    body: JSON.stringify({refresh_token: sitzung.refresh_token})
+async function rpc(name, koerper){
+  return fetch(BASIS+"/rest/v1/rpc/"+name, {
+    method:"POST",
+    headers:{apikey:ANON,"Content-Type":"application/json"},
+    body: JSON.stringify(koerper || {})
   });
-  if(!r.ok) return false;
-  sitzung = await r.json();
-  localStorage.setItem("tapview_sitzung", JSON.stringify(sitzung));
-  return true;
-}
-
-/* offen = ohne Anmeldung, also die Rolle anon */
-async function offen(pfad, opt = {}){
-  const kopf = Object.assign({apikey:ANON,"Content-Type":"application/json"}, opt.headers||{});
-  return fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
-}
-
-async function api(pfad, opt = {}){
-  const kopf = Object.assign({apikey:ANON,"Content-Type":"application/json"}, opt.headers||{});
-  if(sitzung?.access_token) kopf.Authorization = "Bearer "+sitzung.access_token;
-  let r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
-  if(r.status === 401 && await erneuern()){
-    kopf.Authorization = "Bearer "+sitzung.access_token;
-    r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
-  }
-  if(r.status === 401){ abmelden(); throw new Error("Sitzung abgelaufen, bitte neu anmelden."); }
-  return r;
 }
 
 function zeigen(welche){
@@ -251,9 +228,8 @@ function zeigen(welche){
 /* ---------- Teilnehmer ---------- */
 async function anzahlHolen(){
   try{
-    const r = await offen("/rest/v1/rpc/pizza_anzahl", {method:"POST", body:"{}"});
-    if(!r.ok) return null;
-    return await r.json();
+    const r = await rpc("pizza_anzahl");
+    return r.ok ? await r.json() : null;
   }catch(_){ return null; }
 }
 
@@ -289,9 +265,9 @@ $("#formEintrag").addEventListener("submit", async (e) => {
 
   knopf.disabled = true;
   try{
-    const r = await offen("/rest/v1/pizza_anmeldungen", {
+    const r = await fetch(BASIS+"/rest/v1/pizza_anmeldungen", {
       method:"POST",
-      headers:{Prefer:"return=minimal"},
+      headers:{apikey:ANON,"Content-Type":"application/json",Prefer:"return=minimal"},
       body: JSON.stringify({name: name, alter_jahre: jahre})
     });
     if(r.status === 409){
@@ -313,7 +289,7 @@ $("#formEintrag").addEventListener("submit", async (e) => {
 
 /* ---------- Organisatoren ---------- */
 $("#zumBereich").addEventListener("click", () => {
-  if(sitzung?.access_token){ zeigen("liste"); listeLaden(); }
+  if(passwort){ zeigen("liste"); listeLaden(); }
   else zeigen("tor");
 });
 $("#zurueckZurListe").addEventListener("click", () => zeigen("teil"));
@@ -324,33 +300,34 @@ $("#formTor").addEventListener("submit", async (e) => {
   const knopf = e.target.querySelector("button");
   knopf.disabled = true; $("#torFehler").textContent = "";
   try{
-    const r = await fetch(BASIS+"/auth/v1/token?grant_type=password",{
-      method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
-      body: JSON.stringify({email:$("#tEmail").value.trim(), password:$("#tPasswort").value})
-    });
-    const d = await r.json();
-    if(!r.ok) throw new Error(d.error_description || d.msg || "Anmeldung fehlgeschlagen");
-    sitzung = d;
-    localStorage.setItem("tapview_sitzung", JSON.stringify(d));
+    const versuch = $("#tPasswort").value;
+    const r = await rpc("pizza_liste", {p_passwort: versuch});
+    if(r.status === 403){ $("#torFehler").textContent = "Das Passwort stimmt nicht."; return; }
+    if(!r.ok) throw new Error("Die Liste ließ sich nicht öffnen.");
+    eintraege = await r.json();
+    passwort = versuch;
+    localStorage.setItem("pizza_orga", passwort);
     $("#tPasswort").value = "";
     zeigen("liste");
-    listeLaden();
+    listeZeichnen();
   }catch(err){
     $("#torFehler").textContent = err.message;
   }finally{ knopf.disabled = false; }
 });
 
-function abmelden(){
-  localStorage.removeItem("tapview_sitzung");
-  sitzung = null;
+function sperren(){
+  localStorage.removeItem("pizza_orga");
+  passwort = "";
+  eintraege = [];
   zeigen("teil");
 }
-$("#abmelden").addEventListener("click", abmelden);
+$("#sperren").addEventListener("click", sperren);
 
 async function listeLaden(){
   $("#listeFehler").textContent = "";
   try{
-    const r = await api("/rest/v1/pizza_anmeldungen?select=*&order=eingetragen_am.asc");
+    const r = await rpc("pizza_liste", {p_passwort: passwort});
+    if(r.status === 403){ sperren(); zeigen("tor"); $("#torFehler").textContent = "Das Passwort wurde geändert, bitte neu eingeben."; return; }
     if(!r.ok) throw new Error("Die Liste ließ sich nicht laden.");
     eintraege = await r.json();
     listeZeichnen();
@@ -397,10 +374,7 @@ function listeZeichnen(){
 async function anwesenheitSetzen(id, wert, haken){
   haken.disabled = true;
   try{
-    const r = await api("/rest/v1/pizza_anmeldungen?id=eq."+id, {
-      method:"PATCH", headers:{Prefer:"return=minimal"},
-      body: JSON.stringify({anwesend: wert})
-    });
+    const r = await rpc("pizza_anwesend", {p_passwort: passwort, p_id: id, p_wert: wert});
     if(!r.ok) throw new Error("Anwesenheit ließ sich nicht speichern.");
     const treffer = eintraege.find((e) => e.id === id);
     if(treffer) treffer.anwesend = wert;
@@ -415,7 +389,7 @@ async function eintragLoeschen(id){
   const treffer = eintraege.find((e) => e.id === id);
   if(!confirm("„"+(treffer ? treffer.name : "Eintrag")+"“ von der Liste nehmen?")) return;
   try{
-    const r = await api("/rest/v1/pizza_anmeldungen?id=eq."+id, {method:"DELETE", headers:{Prefer:"return=minimal"}});
+    const r = await rpc("pizza_loeschen", {p_passwort: passwort, p_id: id});
     if(!r.ok) throw new Error("Löschen hat nicht geklappt.");
     eintraege = eintraege.filter((e) => e.id !== id);
     listeZeichnen();
@@ -423,6 +397,24 @@ async function eintragLoeschen(id){
     $("#listeFehler").textContent = err.message;
   }
 }
+
+$("#btnPasswort").addEventListener("click", async () => {
+  const neu = prompt("Neues Passwort für das Orga-Team (mindestens 8 Zeichen):");
+  if(neu === null) return;
+  $("#listeFehler").textContent = "";
+  try{
+    const r = await rpc("pizza_passwort_aendern", {p_alt: passwort, p_neu: neu});
+    if(!r.ok){
+      const d = await r.json().catch(() => ({}));
+      throw new Error(d.message || "Passwort ließ sich nicht ändern.");
+    }
+    passwort = neu;
+    localStorage.setItem("pizza_orga", passwort);
+    alert("Passwort geändert. Sag es dem Orga-Team weiter – alle anderen Geräte müssen es neu eingeben.");
+  }catch(err){
+    $("#listeFehler").textContent = err.message;
+  }
+});
 
 /* Semikolon und BOM, damit Excel die Spalten sauber trennt. */
 $("#btnCsv").addEventListener("click", () => {
@@ -443,7 +435,7 @@ $("#btnCsv").addEventListener("click", () => {
 
 /* ---------- Start ---------- */
 if(location.hash === "#organisatoren"){
-  if(sitzung?.access_token){ zeigen("liste"); listeLaden(); } else zeigen("tor");
+  if(passwort){ zeigen("liste"); listeLaden(); } else zeigen("tor");
 }else{
   dankeZeigen();
 }
