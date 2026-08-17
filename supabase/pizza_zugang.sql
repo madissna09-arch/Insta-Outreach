@@ -6,7 +6,7 @@
 -- erfolgreicher Passwortpruefung etwas zurueck. Ein falsches Passwort endet
 -- mit SQLSTATE 28P01, was PostgREST als 403 ausliefert.
 --
--- Passwort spaeter aendern: entweder ueber den Knopf in pizza.html oder hier
+-- Passwort spaeter aendern: nur hier im SQL-Editor, nicht von der Seite aus
 --   select public.pizza_passwort_aendern('altes', 'neues');
 
 create schema if not exists intern;
@@ -119,4 +119,7 @@ revoke all on function public.pizza_passwort_aendern(text, text)   from public;
 grant execute on function public.pizza_liste(text)                   to anon, authenticated;
 grant execute on function public.pizza_anwesend(text, uuid, boolean) to anon, authenticated;
 grant execute on function public.pizza_loeschen(text, uuid)          to anon, authenticated;
-grant execute on function public.pizza_passwort_aendern(text, text)  to anon, authenticated;
+
+-- Der Passwortwechsel bleibt bewusst dem SQL-Editor vorbehalten und ist ueber
+-- die API nicht erreichbar.
+revoke execute on function public.pizza_passwort_aendern(text, text) from anon, authenticated;
