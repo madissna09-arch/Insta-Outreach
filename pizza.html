@@ -172,7 +172,6 @@
     <div class="werkzeuge">
       <button class="knopf-schmal" id="btnNeuLaden">Neu laden</button>
       <button class="knopf-schmal stark" id="btnCsv">CSV laden</button>
-      <button class="knopf-schmal" id="btnPasswort">Passwort ändern</button>
     </div>
 
     <div id="listeInhalt"><p class="leer">Liste wird geladen …</p></div>
@@ -270,10 +269,6 @@ $("#formEintrag").addEventListener("submit", async (e) => {
       headers:{apikey:ANON,"Content-Type":"application/json",Prefer:"return=minimal"},
       body: JSON.stringify({name: name, alter_jahre: jahre})
     });
-    if(r.status === 409){
-      meldung.textContent = "Unter diesem Namen steht schon jemand auf der Liste.";
-      return;
-    }
     if(!r.ok){
       const d = await r.text();
       throw new Error(/pizza_(name|alter)/.test(d)
@@ -397,24 +392,6 @@ async function eintragLoeschen(id){
     $("#listeFehler").textContent = err.message;
   }
 }
-
-$("#btnPasswort").addEventListener("click", async () => {
-  const neu = prompt("Neues Passwort für das Orga-Team (mindestens 8 Zeichen):");
-  if(neu === null) return;
-  $("#listeFehler").textContent = "";
-  try{
-    const r = await rpc("pizza_passwort_aendern", {p_alt: passwort, p_neu: neu});
-    if(!r.ok){
-      const d = await r.json().catch(() => ({}));
-      throw new Error(d.message || "Passwort ließ sich nicht ändern.");
-    }
-    passwort = neu;
-    localStorage.setItem("pizza_orga", passwort);
-    alert("Passwort geändert. Sag es dem Orga-Team weiter – alle anderen Geräte müssen es neu eingeben.");
-  }catch(err){
-    $("#listeFehler").textContent = err.message;
-  }
-});
 
 /* Semikolon und BOM, damit Excel die Spalten sauber trennt. */
 $("#btnCsv").addEventListener("click", () => {
