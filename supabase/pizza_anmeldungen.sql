@@ -18,6 +18,25 @@ create table if not exists public.pizza_anmeldungen (
 -- und niemand soll deswegen abgewiesen werden.
 drop index if exists public.pizza_anmeldungen_name_einmalig;
 
+-- Der fruehere eindeutige Index hat die Namen nebenbei normalisiert. Das
+-- passiert jetzt ausdruecklich, damit auch Eintraege direkt ueber die API
+-- sauber in der Liste stehen.
+create or replace function public.pizza_name_saeubern()
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  new.name := regexp_replace(btrim(new.name), '\s+', ' ', 'g');
+  return new;
+end;
+$$;
+
+drop trigger if exists pizza_name_saeubern_vor_schreiben on public.pizza_anmeldungen;
+create trigger pizza_name_saeubern_vor_schreiben
+  before insert or update on public.pizza_anmeldungen
+  for each row execute function public.pizza_name_saeubern();
+
 alter table public.pizza_anmeldungen enable row level security;
 
 drop policy if exists "eintragen_fuer_alle" on public.pizza_anmeldungen;
