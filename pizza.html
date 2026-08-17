@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1F2A4A">
+<title>Pizzabacken – Anmeldung</title>
+<style>
+  :root{
+    --navy:#1F2A4A; --navy-hell:#2C3A61; --creme:#F4F2ED; --creme-tief:#E7E3DA;
+    --messing:#C6A15B; --messing-dunkel:#8A6A28;
+    --grau:#6D7385; --rot:#8E3B33; --gruen:#3B6B4A;
+    --rand:rgba(31,42,74,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--creme); color:var(--navy);
+    font:16px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  button,input{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:var(--messing-dunkel)}
+
+  main{max-width:520px;margin:0 auto;padding:26px 16px 48px}
+
+  .kopf{margin:0 0 20px}
+  .kopf .marke{margin:0 0 2px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--messing-dunkel)}
+  .kopf h1{margin:0 0 6px;font-size:27px;line-height:1.15;letter-spacing:.01em}
+  .kopf .wann{margin:0;color:var(--grau);font-size:14px}
+
+  .tafel{
+    background:#fff;padding:22px 20px 20px;margin:0 0 14px;
+    clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);
+    box-shadow:0 18px 40px -30px rgba(31,42,74,.55);
+  }
+  .tafel h2{margin:0 0 4px;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+  .tafel p.unter{margin:0 0 18px;color:var(--grau);font-size:13px}
+
+  label{display:block;margin:0 0 14px}
+  label span{display:block;margin-bottom:5px;color:var(--grau);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  input{
+    width:100%;padding:11px 12px;border:1px solid var(--rand);
+    background:var(--creme);border-radius:0;
+  }
+  input:focus{outline:2px solid var(--messing);outline-offset:-2px}
+
+  .knopf-voll{
+    width:100%;background:var(--navy);color:var(--creme);padding:13px;
+    letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:600;
+    clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  }
+  .knopf-voll:disabled{opacity:.5}
+  .knopf-schmal{
+    border:1px solid var(--rand);background:var(--creme);padding:9px 12px;
+    text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:600;
+  }
+  .knopf-schmal.stark{background:var(--messing);border-color:var(--messing)}
+
+  .fehler{color:var(--rot);font-size:13px;margin:10px 0 0;min-height:18px}
+  .gut{
+    background:var(--creme-tief);border-left:3px solid var(--gruen);
+    padding:14px 15px;margin:0 0 14px;font-size:14px;
+  }
+  .gut b{display:block;margin:0 0 3px}
+  .hinweis{
+    background:var(--creme-tief);border-left:3px solid var(--messing);
+    padding:11px 13px;margin:0 0 14px;font-size:13px;
+  }
+  .fuss{margin:22px 0 0;text-align:center;font-size:12px;color:var(--grau)}
+  .fuss button{color:var(--grau);text-decoration:underline;letter-spacing:.04em}
+
+  /* ---------- Organisatoren ---------- */
+  .balken{
+    display:flex;align-items:center;gap:12px;background:var(--navy);color:var(--creme);
+    padding:11px 14px;margin:0 0 14px;
+  }
+  .balken .titel{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+  .balken .zaehler{margin-left:auto;font-size:12px;color:var(--messing);letter-spacing:.08em}
+  .balken button{color:var(--creme);opacity:.7;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+
+  .werkzeuge{display:flex;gap:8px;margin:0 0 12px}
+  .werkzeuge .knopf-schmal{flex:1}
+
+  .zeile{
+    background:#fff;padding:10px 12px;margin:0 0 7px;display:flex;align-items:center;gap:11px;
+    box-shadow:0 6px 16px -14px rgba(31,42,74,.6);
+  }
+  .zeile.da{background:#F2F6F2}
+  .zeile input[type=checkbox]{width:20px;height:20px;flex:0 0 auto;accent-color:var(--gruen)}
+  .zeile .wer{flex:1;min-width:0}
+  .zeile .wer b{display:block;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .zeile .wer small{color:var(--grau);font-size:12px}
+  .zeile .weg{color:var(--rot);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px}
+  .leer{text-align:center;color:var(--grau);padding:40px 16px;font-size:14px}
+  .zahlen{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rand);margin:0 0 14px}
+  .zahlen div{background:#fff;padding:11px 12px}
+  .zahlen b{display:block;font-size:21px;font-weight:600}
+  .zahlen span{color:var(--grau);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<main>
+
+  <!-- ---------- Anmeldung für Teilnehmer ---------- -->
+  <section id="teil">
+    <div class="kopf">
+      <p class="marke" id="marke">Einladung</p>
+      <h1 id="titel">Pizzabacken</h1>
+      <p class="wann" id="wann"></p>
+    </div>
+
+    <div class="hinweis" id="hinweis" hidden></div>
+
+    <div class="gut" id="danke" hidden>
+      <b>Du stehst auf der Liste.</b>
+      <span id="dankeText"></span>
+      <p style="margin:12px 0 0">
+        <button class="knopf-schmal" id="btnNochWer">Noch jemanden eintragen</button>
+      </p>
+    </div>
+
+    <div class="tafel" id="tafelFormular">
+      <h2>Eintragen</h2>
+      <p class="unter">Name und Alter genügen. Die Liste sehen nur die Organisatoren.</p>
+      <form id="formEintrag">
+        <label><span>Name</span>
+          <input id="fName" name="name" autocomplete="name" maxlength="60" required>
+        </label>
+        <label><span>Alter</span>
+          <input id="fAlter" name="alter" type="number" inputmode="numeric" min="1" max="120" required>
+        </label>
+        <button class="knopf-voll" type="submit">Verbindlich eintragen</button>
+        <p class="fehler" id="eintragFehler"></p>
+      </form>
+    </div>
+
+    <p class="fuss">
+      <button id="zumBereich">Bereich für Organisatoren</button>
+    </p>
+  </section>
+
+  <!-- ---------- Anmeldung für Organisatoren ---------- -->
+  <section id="tor" hidden>
+    <div class="tafel">
+      <h2>Organisatoren</h2>
+      <p class="unter">Mit dem Zugang der Akquise-Konsole anmelden.</p>
+      <form id="formTor">
+        <label><span>E-Mail</span>
+          <input id="tEmail" type="email" autocomplete="username" required>
+        </label>
+        <label><span>Passwort</span>
+          <input id="tPasswort" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="knopf-voll" type="submit">Anmelden</button>
+        <p class="fehler" id="torFehler"></p>
+      </form>
+    </div>
+    <p class="fuss"><button id="zurueckZurListe">Zurück zur Anmeldung</button></p>
+  </section>
+
+  <!-- ---------- Anwesenheitsliste ---------- -->
+  <section id="liste" hidden>
+    <div class="balken">
+      <span class="titel">Anwesenheit</span>
+      <span class="zaehler" id="listeZaehler">–</span>
+      <button id="abmelden">Abmelden</button>
+    </div>
+
+    <div class="zahlen" id="zahlen"></div>
+
+    <div class="werkzeuge">
+      <button class="knopf-schmal" id="btnNeuLaden">Neu laden</button>
+      <button class="knopf-schmal stark" id="btnCsv">CSV laden</button>
+    </div>
+
+    <div id="listeInhalt"><p class="leer">Liste wird geladen …</p></div>
+    <p class="fehler" id="listeFehler"></p>
+    <p class="fuss"><button id="zurAnmeldung">Zur Anmeldeseite</button></p>
+  </section>
+
+</main>
+
+<script>
+const BASIS = "https://vkrrpdkhhdrjodzyrqnj.supabase.co";
+const ANON  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrcnJwZGtoaGRyam9kenlycW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTUwNjAsImV4cCI6MjEwMTA5MTA2MH0.RV1LnlXQY8EBVdJy7skErNTLZV9-rkGt0v97_GnHYu8";
+
+/* Hier die Eckdaten eintragen – sie stehen oben auf der Einladung. */
+const EVENT = {
+  marke:   "Einladung",
+  titel:   "Pizzabacken",
+  wann:    "",   // z.B. "Samstag, 12. September, ab 17 Uhr"
+  wo:      "",   // z.B. "bei Madis, Hauptstr. 4"
+  hinweis: ""    // z.B. "Bitte eine Schürze mitbringen."
+};
+
+const $ = (s) => document.querySelector(s);
+const text = (s) => String(s ?? "").replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+
+let sitzung = JSON.parse(localStorage.getItem("tapview_sitzung") || "null");
+let eintraege = [];
+
+/* ---------- Kopf ---------- */
+(function kopfSetzen(){
+  document.title = EVENT.titel + " – Anmeldung";
+  $("#marke").textContent = EVENT.marke;
+  $("#titel").textContent = EVENT.titel;
+  $("#wann").textContent  = [EVENT.wann, EVENT.wo].filter(Boolean).join(" · ");
+  if(EVENT.hinweis){ $("#hinweis").textContent = EVENT.hinweis; $("#hinweis").hidden = false; }
+})();
+
+/* ---------- Zugriff ---------- */
+async function erneuern(){
+  if(!sitzung?.refresh_token) return false;
+  const r = await fetch(BASIS+"/auth/v1/token?grant_type=refresh_token",{
+    method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
+    body: JSON.stringify({refresh_token: sitzung.refresh_token})
+  });
+  if(!r.ok) return false;
+  sitzung = await r.json();
+  localStorage.setItem("tapview_sitzung", JSON.stringify(sitzung));
+  return true;
+}
+
+/* offen = ohne Anmeldung, also die Rolle anon */
+async function offen(pfad, opt = {}){
+  const kopf = Object.assign({apikey:ANON,"Content-Type":"application/json"}, opt.headers||{});
+  return fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
+}
+
+async function api(pfad, opt = {}){
+  const kopf = Object.assign({apikey:ANON,"Content-Type":"application/json"}, opt.headers||{});
+  if(sitzung?.access_token) kopf.Authorization = "Bearer "+sitzung.access_token;
+  let r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
+  if(r.status === 401 && await erneuern()){
+    kopf.Authorization = "Bearer "+sitzung.access_token;
+    r = await fetch(BASIS+pfad, Object.assign({}, opt, {headers:kopf}));
+  }
+  if(r.status === 401){ abmelden(); throw new Error("Sitzung abgelaufen, bitte neu anmelden."); }
+  return r;
+}
+
+function zeigen(welche){
+  ["teil","tor","liste"].forEach((n) => { $("#"+n).hidden = (n !== welche); });
+  window.scrollTo(0,0);
+}
+
+/* ---------- Teilnehmer ---------- */
+async function anzahlHolen(){
+  try{
+    const r = await offen("/rest/v1/rpc/pizza_anzahl", {method:"POST", body:"{}"});
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(_){ return null; }
+}
+
+async function dankeZeigen(){
+  const eigener = localStorage.getItem("pizza_eigener_eintrag");
+  if(!eigener) return;
+  $("#tafelFormular").hidden = true;
+  $("#danke").hidden = false;
+  const n = await anzahlHolen();
+  $("#dankeText").textContent = "Eingetragen als „" + eigener + "“."
+    + (n === null ? "" : " Bisher sind " + n + " Leute dabei.");
+}
+
+/* Ein Geraet, mehrere Leute: das Formular laesst sich wieder oeffnen. */
+$("#btnNochWer").addEventListener("click", () => {
+  $("#danke").hidden = true;
+  $("#tafelFormular").hidden = false;
+  $("#fName").value = "";
+  $("#fAlter").value = "";
+  $("#fName").focus();
+});
+
+$("#formEintrag").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const knopf = e.target.querySelector("button");
+  const meldung = $("#eintragFehler");
+  const name  = $("#fName").value.trim().replace(/\s+/g," ");
+  const jahre = parseInt($("#fAlter").value, 10);
+  meldung.textContent = "";
+
+  if(name.length < 2){ meldung.textContent = "Bitte den Namen ausschreiben."; return; }
+  if(!(jahre >= 1 && jahre <= 120)){ meldung.textContent = "Bitte ein Alter zwischen 1 und 120 angeben."; return; }
+
+  knopf.disabled = true;
+  try{
+    const r = await offen("/rest/v1/pizza_anmeldungen", {
+      method:"POST",
+      headers:{Prefer:"return=minimal"},
+      body: JSON.stringify({name: name, alter_jahre: jahre})
+    });
+    if(r.status === 409){
+      meldung.textContent = "Unter diesem Namen steht schon jemand auf der Liste.";
+      return;
+    }
+    if(!r.ok){
+      const d = await r.text();
+      throw new Error(/pizza_(name|alter)/.test(d)
+        ? "Name oder Alter sieht nicht plausibel aus."
+        : "Eintragen hat nicht geklappt. Bitte später noch einmal versuchen.");
+    }
+    localStorage.setItem("pizza_eigener_eintrag", name);
+    dankeZeigen();
+  }catch(err){
+    meldung.textContent = err.message;
+  }finally{ knopf.disabled = false; }
+});
+
+/* ---------- Organisatoren ---------- */
+$("#zumBereich").addEventListener("click", () => {
+  if(sitzung?.access_token){ zeigen("liste"); listeLaden(); }
+  else zeigen("tor");
+});
+$("#zurueckZurListe").addEventListener("click", () => zeigen("teil"));
+$("#zurAnmeldung").addEventListener("click", () => zeigen("teil"));
+
+$("#formTor").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const knopf = e.target.querySelector("button");
+  knopf.disabled = true; $("#torFehler").textContent = "";
+  try{
+    const r = await fetch(BASIS+"/auth/v1/token?grant_type=password",{
+      method:"POST", headers:{apikey:ANON,"Content-Type":"application/json"},
+      body: JSON.stringify({email:$("#tEmail").value.trim(), password:$("#tPasswort").value})
+    });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error_description || d.msg || "Anmeldung fehlgeschlagen");
+    sitzung = d;
+    localStorage.setItem("tapview_sitzung", JSON.stringify(d));
+    $("#tPasswort").value = "";
+    zeigen("liste");
+    listeLaden();
+  }catch(err){
+    $("#torFehler").textContent = err.message;
+  }finally{ knopf.disabled = false; }
+});
+
+function abmelden(){
+  localStorage.removeItem("tapview_sitzung");
+  sitzung = null;
+  zeigen("teil");
+}
+$("#abmelden").addEventListener("click", abmelden);
+
+async function listeLaden(){
+  $("#listeFehler").textContent = "";
+  try{
+    const r = await api("/rest/v1/pizza_anmeldungen?select=*&order=eingetragen_am.asc");
+    if(!r.ok) throw new Error("Die Liste ließ sich nicht laden.");
+    eintraege = await r.json();
+    listeZeichnen();
+  }catch(err){
+    $("#listeFehler").textContent = err.message;
+  }
+}
+$("#btnNeuLaden").addEventListener("click", listeLaden);
+
+function listeZeichnen(){
+  const da = eintraege.filter((e) => e.anwesend).length;
+  const alter = eintraege.map((e) => e.alter_jahre);
+  const schnitt = alter.length ? Math.round(alter.reduce((a,b) => a+b, 0) / alter.length) : "–";
+  const kinder = eintraege.filter((e) => e.alter_jahre < 18).length;
+
+  $("#listeZaehler").textContent = da + " / " + eintraege.length + " da";
+  $("#zahlen").innerHTML =
+      '<div><b>'+eintraege.length+'</b><span>angemeldet</span></div>'
+    + '<div><b>'+kinder+'</b><span>unter 18</span></div>'
+    + '<div><b>'+schnitt+'</b><span>Ø Alter</span></div>';
+
+  if(!eintraege.length){
+    $("#listeInhalt").innerHTML = '<p class="leer">Noch niemand eingetragen.</p>';
+    return;
+  }
+
+  $("#listeInhalt").innerHTML = eintraege.map((e) => {
+    const tag = new Date(e.eingetragen_am).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"});
+    return '<div class="zeile'+(e.anwesend ? " da" : "")+'" data-id="'+e.id+'">'
+      + '<input type="checkbox" class="hakenAnwesend"'+(e.anwesend ? " checked" : "")+' aria-label="anwesend">'
+      + '<span class="wer"><b>'+text(e.name)+'</b><small>'+e.alter_jahre+' Jahre · eingetragen '+tag+'</small></span>'
+      + '<button class="weg">löschen</button>'
+      + '</div>';
+  }).join("");
+
+  document.querySelectorAll(".hakenAnwesend").forEach((h) => {
+    h.addEventListener("change", () => anwesenheitSetzen(h.closest(".zeile").dataset.id, h.checked, h));
+  });
+  document.querySelectorAll(".weg").forEach((b) => {
+    b.addEventListener("click", () => eintragLoeschen(b.closest(".zeile").dataset.id));
+  });
+}
+
+async function anwesenheitSetzen(id, wert, haken){
+  haken.disabled = true;
+  try{
+    const r = await api("/rest/v1/pizza_anmeldungen?id=eq."+id, {
+      method:"PATCH", headers:{Prefer:"return=minimal"},
+      body: JSON.stringify({anwesend: wert})
+    });
+    if(!r.ok) throw new Error("Anwesenheit ließ sich nicht speichern.");
+    const treffer = eintraege.find((e) => e.id === id);
+    if(treffer) treffer.anwesend = wert;
+    listeZeichnen();
+  }catch(err){
+    haken.checked = !wert;
+    $("#listeFehler").textContent = err.message;
+  }finally{ haken.disabled = false; }
+}
+
+async function eintragLoeschen(id){
+  const treffer = eintraege.find((e) => e.id === id);
+  if(!confirm("„"+(treffer ? treffer.name : "Eintrag")+"“ von der Liste nehmen?")) return;
+  try{
+    const r = await api("/rest/v1/pizza_anmeldungen?id=eq."+id, {method:"DELETE", headers:{Prefer:"return=minimal"}});
+    if(!r.ok) throw new Error("Löschen hat nicht geklappt.");
+    eintraege = eintraege.filter((e) => e.id !== id);
+    listeZeichnen();
+  }catch(err){
+    $("#listeFehler").textContent = err.message;
+  }
+}
+
+/* Semikolon und BOM, damit Excel die Spalten sauber trennt. */
+$("#btnCsv").addEventListener("click", () => {
+  const zellen = (w) => '"' + String(w ?? "").replace(/"/g,'""') + '"';
+  const zeilen = [["Name","Alter","anwesend","eingetragen am"].map(zellen).join(";")].concat(
+    eintraege.map((e) => [
+      e.name, e.alter_jahre, e.anwesend ? "ja" : "nein",
+      new Date(e.eingetragen_am).toLocaleString("de-DE")
+    ].map(zellen).join(";"))
+  );
+  const blob = new Blob(["﻿"+zeilen.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "pizza-anmeldungen.csv";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+});
+
+/* ---------- Start ---------- */
+if(location.hash === "#organisatoren"){
+  if(sitzung?.access_token){ zeigen("liste"); listeLaden(); } else zeigen("tor");
+}else{
+  dankeZeigen();
+}
+</script>
+</body>
+</html>
