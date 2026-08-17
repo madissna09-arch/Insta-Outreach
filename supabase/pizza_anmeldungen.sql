@@ -1,7 +1,8 @@
 -- Anmeldeliste fuer das Pizzabacken.
--- Eintragen darf jeder mit dem Link (anon), lesen/aendern/loeschen nur angemeldete
--- Organisatoren. Die Teilnehmerzahl kommt ueber die Funktion pizza_anzahl(),
--- damit Teilnehmer eine Rueckmeldung bekommen, ohne die Namen zu sehen.
+-- Eintragen darf jeder mit dem Link (Rolle anon). Gelesen, abgehakt und
+-- geloescht wird ausschliesslich ueber die Funktionen in pizza_zugang.sql,
+-- die das Passwort des Orga-Teams pruefen. Deshalb gibt es hier nur eine
+-- einzige Policy, naemlich fuers Eintragen.
 
 create table if not exists public.pizza_anmeldungen (
   id             uuid primary key default gen_random_uuid(),
@@ -25,19 +26,8 @@ drop policy if exists "eintragen_fuer_alle" on public.pizza_anmeldungen;
 create policy "eintragen_fuer_alle" on public.pizza_anmeldungen
   for insert to anon, authenticated with check (true);
 
-drop policy if exists "lesen_nur_angemeldet" on public.pizza_anmeldungen;
-create policy "lesen_nur_angemeldet" on public.pizza_anmeldungen
-  for select to authenticated using (true);
-
-drop policy if exists "aendern_nur_angemeldet" on public.pizza_anmeldungen;
-create policy "aendern_nur_angemeldet" on public.pizza_anmeldungen
-  for update to authenticated using (true) with check (true);
-
-drop policy if exists "loeschen_nur_angemeldet" on public.pizza_anmeldungen;
-create policy "loeschen_nur_angemeldet" on public.pizza_anmeldungen
-  for delete to authenticated using (true);
-
--- nur die Anzahl, keine Namen
+-- nur die Anzahl, keine Namen: damit Teilnehmer nach dem Eintragen eine
+-- Rueckmeldung bekommen, ohne die Liste zu sehen
 create or replace function public.pizza_anzahl()
 returns integer
 language sql
