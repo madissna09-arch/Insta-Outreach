@@ -13,9 +13,11 @@ create table if not exists public.pizza_anmeldungen (
   constraint pizza_alter_bereich check (alter_jahre between 1 and 120)
 );
 
--- kein Name doppelt, Gross-/Kleinschreibung und Leerzeichen egal
-create unique index if not exists pizza_anmeldungen_name_einmalig
-  on public.pizza_anmeldungen (lower(btrim(name)));
+-- kein Name doppelt; Gross-/Kleinschreibung und beliebige Leerzeichen
+-- ergeben keinen neuen Namen
+drop index if exists public.pizza_anmeldungen_name_einmalig;
+create unique index pizza_anmeldungen_name_einmalig
+  on public.pizza_anmeldungen (lower(regexp_replace(btrim(name), '\s+', ' ', 'g')));
 
 alter table public.pizza_anmeldungen enable row level security;
 
