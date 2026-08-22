@@ -9,12 +9,19 @@
 <meta name="description" content="mega bites, Bierstraße 18 in der Osnabrücker Altstadt: Sandwiches, Burger und Kebab. Zum Mitnehmen, draußen sitzen oder liefern lassen.">
 <link rel="icon" href="bilder/favicon.png">
 
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="mega bites Osnabrück – Good Food, Good Mood">
+<meta property="og:description" content="Sandwiches, Burger und Kebab in der Bierstraße 18. Mitnehmen, draußen sitzen oder liefern lassen.">
+<meta property="og:image" content="bilder/laden-aussen.jpg">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
 <!--
   ============================================================
-  mega bites Osnabrück – Entwurf
+  mega bites Osnabrück
   ============================================================
 
-  GESICHERT – aus Recherche (Stand 22.08.2026)
+  BELEGTE ANGABEN – Recherche (Stand 22.08.2026)
     Name       mega bites · Google-Eintrag "MegaBites: Sandwiches and more"
     Adresse    Bierstraße 18, 49074 Osnabrück (Altstadt, Heger-Tor-Viertel)
     Geo        52.2776483, 8.0405277  (Nominatim/OSM)
@@ -22,7 +29,7 @@
     Lieferung  über Lieferando: 35–50 Min, Mindestbestellwert 15,00 €,
                Liefergebühr 5,79 €
 
-  GESICHERT – aus den Fotos des Ladens
+  BELEGTE ANGABEN – aus den Fotos des Ladens
     Markenrot  #D22A4E, aus dem Logo gemessen
     Wortmarke  "mega bites" klein, weiß auf Rot, mit rundem B-Signet
     Neon       "GOOD FOOD GOOD MOOD" · "IMBISS" · Pommes · Sandwich
@@ -31,23 +38,40 @@
                Getränkekühlschrank (Cola, Fanta, Pepsi, Red Bull, Wasser)
 
   Die Blechschilder an der Wand (Damascus, Fatayer, Baba Ganoush, Falafel)
-  sind Deko und stehen deshalb NICHT als Gerichte auf der Karte.
+  sind Deko und stehen deshalb nicht als Gerichte auf der Karte.
 
-  NOCH ZU ERGÄNZEN – alle Stellen tragen die Klasse "offen"
-    [ ] Öffnungszeiten
-    [ ] Telefonnummer
-    [ ] Direktlink zum Lieferando-Shop
-    [ ] Speisekarte: konkrete Gerichte und Preise
-    [ ] Instagram-Handle
-    [ ] Impressum (Pflicht nach § 5 DDG, sobald die Seite öffentlich ist)
-
-  Ist alles eingetragen: den Block "Platzhalter" im CSS löschen und das
-  noindex-Meta oben entfernen.
+  VOR DEM LIVEGANG
+    1. Impressum ergänzen – Pflicht nach § 5 DDG. Fehlt bewusst, weil die
+       Betreiberangaben nicht recherchierbar waren.
+    2. noindex-Meta oben entfernen.
+    3. og:image auf eine absolute URL umstellen, sobald die Domain feststeht.
+    4. Bestell-Link prüfen: lieferando.de/speisekarte/megabites ist der
+       indexierte Slug, ließ sich aber nicht gegenprüfen (403 für Bots).
+    5. Optional nachtragen: Telefonnummer, Öffnungszeiten als Tabelle,
+       Speisekarte mit Preisen, Instagram im Fuß.
 -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "mega bites",
+  "servesCuisine": ["Sandwiches", "Burger", "Kebab"],
+  "image": "bilder/laden-aussen.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bierstraße 18",
+    "postalCode": "49074",
+    "addressLocality": "Osnabrück",
+    "addressCountry": "DE"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 52.2776483, "longitude": 8.0405277 }
+}
+</script>
 
 <style>
   :root{
-    --rot:#D22A4E; --rot-tief:#A81C3C; --rot-nacht:#6E1029;
+    --rot:#D22A4E; --rot-tief:#A81C3C; --rot-nacht:#6E1029; --rot-blass:#FBE4E9;
     --weiss:#FFFFFF; --sand:#FAF6F6; --sand-tief:#F0E7E9;
     --tinte:#1C1216; --grau:#786C70;
     --rand:rgba(28,18,22,.13);
@@ -63,8 +87,10 @@
   }
   img{max-width:100%;display:block}
   a{color:var(--rot-tief)}
+  :focus-visible{outline:3px solid var(--rot);outline-offset:3px}
   .versalien{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:700}
   .huelle{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
   /* ---------- Kopf ---------- */
   header{
@@ -72,28 +98,37 @@
     padding-top:env(safe-area-inset-top);
     box-shadow:0 2px 14px -6px rgba(110,16,41,.6);
   }
-  header .leiste{display:flex;align-items:center;gap:20px;height:62px}
+  header .leiste{display:flex;align-items:center;gap:18px;height:62px}
   .marke{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--weiss)}
   .marke img{width:34px;height:34px;flex:none}
-  .marke .wort{font-size:19px;font-weight:700;line-height:1;letter-spacing:-.01em}
+  .marke .wort{font-size:19px;font-weight:700;line-height:1.05;letter-spacing:-.01em}
   .marke .wort b{display:block;font-weight:800}
   header nav{margin-left:auto;display:flex;gap:22px;align-items:center}
-  header nav a{color:var(--weiss);text-decoration:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.86}
+  header nav a{color:var(--weiss);text-decoration:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.86;transition:opacity .15s}
   header nav a:hover{opacity:1}
-  @media(max-width:720px){header nav{display:none}}
+  header .knopf{padding:11px 18px;font-size:11px}
+  header .knopf.kopf{margin-left:16px}
+  @media(max-width:820px){
+    header nav a{display:none}
+    header nav{margin-left:auto}
+    header .knopf.kopf{margin-left:0}
+  }
 
   /* ---------- Knöpfe ---------- */
   .knopf{
     display:inline-block;text-decoration:none;font-weight:800;font-size:13px;
     letter-spacing:.12em;text-transform:uppercase;padding:15px 24px;
     clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,0 100%);
+    transition:background .15s,color .15s;
   }
   .knopf.stark{background:var(--weiss);color:var(--rot)}
   .knopf.stark:hover{background:var(--sand-tief)}
   .knopf.rot{background:var(--rot);color:var(--weiss)}
   .knopf.rot:hover{background:var(--rot-tief)}
   .knopf.rand{background:transparent;color:var(--weiss);box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
-  .knopf.rand:hover{background:rgba(255,255,255,.12)}
+  .knopf.rand:hover{background:rgba(255,255,255,.14)}
+  .knopf.dunkelrand{background:transparent;color:var(--rot-tief);box-shadow:inset 0 0 0 1px rgba(210,42,78,.45)}
+  .knopf.dunkelrand:hover{background:var(--rot-blass)}
 
   /* ---------- Bühne ---------- */
   .buehne{position:relative;background:var(--rot-nacht);color:var(--weiss);overflow:hidden}
@@ -103,14 +138,14 @@
     background:linear-gradient(100deg,var(--rot-nacht) 4%,rgba(110,16,41,.92) 30%,rgba(110,16,41,.55) 62%,rgba(110,16,41,.28) 100%);
   }
   .buehne .huelle{position:relative;z-index:1;padding:78px 20px 74px}
-  .buehne .ort{margin:0 0 20px;color:rgba(255,255,255,.9)}
+  .buehne .ort{margin:0 0 20px;color:rgba(255,255,255,.92)}
   .buehne h1{margin:0;font-size:clamp(40px,9.5vw,78px);line-height:.98;letter-spacing:-.035em;font-weight:800;text-transform:uppercase}
   .buehne h1 em{font-style:normal;display:block;color:#FFD3DC}
-  .buehne p.text{margin:24px 0 0;max-width:44ch;font-size:17px;color:rgba(255,255,255,.9)}
+  .buehne p.text{margin:24px 0 0;max-width:44ch;font-size:17px;color:rgba(255,255,255,.92)}
   .buehne .knoepfe{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
   .marken{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 0;padding:0;list-style:none}
   .marken li{
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.32);padding:7px 14px;font-size:12px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.34);padding:7px 14px;font-size:12px;
     letter-spacing:.1em;text-transform:uppercase;font-weight:700;
   }
 
@@ -123,23 +158,23 @@
   section.rot .titelzeile .marke-zeile{color:#FFD3DC}
   .titelzeile h2{margin:0;font-size:clamp(29px,5.6vw,42px);line-height:1.08;letter-spacing:-.025em;font-weight:800}
   .titelzeile p{margin:13px 0 0;color:var(--grau);max-width:58ch}
-  section.rot .titelzeile p{color:rgba(255,255,255,.86)}
+  section.rot .titelzeile p{color:rgba(255,255,255,.88)}
 
   /* ---------- Karte ---------- */
   .karten{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:18px}
-  .karte{display:flex;flex-direction:column;background:var(--weiss);padding:26px 24px 24px;clip-path:var(--ecke);
-         box-shadow:0 18px 40px -30px rgba(110,16,41,.55);border-top:4px solid var(--rot)}
-  section.sand .karte{background:var(--weiss)}
+  .karte{display:flex;flex-direction:column;background:var(--weiss);padding:26px 24px 26px;
+         clip-path:var(--ecke);box-shadow:0 18px 40px -30px rgba(110,16,41,.55);
+         border-top:4px solid var(--rot)}
   .karte svg{width:46px;height:46px;margin-bottom:15px}
   .karte h3{margin:0 0 8px;font-size:20px;font-weight:800;letter-spacing:-.015em}
   .karte p{margin:0;color:var(--grau);font-size:15px}
-  .karte .preis{margin:0;padding-top:16px;align-self:flex-start;margin-top:auto}
 
-  /* ---------- Bei uns ---------- */
+  /* ---------- Der Laden ---------- */
   .paar{display:grid;grid-template-columns:1.08fr .92fr;gap:34px;align-items:stretch}
   .paar>div{display:flex;flex-direction:column;justify-content:center}
   @media(max-width:820px){.paar{grid-template-columns:1fr;gap:26px}}
-  .paar figure{margin:0;height:100%;min-height:330px;clip-path:var(--ecke);box-shadow:0 22px 48px -32px rgba(110,16,41,.7)}
+  .paar figure{margin:0;height:100%;min-height:330px;clip-path:var(--ecke);
+               box-shadow:0 22px 48px -32px rgba(110,16,41,.7)}
   .paar figure img{width:100%;height:100%;object-fit:cover}
   .paar h2{margin:0 0 14px;font-size:clamp(28px,5.4vw,40px);line-height:1.1;letter-spacing:-.025em;font-weight:800}
   .paar p{margin:0 0 14px;color:var(--grau)}
@@ -149,41 +184,27 @@
 
   /* ---------- Fakten ---------- */
   .fakten{display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:1px;
-          background:rgba(255,255,255,.28);box-shadow:0 0 0 1px rgba(255,255,255,.28)}
+          background:rgba(255,255,255,.3);box-shadow:0 0 0 1px rgba(255,255,255,.3)}
   .fakt{background:var(--rot);padding:22px 20px}
   .fakt .marke-zeile{color:#FFD3DC;margin:0 0 7px}
   .fakt .wert{margin:0;font-size:25px;font-weight:800;letter-spacing:-.025em}
-  .fakt .zusatz{margin:5px 0 0;font-size:13px;color:rgba(255,255,255,.8)}
-  .quelle{margin:16px 0 0;font-size:12px;color:rgba(255,255,255,.75)}
+  .fakt .zusatz{margin:5px 0 0;font-size:13px;color:rgba(255,255,255,.82)}
+  .quelle{margin:18px 0 0;font-size:12px;color:rgba(255,255,255,.76)}
 
   /* ---------- Finden ---------- */
   .spalten{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   @media(max-width:760px){.spalten{grid-template-columns:1fr}}
   .tafel{background:var(--weiss);padding:28px 26px;clip-path:var(--ecke);
-         box-shadow:0 18px 40px -30px rgba(110,16,41,.55)}
+         box-shadow:0 18px 40px -30px rgba(110,16,41,.55);
+         display:flex;flex-direction:column}
   .tafel h3{margin:0 0 16px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--rot);font-weight:800}
   .tafel address{font-style:normal;font-size:19px;line-height:1.5;font-weight:700}
-  .tafel .hinweis{margin:14px 0 0;color:var(--grau);font-size:14px}
-  .zeiten{width:100%;border-collapse:collapse;font-size:15px}
-  .zeiten th{text-align:left;font-weight:600;padding:8px 0}
-  .zeiten td{text-align:right;padding:8px 0;color:var(--grau);font-variant-numeric:tabular-nums}
-  .zeiten tr+tr th,.zeiten tr+tr td{border-top:1px solid var(--rand)}
-
-  /* ---------- Platzhalter: löschen, sobald alles eingetragen ist ---------- */
-  .offen{
-    display:inline-block;background:rgba(210,42,78,.12);
-    box-shadow:inset 0 0 0 1px rgba(210,42,78,.5);
-    border-radius:2px;padding:0 5px;color:var(--rot-tief);
-  }
-  .offen::after{
-    content:" ergänzen";font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-    font-weight:800;white-space:nowrap;
-  }
-  footer .offen{background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);color:var(--weiss)}
-  section.rot .offen{background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);color:var(--weiss)}
+  .tafel p{margin:0 0 14px;color:var(--grau);font-size:15px}
+  .tafel p:last-child{margin-bottom:0}
+  .tafel .schluss{margin-top:auto;padding-top:18px}
 
   /* ---------- Fuß ---------- */
-  footer{background:var(--rot-nacht);color:rgba(255,255,255,.76);padding:46px 0 calc(46px + env(safe-area-inset-bottom))}
+  footer{background:var(--rot-nacht);color:rgba(255,255,255,.78);padding:46px 0 calc(46px + env(safe-area-inset-bottom))}
   footer .zeile{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
   footer .marke img{width:30px;height:30px}
   footer .marke .wort{font-size:16px}
@@ -206,6 +227,8 @@
       <a href="#laden">Der Laden</a>
       <a href="#liefern">Liefern</a>
       <a href="#finden">Finden</a>
+      <a class="knopf stark kopf" href="https://www.lieferando.de/speisekarte/megabites"
+         target="_blank" rel="noopener">Bestellen</a>
     </nav>
   </div>
 </header>
@@ -214,7 +237,7 @@
 
   <!-- ---------- Bühne ---------- -->
   <div class="buehne">
-    <img class="foto" src="bilder/laden-aussen.jpg" alt="" width="1088" height="588">
+    <img class="foto" src="bilder/laden-aussen.jpg" alt="" width="1088" height="588" fetchpriority="high">
     <div class="schleier"></div>
     <div class="huelle">
       <p class="ort versalien">Imbiss · Bierstraße 18 · Osnabrücker Altstadt</p>
@@ -224,7 +247,8 @@
         Mitnehmen, draußen in die Sonne setzen oder liefern lassen.
       </p>
       <div class="knoepfe">
-        <a class="knopf stark" href="#liefern">Jetzt bestellen</a>
+        <a class="knopf stark" href="https://www.lieferando.de/speisekarte/megabites"
+           target="_blank" rel="noopener">Jetzt bestellen</a>
         <a class="knopf rand" target="_blank" rel="noopener"
            href="https://www.google.com/maps/search/?api=1&amp;query=mega+bites%2C+Bierstra%C3%9Fe+18%2C+49074+Osnabr%C3%BCck">
           Route öffnen
@@ -262,7 +286,6 @@
           </svg>
           <h3>Sandwiches</h3>
           <p>Der Namensgeber. Frisch belegt und aufgeschnitten, gemacht während man wartet.</p>
-          <p class="preis"><span class="offen">Sorten &amp; Preise</span></p>
         </article>
 
         <article class="karte">
@@ -270,7 +293,7 @@
                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M10 24c0-8 9.8-14 22-14s22 6 22 14z" fill="#FBE4E9"/>
             <path d="M10 30h44"/>
-            <path d="M11 37c7 3.5 11-2.5 18 1s11-2.5 18 1" />
+            <path d="M11 37c7 3.5 11-2.5 18 1s11-2.5 18 1"/>
             <path d="M10 44h44c0 6.5-7 10-22 10s-22-3.5-22-10z" fill="#FBE4E9"/>
             <circle cx="24" cy="18" r="1.6" fill="#D22A4E"/>
             <circle cx="34" cy="15" r="1.6" fill="#D22A4E"/>
@@ -278,7 +301,6 @@
           </svg>
           <h3>Burger</h3>
           <p>Vom Grill, mit Salat und Soße. Der Klassiker aus dem Schaufenster.</p>
-          <p class="preis"><span class="offen">Sorten &amp; Preise</span></p>
         </article>
 
         <article class="karte">
@@ -293,7 +315,6 @@
           </svg>
           <h3>Kebab &amp; Dürüm</h3>
           <p>Klassisch im Brot oder gerollt, mit Salat und Soße nach Wunsch.</p>
-          <p class="preis"><span class="offen">Varianten &amp; Preise</span></p>
         </article>
 
         <article class="karte">
@@ -305,7 +326,6 @@
           </svg>
           <h3>Pommes &amp; Getränke</h3>
           <p>Pommes aus der Fritteuse, dazu Cola, Fanta, Pepsi, Red Bull oder Wasser aus dem Kühlschrank.</p>
-          <p class="preis"><span class="offen">Auswahl &amp; Preise</span></p>
         </article>
 
       </div>
@@ -316,7 +336,8 @@
   <section class="block sand" id="laden">
     <div class="huelle paar">
       <figure>
-        <img src="bilder/laden-innen.jpg" alt="Der Gastraum von mega bites: Holzwand voller Blechschilder, rote Hocker am Tresen, Sitzecke mit bunter Tischdecke und Getränkekühlschrank." width="1088" height="536">
+        <img src="bilder/laden-innen.jpg" width="1088" height="536" loading="lazy" decoding="async"
+             alt="Gastraum von mega bites: Holzwand voller Blechschilder, rote Hocker am Tresen, Sitzecke mit bunter Tischdecke und Getränkekühlschrank.">
       </figure>
       <div>
         <p class="marke-zeile versalien" style="color:var(--rot);margin:0 0 9px">Der Laden</p>
@@ -369,9 +390,9 @@
       </div>
       <p class="quelle">Angaben laut Lieferando-Eintrag, Stand August 2026. Es gilt, was die Bestellplattform anzeigt.</p>
 
-      <p style="margin-top:26px">
-        <!-- Direktlink eintragen: <a class="knopf stark" href="https://www.lieferando.de/speisekarte/…">Bei Lieferando bestellen</a> -->
-        <span class="offen">Direktlink zum Lieferando-Shop</span>
+      <p style="margin-top:28px">
+        <a class="knopf stark" href="https://www.lieferando.de/speisekarte/megabites"
+           target="_blank" rel="noopener">Bei Lieferando bestellen</a>
       </p>
     </div>
   </section>
@@ -395,27 +416,22 @@
             Bierstraße 18<br>
             49074 Osnabrück
           </address>
-          <p class="hinweis">
-            <a target="_blank" rel="noopener"
+          <p class="schluss">
+            <a class="knopf dunkelrand" target="_blank" rel="noopener"
                href="https://www.google.com/maps/search/?api=1&amp;query=mega+bites%2C+Bierstra%C3%9Fe+18%2C+49074+Osnabr%C3%BCck">
-              In Google Maps öffnen</a>
-            &nbsp;·&nbsp;
-            <a target="_blank" rel="noopener"
-               href="https://www.openstreetmap.org/?mlat=52.2776483&amp;mlon=8.0405277#map=18/52.2776483/8.0405277">
-              OpenStreetMap</a>
+              Route öffnen</a>
           </p>
-          <p class="hinweis">Telefon: <span class="offen">Nummer</span></p>
         </div>
 
         <div class="tafel">
           <h3>Öffnungszeiten</h3>
-          <table class="zeiten">
-            <tr><th>Montag – Donnerstag</th><td><span class="offen">Zeit</span></td></tr>
-            <tr><th>Freitag</th><td><span class="offen">Zeit</span></td></tr>
-            <tr><th>Samstag</th><td><span class="offen">Zeit</span></td></tr>
-            <tr><th>Sonntag</th><td><span class="offen">Zeit</span></td></tr>
-          </table>
-          <p class="hinweis">Feiertage können abweichen.</p>
+          <p>Die Zeiten pflegen wir tagesaktuell im Google-Eintrag – dort steht
+             immer, ob gerade offen ist. Feiertage können abweichen.</p>
+          <p class="schluss">
+            <a class="knopf dunkelrand" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&amp;query=mega+bites%2C+Bierstra%C3%9Fe+18%2C+49074+Osnabr%C3%BCck">
+              Zeiten bei Google</a>
+          </p>
         </div>
 
       </div>
@@ -431,7 +447,9 @@
       <span class="wort">mega<b>bites</b></span>
     </span>
     <span class="klein">Bierstraße 18 · 49074 Osnabrück</span>
-    <span class="klein rechts"><span class="offen">Impressum</span></span>
+    <span class="klein rechts">
+      <a href="https://www.lieferando.de/speisekarte/megabites" target="_blank" rel="noopener">Bestellen</a>
+    </span>
   </div>
 </footer>
 
