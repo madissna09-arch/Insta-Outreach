@@ -43,7 +43,6 @@ drop policy if exists "eintragen_fuer_alle" on public.pizza_anmeldungen;
 create policy "eintragen_fuer_alle" on public.pizza_anmeldungen
   for insert to anon, authenticated with check (true);
 
--- Prueffunktion und Anzahl siehe auch pizza_zugang.sql
 -- nur die Anzahl, keine Namen: damit Teilnehmer nach dem Eintragen eine
 -- Rueckmeldung bekommen, ohne die Liste zu sehen
 create or replace function public.pizza_anzahl()
