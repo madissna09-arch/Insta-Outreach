@@ -192,7 +192,7 @@ const EVENT = {
   titel:   "Wraps machen",
   wann:    "Freitag, 4. September, 18 Uhr",
   wo:      "in der Tawba-Moschee",
-  hinweis: "Anmeldeschluss: Donnerstag, 3. September, 22 Uhr. Danach steht der Einkauf fest."
+  hinweis: "Anmeldeschluss: Freitag, 4. September, 14:15 Uhr – vor dem Freitagsgebet."
 };
 
 const $ = (s) => document.querySelector(s);
@@ -211,6 +211,14 @@ let eintraege = [];
   $("#wann").textContent  = [EVENT.wann, EVENT.wo].filter(Boolean).join(" · ");
   if(EVENT.hinweis){ $("#hinweis").textContent = EVENT.hinweis; $("#hinweis").hidden = false; }
 })();
+
+function neueKennung(){
+  if(crypto.randomUUID) return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = Math.random()*16|0;
+    return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
 
 async function rpc(name, koerper){
   return fetch(BASIS+"/rest/v1/rpc/"+name, {
@@ -233,13 +241,42 @@ async function anzahlHolen(){
   }catch(_){ return null; }
 }
 
+/* Der Browser merkt sich nur die selbst erzeugte Kennung. Ob der Eintrag
+   wirklich noch auf der Liste steht, sagt die Datenbank – sonst behauptet die
+   Seite eine Anmeldung, die das Orga-Team laengst geloescht hat. */
+function eigenerEintrag(){
+  try{ return JSON.parse(localStorage.getItem("pizza_eintrag") || "null"); }
+  catch(_){ return null; }
+}
+
+function eintragVergessen(){
+  localStorage.removeItem("pizza_eintrag");
+  localStorage.removeItem("pizza_eigener_eintrag");  // Altlast frueherer Fassungen
+}
+
+function formularZeigen(){
+  $("#danke").hidden = true;
+  $("#tafelFormular").hidden = false;
+}
+
 async function dankeZeigen(){
-  const eigener = localStorage.getItem("pizza_eigener_eintrag");
-  if(!eigener) return;
+  const eigener = eigenerEintrag();
+  if(!eigener || !eigener.id){ eintragVergessen(); formularZeigen(); return; }
+
+  try{
+    const r = await rpc("pizza_steht_drauf", {p_id: eigener.id});
+    if(!r.ok) throw new Error("nicht erreichbar");
+    if(await r.json() !== true){ eintragVergessen(); formularZeigen(); return; }
+  }catch(_){
+    // Keine Verbindung: lieber das Formular zeigen als eine Anmeldung behaupten.
+    formularZeigen();
+    return;
+  }
+
   $("#tafelFormular").hidden = true;
   $("#danke").hidden = false;
   const n = await anzahlHolen();
-  $("#dankeText").textContent = "Eingetragen als „" + eigener + "“."
+  $("#dankeText").textContent = "Eingetragen als „" + eigener.name + "“."
     + (n === null ? "" : " Bisher sind " + n + " Leute dabei.");
 }
 
@@ -265,10 +302,11 @@ $("#formEintrag").addEventListener("submit", async (e) => {
 
   knopf.disabled = true;
   try{
+    const kennung = neueKennung();
     const r = await fetch(BASIS+"/rest/v1/pizza_anmeldungen", {
       method:"POST",
       headers:{apikey:ANON,"Content-Type":"application/json",Prefer:"return=minimal"},
-      body: JSON.stringify({name: name, alter_jahre: jahre})
+      body: JSON.stringify({id: kennung, name: name, alter_jahre: jahre})
     });
     if(!r.ok){
       const d = await r.text();
@@ -276,7 +314,7 @@ $("#formEintrag").addEventListener("submit", async (e) => {
         ? "Name oder Alter sieht nicht plausibel aus."
         : "Eintragen hat nicht geklappt. Bitte später noch einmal versuchen.");
     }
-    localStorage.setItem("pizza_eigener_eintrag", name);
+    localStorage.setItem("pizza_eintrag", JSON.stringify({id: kennung, name: name}));
     dankeZeigen();
   }catch(err){
     meldung.textContent = err.message;
