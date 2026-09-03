@@ -43,6 +43,7 @@ drop policy if exists "eintragen_fuer_alle" on public.pizza_anmeldungen;
 create policy "eintragen_fuer_alle" on public.pizza_anmeldungen
   for insert to anon, authenticated with check (true);
 
+-- Prueffunktion und Anzahl siehe auch pizza_zugang.sql
 -- nur die Anzahl, keine Namen: damit Teilnehmer nach dem Eintragen eine
 -- Rueckmeldung bekommen, ohne die Liste zu sehen
 create or replace function public.pizza_anzahl()
@@ -57,3 +58,19 @@ $$;
 
 revoke all on function public.pizza_anzahl() from public;
 grant execute on function public.pizza_anzahl() to anon, authenticated;
+
+-- Damit die Seite pruefen kann, ob der eigene Eintrag noch existiert. Die
+-- Kennung erzeugt der Browser beim Eintragen selbst und merkt sie sich; eine
+-- UUID laesst sich nicht erraten, also verraet das keine fremden Anmeldungen.
+create or replace function public.pizza_steht_drauf(p_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (select 1 from public.pizza_anmeldungen where id = p_id);
+$$;
+
+revoke all on function public.pizza_steht_drauf(uuid) from public;
+grant execute on function public.pizza_steht_drauf(uuid) to anon, authenticated;
