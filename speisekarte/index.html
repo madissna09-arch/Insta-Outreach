@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2 Bros Bistro – Speisekarte | Osnabrück</title>
+<meta name="description" content="Die digitale Speisekarte vom 2 Bros Bistro in Osnabrück: Döner, Schawarma, hausgemachte Falafel, Bandnudeln, Steinofenpizza, Smash Burger und mehr.">
+<meta name="theme-color" content="#141110">
+<meta property="og:title" content="2 Bros Bistro – Speisekarte">
+<meta property="og:description" content="Döner, Schawarma, Falafel, Bandnudeln, Pizza & Burger. Frisch gemacht in Osnabrück.">
+<meta property="og:image" content="assets/burger.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23E4322A'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='Georgia,serif' font-style='italic' fill='%23fff'>2B</text></svg>">
+<link rel="preload" href="assets/fonts/oswald-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/barlow-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Schriften lokal eingebunden - keine Anfragen an Dritte (DSGVO) */
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/anton-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/anton-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:400 600;font-display:swap;src:url(assets/fonts/oswald-var-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:400 600;font-display:swap;src:url(assets/fonts/oswald-var-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/barlow-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/barlow-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/barlow-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/barlow-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+:root{
+  --schwarz:#141110;
+  --tafel:#1b1715;
+  --tafel-hoch:#221d1a;
+  --rot:#E4322A;
+  --rot-tief:#B8241D;
+  --gold:#F5C24B;
+  --creme:#FFFFFF;
+  --grau:#A9A099;
+  --grau-tief:#78706A;
+  --gruen:#5CB85C;
+  --linie:rgba(255,255,255,.10);
+  --schrift-display:"Anton",Impact,"Arial Narrow",sans-serif;
+  --schrift-titel:"Oswald","Arial Narrow",sans-serif;
+  --schrift-text:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h,120px)}
+b,strong{font-weight:600}
+body{
+  margin:0;background:var(--schwarz);color:var(--creme);
+  font-family:var(--schrift-text);font-size:16px;line-height:1.5;
+  -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.014) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.30) 0 1px,transparent 1px 7px);
+}
+img{max-width:100%;display:block}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+.huelle{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* ---------- Kopf / Hero ---------- */
+.hero{position:relative;overflow:hidden;padding:52px 20px 40px;text-align:center;border-bottom:1px solid var(--linie)}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 90% at 50% 30%,rgba(228,50,42,.16),transparent 70%);
+  pointer-events:none;
+}
+.hero-inhalt{position:relative;max-width:760px;margin:0 auto}
+.hero img.logo{width:min(310px,70vw);height:auto;margin:0 auto 20px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.7))}
+.hero .schlagzeile{
+  font-family:var(--schrift-display);font-size:clamp(26px,6.4vw,44px);line-height:1.05;
+  letter-spacing:.01em;margin:0 0 14px;text-transform:uppercase;
+}
+.hero .schlagzeile em{font-style:normal;color:var(--rot)}
+.hero .unter{margin:0 auto 26px;max-width:520px;color:var(--grau);font-size:clamp(15px,2.6vw,17px)}
+.ort{
+  display:inline-flex;align-items:center;gap:8px;margin:0 0 26px;
+  font-family:var(--schrift-titel);font-size:12px;font-weight:500;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
+}
+.ort::before,.ort::after{content:"";width:26px;height:1px;background:var(--gold);opacity:.5}
+.hero-bilder{display:flex;justify-content:center;gap:10px;margin-top:6px}
+.hero-bilder img{
+  width:clamp(76px,20vw,116px);height:clamp(76px,20vw,116px);
+  border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.14);
+  box-shadow:0 12px 30px -14px #000;
+}
+.hero-bilder img:nth-child(2){transform:translateY(-10px);width:clamp(92px,24vw,140px);height:clamp(92px,24vw,140px);border-color:rgba(228,50,42,.55)}
+
+/* ---------- Navigation ---------- */
+.navleiste{
+  position:sticky;top:0;z-index:40;background:rgba(20,17,16,.94);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--linie);
+}
+.navleiste .reihe{display:flex;align-items:center;gap:12px;padding:10px 20px;max-width:1120px;margin:0 auto}
+.navleiste .marke{
+  font-family:var(--schrift-display);font-size:17px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap;flex:none;
+}
+.navleiste .marke span{color:var(--rot)}
+.suche{position:relative;margin-left:auto;flex:1;max-width:280px}
+.suche input{
+  width:100%;padding:8px 12px 8px 34px;font-family:var(--schrift-text);font-size:14px;
+  color:var(--creme);background:var(--tafel-hoch);border:1px solid var(--linie);border-radius:999px;
+}
+.suche input::placeholder{color:var(--grau-tief)}
+.suche input:focus{outline:2px solid var(--rot);outline-offset:-1px}
+.suche svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--grau-tief);fill:none;stroke-width:2}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 20px 10px;max-width:1120px;margin:0 auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:none;padding:6px 14px;border-radius:999px;border:1px solid var(--linie);
+  font-family:var(--schrift-titel);font-size:12px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--grau);white-space:nowrap;transition:.16s;
+}
+.chip:hover{color:var(--creme);border-color:rgba(255,255,255,.28)}
+.chip.aktiv{background:var(--rot);border-color:var(--rot);color:#fff}
+.chip.filter.aktiv{background:var(--gruen);border-color:var(--gruen);color:#0d1a0d}
+
+/* ---------- Abschnitte ---------- */
+.abschnitt{padding:44px 0 8px}
+.abschnitt-kopf{display:flex;align-items:center;gap:18px;margin:0 0 26px;flex-wrap:wrap}
+.banner{
+  display:inline-block;background:var(--rot);color:#fff;padding:9px 22px 8px;
+  transform:skewX(-9deg);box-shadow:5px 5px 0 rgba(0,0,0,.35);
+}
+.banner h2{
+  margin:0;transform:skewX(9deg);font-family:var(--schrift-display);
+  font-size:clamp(19px,4.2vw,28px);letter-spacing:.03em;text-transform:uppercase;font-weight:400;
+}
+.abschnitt-kopf .notiz{color:var(--grau);font-size:13px;font-style:italic}
+.abschnitt-kopf img.deko{
+  width:64px;height:64px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(255,255,255,.14);margin-left:auto;
+}
+.abschnitt-kopf img.deko + .groessen{margin-left:26px}
+.groessen{
+  margin-left:auto;display:flex;gap:26px;font-family:var(--schrift-titel);
+  font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--grau);text-transform:uppercase;
+}
+.groessen span{width:64px;text-align:right}
+
+/* ---------- Gerichte ---------- */
+.gerichte{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:0 44px}
+.gericht,.gerichte>*{min-width:0}
+#pizza .gerichte{grid-template-columns:1fr}
+.gericht h3,.gericht .beschreibung,.menue{overflow-wrap:break-word}
+.gericht{padding:14px 0;border-bottom:1px dashed rgba(255,255,255,.09)}
+.gericht .zeile{display:flex;align-items:baseline;gap:8px}
+.gericht .nr{
+  font-family:var(--schrift-titel);font-weight:600;font-size:15px;color:var(--grau-tief);
+  flex:none;min-width:26px;
+}
+.gericht h3{
+  margin:0;font-family:var(--schrift-titel);font-weight:600;font-size:clamp(15px,2.9vw,17px);
+  letter-spacing:.02em;text-transform:uppercase;
+}
+.allerg{font-family:var(--schrift-titel);font-size:11px;font-weight:500;color:var(--rot);letter-spacing:.04em;white-space:nowrap}
+.gericht h3 .gr{color:var(--grau);font-weight:400}
+.punkte{flex:1;border-bottom:1px dotted rgba(255,255,255,.24);transform:translateY(-4px);min-width:14px}
+.preis{
+  font-family:var(--schrift-titel);font-weight:600;font-size:clamp(15px,2.9vw,17px);
+  color:var(--creme);flex:none;white-space:nowrap;
+}
+.preis.zwei{display:flex;gap:26px}
+.preis.zwei span{width:64px;text-align:right}
+.preis.zwei span:last-child{color:var(--gold)}
+.gericht .beschreibung{margin:5px 0 0 34px;color:var(--grau);font-size:14px;line-height:1.45}
+.abzeichen{
+  display:inline-block;margin-left:6px;padding:2px 7px 1px;border-radius:3px;
+  font-family:var(--schrift-titel);font-size:9.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;vertical-align:1px;
+}
+.abzeichen.vegan{background:var(--gruen);color:#0d1a0d}
+.abzeichen.neu{background:var(--gold);color:#241c05}
+.menue{
+  display:inline-block;margin:8px 0 0 34px;padding:5px 13px;
+  border:1px solid rgba(245,194,75,.42);border-radius:4px;background:rgba(245,194,75,.07);
+  font-family:var(--schrift-titel);font-size:11.5px;font-weight:500;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--grau);
+}
+.menue b{color:var(--gold);font-weight:600}
+
+/* ---------- Kasten (Extras) ---------- */
+.kasten{
+  border:1px solid rgba(245,194,75,.40);border-radius:6px;background:var(--tafel);
+  padding:18px 22px;margin:6px 0 10px;
+}
+.kasten h3{
+  margin:0 0 12px;font-family:var(--schrift-display);font-size:15px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);font-weight:400;
+}
+.kasten ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:9px 26px}
+.kasten li{display:flex;align-items:baseline;gap:8px;font-family:var(--schrift-titel);font-size:13.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase}
+.kasten li .punkte{border-bottom-color:rgba(255,255,255,.16)}
+.kasten li b{color:var(--gold);font-weight:600;white-space:nowrap}
+
+/* ---------- Original-Karte ---------- */
+.original{padding:52px 0 10px}
+.original,.legende{scroll-margin-top:var(--nav-h,120px)}
+.original .tafeln{display:grid;gap:14px}
+.original button.tafel-knopf{
+  display:block;width:100%;padding:0;border:1px solid var(--linie);border-radius:6px;
+  overflow:hidden;background:var(--tafel);transition:.18s;
+}
+.original button.tafel-knopf:hover{border-color:rgba(228,50,42,.6);transform:translateY(-2px)}
+
+/* ---------- Allergene ---------- */
+.legende{padding:46px 0 10px}
+.legende ul{
+  margin:0;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px 26px;
+}
+.legende li{display:flex;gap:10px;font-size:14px;color:var(--grau)}
+.legende li b{color:var(--rot);font-family:var(--schrift-titel);font-weight:600;min-width:22px}
+.hinweis{
+  margin:20px 0 0;padding:13px 16px;border-left:3px solid var(--gold);
+  background:rgba(245,194,75,.06);color:var(--grau);font-size:13.5px;line-height:1.5;
+}
+
+/* ---------- Fuss ---------- */
+footer{margin-top:56px;padding:44px 0 40px;border-top:1px solid var(--linie);background:var(--tafel)}
+.fuss-gitter{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:32px}
+footer h4{
+  margin:0 0 12px;font-family:var(--schrift-titel);font-size:11.5px;font-weight:600;
+  letter-spacing:.20em;text-transform:uppercase;color:var(--gold);
+}
+footer p,footer li{margin:0 0 5px;color:var(--grau);font-size:14.5px}
+footer ul{margin:0;padding:0;list-style:none}
+footer .zeiten li{display:flex;justify-content:space-between;gap:16px;max-width:250px}
+footer img.logo{width:160px;height:auto;margin-bottom:14px;opacity:.92}
+.knopf{
+  display:inline-flex;align-items:center;gap:9px;margin-top:8px;padding:11px 20px;
+  background:var(--rot);color:#fff;border-radius:4px;
+  font-family:var(--schrift-titel);font-size:12.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;transition:.16s;
+}
+.knopf:hover{background:var(--rot-tief);text-decoration:none}
+.kleingedruckt{
+  margin-top:34px;padding-top:20px;border-top:1px solid var(--linie);
+  color:var(--grau-tief);font-size:12.5px;line-height:1.6;
+}
+
+/* ---------- Lichtkasten ---------- */
+.lichtkasten{
+  position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.94);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.lichtkasten img{max-width:100%;max-height:88vh;object-fit:contain;border-radius:4px}
+.lichtkasten .zu{
+  position:absolute;top:16px;right:20px;width:42px;height:42px;border-radius:50%;
+  background:rgba(255,255,255,.12);font-size:22px;line-height:1;color:#fff;
+}
+.lichtkasten .tipp{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:var(--grau-tief);font-size:12.5px}
+
+.leer{padding:40px 0;text-align:center;color:var(--grau)}
+.leer b{display:block;font-family:var(--schrift-display);font-size:20px;color:var(--creme);margin-bottom:6px;text-transform:uppercase}
+
+@media (max-width:760px){
+  .gerichte{grid-template-columns:1fr;gap:0}
+  .abschnitt-kopf img.deko{width:52px;height:52px}
+  .navleiste .marke{font-size:15px}
+  .suche{max-width:none}
+  .groessen{width:100%;margin-left:0;justify-content:flex-end}
+  .preis.zwei{gap:18px}
+  .preis.zwei span,.groessen span{width:56px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ══ Stammdaten: hier eintragen, sobald bestätigt. Leere Felder werden nicht angezeigt. ══ -->
+<script>
+const BISTRO = {
+  name:      "2 Bros Bistro",
+  strasse:   "",                 // z. B. "Musterstraße 12"
+  plz:       "",                 // z. B. "49074"
+  stadt:     "Osnabrück",
+  telefon:   "",                 // z. B. "+49 541 1234567"
+  instagram: "",                 // z. B. "https://www.instagram.com/…"
+  lieferando:"https://www.lieferando.de/speisekarte/two-bros-bistro",
+  zeiten: []                     // z. B. [["Mo – Do","11:00 – 22:00"],["Fr – Sa","11:00 – 23:00"],["Sonntag","12:00 – 22:00"]]
+};
+</script>
+
+<header class="hero">
+  <div class="hero-inhalt">
+    <img class="logo" src="assets/logo.png" alt="2 Bros Bistro" width="838" height="536">
+    <span class="ort">Osnabrück</span>
+    <h1 class="schlagzeile">Vom Grill, aus dem Ofen,<br><em>frisch gemacht.</em></h1>
+    <p class="unter">Libanesisches Schawarma, hausgemachte Falafel, Bandnudeln aus eigener Herstellung, Steinofenpizza und Smash Burger — alles auf einer Karte.</p>
+    <div class="hero-bilder">
+      <img src="assets/doener.jpg" alt="Döner Tasche" loading="eager">
+      <img src="assets/burger.jpg" alt="Bros Burger" loading="eager">
+      <img src="assets/tabouleh.jpg" alt="Tabouleh" loading="eager">
+    </div>
+  </div>
+</header>
+
+<nav class="navleiste">
+  <div class="reihe">
+    <div class="marke">2 <span>Bros</span> Bistro</div>
+    <div class="suche">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="suchfeld" type="search" placeholder="Gericht suchen …" aria-label="Speisekarte durchsuchen" autocomplete="off">
+    </div>
+  </div>
+  <div class="chips" id="chips"></div>
+</nav>
+
+<main class="huelle" id="karte"></main>
+
+<section class="huelle original">
+  <div class="abschnitt-kopf"><div class="banner"><h2>Original-Karte</h2></div></div>
+  <div class="tafeln">
+    <button class="tafel-knopf" data-gross="assets/karte-1.jpg"><img src="assets/karte-1.jpg" alt="Speisekarte Seite 1: Hauptspeisen, Salate, Nudeln, Pizza" loading="lazy"></button>
+    <button class="tafel-knopf" data-gross="assets/karte-2.jpg"><img src="assets/karte-2.jpg" alt="Speisekarte Seite 2: Burger und Getränke" loading="lazy"></button>
+  </div>
+</section>
+
+<section class="huelle legende">
+  <div class="abschnitt-kopf"><div class="banner"><h2>Allergene</h2></div></div>
+  <ul>
+    <li><b>A1</b> Glutenhaltiges Getreide: Weizen</li>
+    <li><b>B</b> Krebstiere</li>
+    <li><b>C</b> Eier</li>
+    <li><b>G</b> Milch und Laktose</li>
+    <li><b>J</b> Senf</li>
+    <li><b>K</b> Sesamsamen</li>
+    <li><b>M</b> Lupinen</li>
+  </ul>
+  <p class="hinweis"><b>Bitte beachten:</b> Alle Angaben zu Zutaten und Allergenen sind ohne Gewähr. Bei Allergien oder Unverträglichkeiten sprechen Sie uns bitte direkt an — wir geben Ihnen gerne verbindlich Auskunft. Preisänderungen vorbehalten.</p>
+</section>
+
+<footer>
+  <div class="huelle">
+    <div class="fuss-gitter">
+      <div>
+        <img class="logo" src="assets/logo.png" alt="2 Bros Bistro" width="838" height="536">
+        <p>Bistro &amp; Lieferservice in Osnabrück.<br>Schawarma, Pizza, Pasta &amp; Burger.</p>
+      </div>
+      <div id="fuss-kontakt"></div>
+      <div id="fuss-zeiten"></div>
+      <div id="fuss-bestellen"></div>
+    </div>
+    <p class="kleingedruckt">
+      © <span id="jahr"></span> 2 Bros Bistro · Alle Preise in Euro inkl. gesetzlicher MwSt.
+      Abbildungen ähnlich. Änderungen und Irrtümer vorbehalten.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ═══════════ Speisekarte ═══════════
+   Preise als Zahl in Euro. p2 = großes Format (Pizza Ø 45 cm).
+   v = vegan · m = Menü-Zusatzzeile
+*/
+const KARTE = [
+{ id:"hauptspeisen", titel:"Hauptspeisen & Sandwiches", bild:"assets/doener.jpg", gerichte:[
+  {n:1, name:"Döner Tasche", a:"A1, C, J", p:7.00},
+  {n:2, name:"Dürüm mit Kalbfleisch", a:"A1, G, J", p:8.50},
+  {n:3, name:"Schawarma Wrap Kalb – libanesischer Art", a:"A1, K", p:8.50,
+   d:"Petersilie, Zwiebel, Sesamsoße, eingelegte Gurken"},
+  {n:4, name:"Schawarma Wrap Hähnchen – libanesischer Art", a:"A1, J", p:7.50,
+   d:"Fladenbrot, Hähnchenfleisch, Knoblauchsoße, eingelegtes Gemüse, Pommes"},
+  {n:5, name:"Schawarma Kalb Menü", a:"A1, K", p:14.50,
+   d:"Kalbswrap, Petersilie, Zwiebel, Sesamsoße, gegrillte Tomaten, eingelegtes Gemüse, Pommes und Getränk"},
+  {n:6, name:"Schawarma Hähnchen Menü", a:"A1, C, J", p:13.50,
+   d:"Hähnchenwrap, Knoblauchsoße, eingelegtes Gemüse, Pommes, Coleslaw-Salat und Getränk"},
+  {n:7, name:"Pommes Sandwich", a:"A1, C, J", p:5.00,
+   d:"Pommes, Knoblauchsoße, Coleslaw-Salat, eingelegtes Gemüse, Ketchup"},
+  {n:8, name:"Köfte-Sandwich", a:"A1, J", p:7.00,
+   d:"Fladenbrot, Köfte, Petersilie, Zwiebel, Hummus"},
+  {n:9, name:"Falafel Sandwich", a:"A1, K", p:6.00,
+   d:"Fladenbrot, hausgemachte Falafel, Sesamsoße, Minze, eingelegtes Gemüse, Granatapfelsirup, Tomaten, Petersilie"},
+  {n:10, name:"Sucuk Sandwich", a:"A1", p:7.00,
+   d:"Fladenbrot, Sucuk gegrillt, Knoblauchsoße, eingelegte Gurke, Pommes"},
+  {n:11, name:"Zucchini-Puffer Teller", a:"A1, C, G, J", p:15.50,
+   d:"Gebratene Zucchini-Puffer, Krautsalat, Eisberg, Tomate, Gewürzgurken, Oliven, Mais, Peperoni, Honig-Senf-Soße, Pommes"},
+  {n:12, name:"Döner Teller Lamm", a:"A1, C, J", p:13.50, d:"Fleisch, Salat, Pommes und Sauce"},
+  {n:13, name:"Döner Teller Hähnchen", a:"A1, C, J", p:12.50, d:"Hähnchen, Salat, Pommes und Sauce"}
+]},
+{ id:"salate", titel:"Salate", bild:"assets/tabouleh.jpg", gerichte:[
+  {n:14, name:"Falafel-Salat", a:"A1, K", p:11.00, v:true,
+   d:"Hausgemachte Falafel (5 Stk.), Eisberg, Tomaten, eingelegtes Gemüse, Sumach, Minze, Sesamsoße, Petersilie, Granatapfelsirup"},
+  {n:15, name:"Caesar-Salat", a:"A1, C, G, J", p:9.00,
+   d:"Caesar-Soße, Eisberg, gebratene marinierte Hähnchenbrust, Parmesan, Croûtons"},
+  {n:16, name:"Tabouleh", a:"A1", p:6.00, v:true,
+   d:"Petersilie, Bulgur, Tomaten, Frühlingszwiebeln, Granatapfel"}
+]},
+{ id:"nudeln", titel:"Hausgemachte Nudeln", bild:"assets/pasta.jpg", gerichte:[
+  {n:17, name:"Bandnudeln Hähnchen", a:"A1, C, G", p:13.00,
+   d:"mit gebratener marinierter Hähnchenbrust in Rahmsoße und Parmesan"},
+  {n:18, name:"Bandnudeln Garnelen", a:"A1, B, C, G", p:15.00,
+   d:"mit gebratenen Garnelen (5 Stk.) in pikanter Tomatensoße und Parmesan"},
+  {n:19, name:"Bandnudeln Pesto", a:"A1, C, G", p:10.50,
+   d:"mit Rucola-Pesto, Cherrytomaten und Parmesan"},
+  {n:20, name:"Bandnudeln Pilze", a:"A1, C, G", p:12.50,
+   d:"mit gebratenen Pilzen in Rahmsoße und Parmesan"}
+]},
+{ id:"pizza", titel:"Pizza & Calzone", groessen:["Ø 30 cm","Ø 45 cm"], gerichte:[
+  {n:21, name:"Pizza Margherita", a:"A1, G", p:8.00, p2:18.00,
+   d:"Tomatensoße, Mozzarella-Kugeln, Olivenöl, Basilikum"},
+  {n:22, name:"Pizza Tonno", a:"A1, G, J", p:11.00, p2:21.00,
+   d:"Tomatensoße, Mozzarella, Zwiebel, Thunfisch"},
+  {n:23, name:"Pizza Vegetaria", a:"A1, G", p:13.00, p2:23.00,
+   d:"Tomatensoße, Mozzarella, Zucchini, Paprika, Zwiebel, Champignons, Tomaten"},
+  {n:24, name:"Pizza Garnelen", a:"A1, B, G", p:15.00, p2:25.00,
+   d:"Tomatensoße, Mozzarella, Zwiebel, Knoblauch, Parmesan, Cherrytomaten, Garnelen (5 Stk.)"},
+  {n:25, name:"Pizza Rucola", a:"A1, G", p:11.00, p2:21.00,
+   d:"Tomatensoße, Mozzarella, Olivenöl, Rucola, Parmesan, Cherrytomaten"},
+  {n:26, name:"Pizza Döner", a:"A1, G", p:12.00, p2:22.00,
+   d:"Tomatensoße, Mozzarella, Zwiebel, Kalbfleisch"},
+  {n:27, name:"Calzone Lamm", a:"A1, G", p:14.50,
+   d:"Tomatensoße, Hirtenkäse, Paprika, Zwiebel, Sauce Hollandaise"},
+  {n:28, name:"Calzone Hähnchen", a:"A1, G", p:13.00}
+], kasten:{ titel:"Extras", posten:[
+  ["Käse – Hirtenkäse oder Mozzarella","2,00 €"],["Sauce Hollandaise","1,00 €"],
+  ["Zwiebeln","0,50 €"],["Pilze","1,50 €"],["Oliven","1,00 €"]
+]}},
+{ id:"burger", titel:"Burger", bild:"assets/burger.jpg", gerichte:[
+  {n:29, name:"Classic Burger", a:"A1, C, G, J", p:7.00,
+   d:"Rindfleisch-Patty ca. 90 g, Käse, Coleslaw-Salat, Pommes, Gewürzgurken, Ketchup"},
+  {n:30, name:"Bros Burger", a:"A1, C, G, J", p:10.00,
+   d:"Rindfleisch-Patty ca. 140 g, getrocknete Tomaten, eingelegte Gurken, Rucola, geschmorte Zwiebel, Bros Burger Soße, Käse",
+   m:"Menü mit Pommes &amp; Getränk <b>14,90 €</b>"},
+  {n:31, name:"Smash Burger Single", a:"A1, C, G, J", p:11.00,
+   d:"Zwei gesmashte Rinder-Pattys je 70 g, Käse, geschmorte Zwiebel, getrocknete Tomaten, Gewürzgurken, Rucola, Bros Burger Soße",
+   m:"Als Doppelburger <b>14,90 €</b> · Menü Single <b>15,00 €</b> · Menü Doppel <b>18,90 €</b>"},
+  {n:32, name:"Crispy Chicken Burger", a:"A1, C, G, J", p:7.50,
+   d:"Gebackenes Crispy Chicken, Chili-Mayo, Eisbergsalat, Gewürzgurken",
+   m:"Menü mit Pommes &amp; Getränk <b>11,50 €</b>"},
+  {n:33, name:"Veggie Burger", a:"A1, C, G, J, M", p:9.00,
+   d:"Gebratene Zucchini-Puffer, Rucola, frische Tomate, Gewürzgurken, geschmorte Zwiebel, Mayo, Honig-Senf-Soße",
+   m:"Menü mit Pommes &amp; Getränk <b>13,00 €</b>"},
+  {n:34, name:"Bros Surf &amp; Turf Burger", a:"A1, B, C, G, J", p:13.00,
+   d:"Rinder-Patty ca. 140 g, 3 gebratene Garnelen, Bros Soße, Cheddar, geschmorte Zwiebel, Rucola"},
+  {n:35, name:"Nuggets Burger", a:"A1, C, G, J", p:4.00,
+   d:"3 Stk. Nuggets, Mayo, Curry-Ketchup, Eisbergsalat"}
+]},
+{ id:"beilagen", titel:"Beilagen", gerichte:[], kasten:{ titel:"Portion Pommes & Extras", posten:[
+  ["Portion Pommes klein","2,50 €"],["Portion Pommes groß","4,50 €"],
+  ["Süßkartoffelpommes","5,50 €"],["Extra-Saucen","1,00 €"]
+]}},
+{ id:"getraenke", titel:"Getränke", bild:"assets/drinks.jpg", gerichte:[
+  {name:"Coca-Cola / Zero", gr:"0,33 l", p:2.50},
+  {name:"Fanta Exotic", gr:"0,33 l", p:2.50},
+  {name:"Fanta", gr:"0,33 l", p:2.50},
+  {name:"Sprite", gr:"0,33 l", p:2.50},
+  {name:"Mezzo Mix", gr:"0,33 l", p:2.50},
+  {name:"Uludag Gazoz", gr:"0,33 l", p:2.50},
+  {name:"Fritz-Kola", gr:"0,33 l", p:3.00},
+  {name:"Coca-Cola", gr:"1 l", p:4.90},
+  {name:"Capri-Sun", gr:"0,2 l", p:1.50},
+  {name:"Durstlöscher", gr:"0,5 l", p:2.00},
+  {name:"Red Bull", gr:"0,25 l", p:3.00},
+  {name:"Wasser still / Sprudel", gr:"0,5 l", p:2.00},
+  {name:"Ayran", gr:"0,25 l", p:2.00}
+]}
+];
+
+/* ═══════════ Aufbau ═══════════ */
+const eur = n => n.toFixed(2).replace(".", ",") + " €";
+const karte = document.getElementById("karte");
+const chips = document.getElementById("chips");
+
+karte.innerHTML = KARTE.map(ab => `
+  <section class="abschnitt" id="${ab.id}" data-abschnitt="${ab.id}">
+    <div class="abschnitt-kopf">
+      <div class="banner"><h2>${ab.titel}</h2></div>
+      ${ab.bild ? `<img class="deko" src="${ab.bild}" alt="" loading="lazy">` : ""}
+      ${ab.groessen ? `<div class="groessen">${ab.groessen.map(g=>`<span>${g}</span>`).join("")}</div>` : ""}
+    </div>
+    ${ab.gerichte.length ? `<div class="gerichte">${ab.gerichte.map(g => `
+      <article class="gericht" data-suche="${(g.name + " " + (g.d||"")).toLowerCase().replace(/&amp;/g,"&").replace(/"/g,"")}"
+               data-vegan="${g.v?1:0}" data-menue="${g.m?1:0}">
+        <div class="zeile">
+          ${g.n ? `<span class="nr">${g.n}.</span>` : ""}
+          <h3>${g.name}${g.gr ? ` <span class="gr">${g.gr}</span>` : ""}${
+            g.a ? ` <span class="allerg">${g.a}</span>` : ""}${
+            g.v ? `<span class="abzeichen vegan">Vegan</span>` : ""}</h3>
+          <span class="punkte"></span>
+          <span class="preis${g.p2 ? " zwei" : ""}">${g.p2 ? `<span>${eur(g.p)}</span><span>${eur(g.p2)}</span>` : eur(g.p)}</span>
+        </div>
+        ${g.d ? `<p class="beschreibung">${g.d}</p>` : ""}
+        ${g.m ? `<div class="menue">${g.m}</div>` : ""}
+      </article>`).join("")}</div>` : ""}
+    ${ab.kasten ? `<div class="kasten"><h3>${ab.kasten.titel}</h3><ul>${
+      ab.kasten.posten.map(([t,p])=>`<li>${t}<span class="punkte"></span><b>${p}</b></li>`).join("")}</ul></div>` : ""}
+  </section>`).join("") + `<div class="leer" id="leer" hidden><b>Nichts gefunden</b>Probieren Sie einen anderen Suchbegriff.</div>`;
+
+chips.innerHTML =
+  KARTE.map(ab => `<button class="chip sprung" data-ziel="${ab.id}">${ab.titel}</button>`).join("") +
+  `<button class="chip filter" data-filter="vegan">Vegan</button>
+   <button class="chip filter" data-filter="menue">Menüs</button>`;
+
+/* ═══════════ Suche & Filter ═══════════ */
+const suchfeld = document.getElementById("suchfeld");
+const leer = document.getElementById("leer");
+let filter = null;
+
+function anwenden(){
+  const q = suchfeld.value.trim().toLowerCase();
+  let treffer = 0;
+  document.querySelectorAll("section.abschnitt").forEach(sec => {
+    let sichtbar = 0;
+    sec.querySelectorAll(".gericht").forEach(g => {
+      const passtText   = !q || g.dataset.suche.includes(q);
+      const passtFilter = !filter || g.dataset[filter] === "1";
+      const zeigen = passtText && passtFilter;
+      g.hidden = !zeigen;
+      if (zeigen) { sichtbar++; treffer++; }
+    });
+    const kasten = sec.querySelector(".kasten");
+    if (kasten) kasten.hidden = !!(q || filter);
+    sec.hidden = (q || filter) ? sichtbar === 0 : false;
+  });
+  leer.hidden = !((q || filter) && treffer === 0);
+}
+suchfeld.addEventListener("input", anwenden);
+
+chips.addEventListener("click", e => {
+  const knopf = e.target.closest(".chip");
+  if (!knopf) return;
+  if (knopf.classList.contains("filter")) {
+    const f = knopf.dataset.filter;
+    filter = filter === f ? null : f;
+    document.querySelectorAll(".chip.filter").forEach(c =>
+      c.classList.toggle("aktiv", c.dataset.filter === filter));
+    anwenden();
+    if (filter) window.scrollTo({ top: document.getElementById("karte").offsetTop - 130, behavior: "smooth" });
+  } else {
+    const ziel = document.getElementById(knopf.dataset.ziel);
+    if (ziel && !ziel.hidden) ziel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
+
+/* ═══════════ Aktiver Abschnitt in der Navigation ═══════════ */
+(() => {
+  const leiste = document.querySelector(".navleiste");
+  const hoeheSetzen = () => document.documentElement.style.setProperty(
+    "--nav-h", (leiste.offsetHeight + 14) + "px");
+  hoeheSetzen();
+  addEventListener("resize", hoeheSetzen, { passive:true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(hoeheSetzen);
+
+  const abschnitte = [...document.querySelectorAll("section.abschnitt")];
+  const sprung = [...document.querySelectorAll(".chip.sprung")];
+  let geplant = false;
+  function markieren(){
+    geplant = false;
+    const grenze = leiste.offsetHeight + 24;
+    let aktiv = null;
+    for (const s of abschnitte) {
+      if (s.hidden) continue;
+      if (s.getBoundingClientRect().top <= grenze) aktiv = s.id;
+    }
+    // ganz oben oder ganz unten sinnvoll auffangen
+    if (!aktiv && abschnitte.length) aktiv = abschnitte[0].id;
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      const letzte = abschnitte.filter(s => !s.hidden).pop();
+      if (letzte) aktiv = letzte.id;
+    }
+    sprung.forEach(c => c.classList.toggle("aktiv", c.dataset.ziel === aktiv));
+    const treffer = sprung.find(c => c.classList.contains("aktiv"));
+    if (treffer && chips.scrollWidth > chips.clientWidth) {
+      const l = treffer.offsetLeft, r = l + treffer.offsetWidth;
+      if (l < chips.scrollLeft || r > chips.scrollLeft + chips.clientWidth)
+        chips.scrollTo({ left: l - 20, behavior: "smooth" });
+    }
+  }
+  addEventListener("scroll", () => { if (!geplant) { geplant = true; requestAnimationFrame(markieren); } }, { passive:true });
+  addEventListener("resize", markieren, { passive:true });
+  markieren();
+})();
+
+/* ═══════════ Lichtkasten für die Original-Karte ═══════════ */
+document.querySelectorAll(".tafel-knopf").forEach(b => b.addEventListener("click", () => {
+  const box = document.createElement("div");
+  box.className = "lichtkasten";
+  box.innerHTML = `<img src="${b.dataset.gross}" alt="Original-Speisekarte">
+    <button class="zu" aria-label="Schließen">×</button>
+    <p class="tipp">Zum Schließen irgendwo klicken oder Esc drücken</p>`;
+  const zu = () => { box.remove(); document.removeEventListener("keydown", esc); };
+  const esc = e => { if (e.key === "Escape") zu(); };
+  box.addEventListener("click", zu);
+  document.addEventListener("keydown", esc);
+  document.body.appendChild(box);
+}));
+
+/* ═══════════ Fußzeile aus den Stammdaten ═══════════ */
+(() => {
+  document.getElementById("jahr").textContent = new Date().getFullYear();
+  const anschrift = [BISTRO.strasse, [BISTRO.plz, BISTRO.stadt].filter(Boolean).join(" ")].filter(Boolean);
+  const k = document.getElementById("fuss-kontakt");
+  if (anschrift.length || BISTRO.telefon || BISTRO.instagram) {
+    k.innerHTML = `<h4>Kontakt</h4>
+      ${anschrift.map(z => `<p>${z}</p>`).join("")}
+      ${BISTRO.telefon  ? `<p><a href="tel:${BISTRO.telefon.replace(/[^+\d]/g,"")}">${BISTRO.telefon}</a></p>` : ""}
+      ${BISTRO.instagram ? `<p><a href="${BISTRO.instagram}" target="_blank" rel="noopener">Instagram</a></p>` : ""}`;
+  }
+  const z = document.getElementById("fuss-zeiten");
+  if (BISTRO.zeiten && BISTRO.zeiten.length) {
+    z.innerHTML = `<h4>Öffnungszeiten</h4><ul class="zeiten">${
+      BISTRO.zeiten.map(([tag,zeit]) => `<li><span>${tag}</span><span>${zeit}</span></li>`).join("")}</ul>`;
+  }
+  const b = document.getElementById("fuss-bestellen");
+  if (BISTRO.lieferando) {
+    b.innerHTML = `<h4>Bestellen</h4>
+      <p>Abholung im Bistro oder Lieferung nach Hause.</p>
+      <a class="knopf" href="${BISTRO.lieferando}" target="_blank" rel="noopener">Online bestellen →</a>`;
+  }
+  [k, z, b].forEach(sp => { if (!sp.innerHTML.trim()) sp.remove(); });
+})();
+</script>
+</body>
+</html>
