@@ -35,7 +35,9 @@ html[lang="ar"] #entwurfsbalken b{letter-spacing:.02em;text-transform:none}
 .preis,.zahl,.zeitenliste li > span + span{direction:ltr;unicode-bidi:isolate}
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:132px}
+/* Kein globales scroll-behavior:smooth — das macht jedes Rollen mit Trackpad
+   oder Rad traege. Die Sprungleiste scrollt stattdessen selbst weich. */
+html{scroll-padding-top:132px}
 body{
   margin:0;
   background:var(--tinte);
@@ -60,10 +62,12 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 #entwurfsbalken b{letter-spacing:.14em;text-transform:uppercase;font-size:11px}
 
 /* ---------- Kopfzeile ---------- */
+/* Deckend statt durchscheinend: ein backdrop-filter unter einer klebenden
+   Leiste zwingt den Browser bei jedem Bild zum Neuzeichnen der ganzen
+   Flaeche darunter — auf schwaecheren Geraeten ruckelt davon das Scrollen. */
 header{
   position:sticky;top:0;z-index:40;
-  background:rgba(21,22,26,.93);
-  backdrop-filter:blur(12px);
+  background:var(--tinte);
   border-bottom:1px solid var(--rand);
 }
 .kopf-reihe{display:flex;align-items:center;gap:13px;padding:12px 0}
@@ -181,7 +185,10 @@ html[lang="ar"] .buehne .zweitname{font-family:var(--schrift-text);font-size:cla
 
 /* ---------- Karte ---------- */
 main{padding-bottom:20px}
-.gang{padding:52px 0 8px;scroll-margin-top:132px}
+/* Der Abstand zur klebenden Kopfzeile kommt allein aus scroll-padding-top am
+   html. Zusaetzliches scroll-margin-top hier wuerde sich damit addieren und
+   Sprungziele doppelt so tief absetzen. */
+.gang{padding:52px 0 8px}
 .gang-kopf{margin:0 0 30px;text-align:center}
 .gang-kopf h2{
   font-family:var(--schrift-anzeige);font-weight:600;
@@ -268,7 +275,6 @@ footer p{margin:0 auto;max-width:56ch;line-height:1.7}
 
 @media (max-width:600px){
   html{scroll-padding-top:120px}
-  .gang{scroll-margin-top:120px}
   .buehne{padding:52px 0 46px}
   .gericht{padding:15px 10px;gap:13px}
   .gericht .bild{width:60px;height:60px}

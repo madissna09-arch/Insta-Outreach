@@ -253,6 +253,17 @@ function baueFilter() {
 
 /* ---------- Sprungleiste mitlaufen lassen ---------- */
 
+/* Schiebt nur die Leiste selbst waagerecht, damit der aktive Punkt sichtbar
+   bleibt. scrollIntoView waere bequemer, verschiebt aber auch die Seite
+   senkrecht — und kaempft dann bei jedem neuen Abschnitt gegen den Leser. */
+function leisteNachfuehren(leiste, punkt) {
+  const rand = 16;
+  const l = leiste.getBoundingClientRect();
+  const p = punkt.getBoundingClientRect();
+  if (p.left < l.left + rand) leiste.scrollLeft -= (l.left + rand) - p.left;
+  else if (p.right > l.right - rand) leiste.scrollLeft += p.right - (l.right - rand);
+}
+
 let beobachter = null;
 function beobachteAbschnitte() {
   if (beobachter) beobachter.disconnect();
@@ -265,10 +276,11 @@ function beobachteAbschnitte() {
     }
     /* Der oberste sichtbare Abschnitt gewinnt. */
     const erster = DATEN.karten.map((g) => g.id).find((id) => sichtbar.has(id));
+    const leiste = el("#sprungleiste");
     document.querySelectorAll("#sprungleiste a").forEach((a) => {
       const dran = a.getAttribute("href") === "#" + erster;
       a.classList.toggle("aktiv", dran);
-      if (dran) a.scrollIntoView({ block: "nearest", inline: "nearest" });
+      if (dran) leisteNachfuehren(leiste, a);
     });
   }, { rootMargin: "-140px 0px -55% 0px" });
 
@@ -311,6 +323,17 @@ document.addEventListener("input", (e) => {
 });
 
 document.addEventListener("click", (e) => {
+  /* Weich springen nur hier — nicht global, sonst wird jedes Rollen zaeh. */
+  const sprung = e.target.closest("#sprungleiste a");
+  if (sprung) {
+    const ziel = document.getElementById(sprung.getAttribute("href").slice(1));
+    if (ziel) {
+      e.preventDefault();
+      const ruhig = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      ziel.scrollIntoView({ behavior: ruhig ? "auto" : "smooth", block: "start" });
+    }
+    return;
+  }
   const merkmalKnopf = e.target.closest("#merkmalfilter button");
   if (merkmalKnopf) {
     const gewaehlt = merkmalKnopf.dataset.merkmal;
