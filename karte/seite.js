@@ -12,7 +12,7 @@ const TEXTE = {
     ruhetag: "Ruhetag",
     tage: ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"],
     entwurfTitel: "Designentwurf",
-    entwurfText: "Gerichte und Preise sind Platzhalter und noch nicht vom Haus bestätigt."
+    entwurfText: "Kein offizieller Auftritt des Hauses. Gerichte und Preise sind Platzhalter."
   },
   ar: {
     suche: "ابحث عن طبق …",
@@ -25,7 +25,7 @@ const TEXTE = {
     ruhetag: "عطلة",
     tage: ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
     entwurfTitel: "مسودة تصميم",
-    entwurfText: "الأطباق والأسعار مؤقتة ولم يؤكدها المطعم بعد."
+    entwurfText: "ليست الصفحة الرسمية للمطعم. الأطباق والأسعار مؤقتة."
   }
 };
 
