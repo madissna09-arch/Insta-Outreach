@@ -83,8 +83,11 @@ function istGeoeffnet(jetzt = new Date()) {
 /* ---------- Aufbau ---------- */
 
 function baueKopf() {
-  el("#marke").innerHTML =
-    sicher(w(DATEN.marke.name)) + "<span>" + sicher(w(DATEN.marke.zusatz)) + "</span>";
+  const logo = DATEN.marke.logo;
+  el("#kopf-marke").innerHTML =
+    (logo ? `<img class="kopf-logo" src="${sicher(logo)}" alt="" onerror="this.remove()">` : "") +
+    `<div class="kopf-marke">${sicher(w(DATEN.marke.name))}` +
+    `<span>${sicher(w(DATEN.marke.zusatz))}</span></div>`;
 
   const zustand = istGeoeffnet();
   const knoten = el("#zustand");
@@ -116,6 +119,7 @@ function baueBuehne() {
   const zweit = sprache === "de" ? m.name.ar : m.name.de;
 
   el("#buehne").innerHTML = `
+    ${m.logo ? `<img class="buehne-logo" src="${sicher(m.logo)}" alt="${sicher(w(m.name))}" onerror="this.remove()">` : ""}
     <p class="obendrueber versalien">${sicher(w(m.unter))}</p>
     <h1>${sicher(w(m.name))}</h1>
     ${zweit ? `<p class="zweitname">${sicher(zweit)}</p>` : ""}
@@ -139,7 +143,9 @@ function passt(gericht) {
   return heuhaufen.includes(suchbegriff);
 }
 
-function baueGericht(g) {
+/* fotospalte: hat irgendein Gericht des Abschnitts ein Bild, bekommt jedes
+   Gericht die gleiche Spalte — sonst franst die linke Kante aus. */
+function baueGericht(g, fotospalte) {
   const zweitname = sprache === "de" ? g.name.ar : g.name.de;
   const abzeichen = g.merkmale.length
     ? `<span class="abzeichen">${g.merkmale
@@ -148,7 +154,8 @@ function baueGericht(g) {
   const text = w(g.text);
   const bild = g.bild
     ? `<img class="bild" src="${sicher(g.bild)}" alt="${sicher(w(g.name))}" loading="lazy"
-            onerror="this.remove()">` : "";
+            onerror="this.className='bild-leer'; this.removeAttribute('src')">`
+    : fotospalte ? `<span class="bild-leer" aria-hidden="true"></span>` : "";
 
   return `<article class="gericht">
     ${bild}
@@ -173,6 +180,7 @@ function baueKarte() {
     if (!treffer.length) return "";
     etwasSichtbar = true;
 
+    const fotospalte = treffer.some((g) => g.bild);
     const zweittitel = sprache === "de" ? gang.titel.ar : gang.titel.de;
     const unter = w(gang.unter);
 
@@ -182,7 +190,7 @@ function baueKarte() {
         ${zweittitel ? `<p class="arabisch">${sicher(zweittitel)}</p>` : ""}
         ${unter ? `<p class="unter">${sicher(unter)}</p>` : ""}
       </div>
-      <div class="gerichte">${treffer.map(baueGericht).join("")}</div>
+      <div class="gerichte">${treffer.map((g) => baueGericht(g, fotospalte)).join("")}</div>
     </section>`;
   }).join("");
 

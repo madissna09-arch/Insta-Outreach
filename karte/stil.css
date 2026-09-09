@@ -1,21 +1,22 @@
+/* Farben aus dem Logo abgenommen: Gold auf dunklem, warmem Anthrazit. */
 :root{
-  --tinte:#141F1A;
-  --tinte-2:#1C2B24;
-  --tinte-3:#26382F;
-  --creme:#F8F2E5;
-  --creme-2:#EDE2CD;
-  --messing:#C9A14A;
-  --messing-hell:#E0C077;
-  --terrakotta:#B65A35;
+  --tinte:#15161A;
+  --tinte-2:#1E2026;
+  --tinte-3:#2A2D34;
+  --creme:#F6F1E6;
+  --creme-2:#E8DFCC;
+  --messing:#C79A45;
+  --messing-hell:#E3C376;
+  --terrakotta:#B0522C;
   --olive:#7E8C58;
-  --grau:#93A197;
-  --rand:rgba(201,161,74,.22);
-  --rand-stark:rgba(201,161,74,.45);
+  --grau:#989AA2;
+  --rand:rgba(199,154,69,.22);
+  --rand-stark:rgba(199,154,69,.45);
 
   --schrift-anzeige:"Cormorant Garamond",Georgia,"Times New Roman",serif;
   --schrift-text:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
 
-  --muster:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23C9A14A' stroke-width='1'%3E%3Crect x='14' y='14' width='36' height='36'/%3E%3Cpath d='M32 6 58 32 32 58 6 32Z'/%3E%3C/g%3E%3C/svg%3E");
+  --muster:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23C79A45' stroke-width='1'%3E%3Crect x='14' y='14' width='36' height='36'/%3E%3Cpath d='M32 6 58 32 32 58 6 32Z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Arabisch: andere Schriften, andere Laufrichtung */
@@ -61,11 +62,16 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 /* ---------- Kopfzeile ---------- */
 header{
   position:sticky;top:0;z-index:40;
-  background:rgba(20,31,26,.93);
+  background:rgba(21,22,26,.93);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--rand);
 }
-.kopf-reihe{display:flex;align-items:center;gap:16px;padding:12px 0}
+.kopf-reihe{display:flex;align-items:center;gap:13px;padding:12px 0}
+/* Das Logo hat selbst einen dunklen Grund — rund beschnitten fügt es sich
+   in die Leiste ein, statt als Kasten darauf zu liegen. */
+.kopf-marke-block{display:flex;align-items:center;gap:11px;min-width:0}
+.kopf-logo{width:40px;height:40px;flex:none;border-radius:50%;object-fit:cover;
+  border:1px solid var(--rand-stark)}
 .kopf-marke{font-family:var(--schrift-anzeige);font-size:23px;font-weight:600;letter-spacing:.06em;line-height:1}
 .kopf-marke span{display:block;font-family:var(--schrift-text);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--messing);margin-top:4px;font-weight:600}
 .kopf-werkzeug{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
@@ -92,14 +98,14 @@ header{
   color:var(--grau);border:1px solid transparent;transition:.18s;
 }
 #sprungleiste a:hover{color:var(--creme)}
-#sprungleiste a.aktiv{color:var(--messing-hell);border-color:var(--rand-stark);background:rgba(201,161,74,.09)}
+#sprungleiste a.aktiv{color:var(--messing-hell);border-color:var(--rand-stark);background:rgba(199,154,69,.09)}
 
 /* ---------- Kopfbild ---------- */
 .buehne{
   position:relative;overflow:hidden;
   padding:76px 0 68px;
   background:
-    radial-gradient(120% 90% at 50% 0%,rgba(201,161,74,.16),transparent 62%),
+    radial-gradient(120% 90% at 50% 0%,rgba(199,154,69,.16),transparent 62%),
     linear-gradient(180deg,var(--tinte-2),var(--tinte));
   text-align:center;
 }
@@ -111,6 +117,13 @@ header{
           mask-image:radial-gradient(75% 70% at 50% 40%,#000,transparent 78%);
 }
 .buehne > *{position:relative}
+/* Das Original ist nur 184 px breit — grösser dargestellt wird es weich.
+   Bei 132 px bleibt es scharf und trägt die Bühne trotzdem. */
+.buehne-logo{
+  width:132px;height:132px;margin:0 auto 26px;border-radius:50%;
+  object-fit:cover;border:1px solid var(--rand-stark);
+  box-shadow:0 0 0 8px rgba(199,154,69,.06),0 22px 50px -24px #000;
+}
 .buehne .obendrueber{color:var(--messing);margin:0 0 20px}
 .buehne h1{
   font-family:var(--schrift-anzeige);
@@ -139,7 +152,7 @@ html[lang="ar"] .buehne .zweitname{font-family:var(--schrift-text);font-size:cla
   font-size:13.5px;font-weight:600;letter-spacing:.04em;
   border:1px solid var(--rand-stark);color:var(--creme);transition:.18s;
 }
-.knopf:hover{border-color:var(--messing);background:rgba(201,161,74,.1)}
+.knopf:hover{border-color:var(--messing);background:rgba(199,154,69,.1)}
 .knopf.voll{background:var(--messing);border-color:var(--messing);color:var(--tinte)}
 .knopf.voll:hover{background:var(--messing-hell);border-color:var(--messing-hell)}
 .knopf svg{width:15px;height:15px;flex:none}
@@ -192,6 +205,8 @@ html[lang="ar"] .gang-kopf .arabisch{font-family:var(--schrift-text);font-size:1
 }
 .gericht:hover{background:var(--tinte-2)}
 .gericht .bild{width:72px;height:72px;flex:none;border-radius:10px;object-fit:cover;border:1px solid var(--rand)}
+/* Platzhalter derselben Breite, damit alle Namen auf einer Kante beginnen */
+.gericht .bild-leer{width:72px;flex:none}
 .gericht .text{flex:1;min-width:0}
 .gericht .kopfzeile{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .gericht h3{
@@ -221,12 +236,14 @@ html[lang="ar"] .gericht .arabisch{font-family:var(--schrift-text);font-size:12.
 
 /* ---------- Galerie ---------- */
 .galerie{padding:56px 0}
-.galerie-gitter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:26px}
+/* Die Vorlagen sind Handyfotos im Hochformat und nur 184 px breit. Kleine
+   Kacheln im Hochformat zeigen sie darum in nahezu voller Schärfe. */
+.galerie-gitter{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:26px}
 .galerie-gitter figure{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--rand)}
-.galerie-gitter img{aspect-ratio:4/3;object-fit:cover;width:100%}
+.galerie-gitter img{aspect-ratio:3/4;object-fit:cover;width:100%}
 .galerie-gitter figcaption{
   position:absolute;inset-inline:0;bottom:0;padding:22px 14px 11px;font-size:12.5px;
-  background:linear-gradient(transparent,rgba(20,31,26,.9));
+  background:linear-gradient(transparent,rgba(21,22,26,.92));
 }
 
 /* ---------- Fußbereich ---------- */
@@ -237,7 +254,7 @@ html[lang="ar"] .gericht .arabisch{font-family:var(--schrift-text);font-size:12.
 .angaben-gitter{display:grid;grid-template-columns:1fr 1fr;gap:56px;max-width:820px;margin-inline:auto}
 .angaben h3{margin:0 0 16px;color:var(--messing)}
 .zeitenliste{list-style:none;margin:0;padding:0;font-size:14.5px}
-.zeitenliste li{display:flex;justify-content:space-between;gap:20px;padding:6px 0;border-bottom:1px dashed rgba(201,161,74,.14)}
+.zeitenliste li{display:flex;justify-content:space-between;gap:20px;padding:6px 0;border-bottom:1px dashed rgba(199,154,69,.14)}
 .zeitenliste li:last-child{border-bottom:0}
 .zeitenliste li.heute{color:var(--messing-hell);font-weight:600}
 .zeitenliste .tag{color:var(--grau)}
@@ -255,6 +272,7 @@ footer p{margin:0 auto;max-width:56ch;line-height:1.7}
   .buehne{padding:52px 0 46px}
   .gericht{padding:15px 10px;gap:13px}
   .gericht .bild{width:60px;height:60px}
+  .gericht .bild-leer{width:60px}
   .gericht h3{font-size:19px}
   .gericht .preis{font-size:18px}
   .gericht .leiter{display:none}

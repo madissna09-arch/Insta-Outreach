@@ -11,12 +11,13 @@ const DATEN = {
   entwurf: true,
 
   marke: {
-    name:    { de: "Zazaland",           ar: "زازالاند" },
-    zusatz:  { de: "Restaurant",         ar: "مطعم" },
-    unter:   { de: "Levantinische Küche", ar: "مطبخ شامي" },
+    logo:    "bilder/logo.jpg",
+    name:    { de: "Zaza Land",  ar: "زازا لاند" },
+    zusatz:  { de: "Restaurant", ar: "مطعم" },
+    unter:   { de: "Syrische Küche · seit 1993", ar: "مطبخ سوري · منذ ١٩٩٣" },
     spruch:  {
-      de: "Mezze, Grill und Süßes — so, wie es zu Hause gemacht wird.",
-      ar: "مقبّلات ومشاوي وحلويات — كما تُصنع في البيت."
+      de: "Der Stolz des syrischen Geschmacks.",
+      ar: "فخر المذاق السوري."
     }
   },
 
@@ -40,10 +41,16 @@ const DATEN = {
     { von: "11:30", bis: "00:00" }
   ],
 
-  /* Fotostrecke. Dateien in karte/bilder/ legen und hier eintragen:
-     { datei: "bilder/saal.jpg", text: { de: "Der Gastraum", ar: "الصالة" } }
+  /* Fotostrecke. Dateien in karte/bilder/ legen und hier eintragen.
      Bleibt die Liste leer, wird der ganze Abschnitt weggelassen. */
-  galerie: [],
+  galerie: [
+    { datei: "bilder/tabbouleh.jpg",  text: { de: "Tabbouleh, jeden Morgen frisch geschnitten", ar: "تبولة تُقطع طازجة كل صباح" } },
+    { datei: "bilder/sambousek.jpg",  text: { de: "Teigtaschen aus der eigenen Backstube",      ar: "معجنات من مخبزنا" } },
+    { datei: "bilder/hummus.jpg",     text: { de: "Mezze für die große Runde",                  ar: "مقبلات للجمعات الكبيرة" } },
+    { datei: "bilder/sandwiches.jpg", text: { de: "Sandwiches, fertig für die Theke",           ar: "سندويشات جاهزة" } },
+    { datei: "bilder/teller.jpg",     text: { de: "Teller mit Reis, Salat und Beilagen",        ar: "صحون مع أرز وسلطة ومقبلات" } },
+    { datei: "bilder/falafel.jpg",    text: { de: "Falafel mit Sesam, dazu Tahina",             ar: "فلافل بالسمسم مع طحينة" } }
+  ],
 
   /* merkmale je Gericht: "vegetarisch", "vegan", "scharf", "beliebt"
      bild: optional, z. B. "bilder/hummus.jpg" */
@@ -53,16 +60,16 @@ const DATEN = {
       titel: { de: "Mezze", ar: "المقبلات" },
       unter: { de: "Kalt und warm, zum Teilen gedacht", ar: "باردة وساخنة، للمشاركة" },
       gerichte: [
-        { name: { de: "Hummus",      ar: "حمص" },        text: { de: "Kichererbsen, Tahina, Zitrone, Olivenöl", ar: "حمص، طحينة، ليمون، زيت زيتون" }, preis: 5.90, merkmale: ["vegan", "beliebt"] },
+        { name: { de: "Hummus",      ar: "حمص" },        text: { de: "Kichererbsen, Tahina, Zitrone, Olivenöl", ar: "حمص، طحينة، ليمون، زيت زيتون" }, preis: 5.90, merkmale: ["vegan", "beliebt"], bild: "bilder/hummus.jpg" },
         { name: { de: "Mutabbal",    ar: "متبل" },       text: { de: "Gegrillte Aubergine, Tahina, Knoblauch",   ar: "باذنجان مشوي، طحينة، ثوم" },   preis: 6.50, merkmale: ["vegan"] },
         { name: { de: "Muhammara",   ar: "محمرة" },      text: { de: "Paprika, Walnuss, Granatapfelmelasse",     ar: "فليفلة، جوز، دبس رمان" },      preis: 6.90, merkmale: ["vegan", "scharf"] },
         { name: { de: "Labneh",      ar: "لبنة" },       text: { de: "Frischkäse, Olivenöl, Za'atar",            ar: "لبنة، زيت زيتون، زعتر" },      preis: 5.90, merkmale: ["vegetarisch"] },
-        { name: { de: "Tabbouleh",   ar: "تبولة" },      text: { de: "Petersilie, Bulgur, Tomate, Zitrone",      ar: "بقدونس، برغل، بندورة، ليمون" }, preis: 6.50, merkmale: ["vegan"] },
+        { name: { de: "Tabbouleh",   ar: "تبولة" },      text: { de: "Petersilie, Bulgur, Tomate, Zitrone",      ar: "بقدونس، برغل، بندورة، ليمون" }, preis: 6.50, merkmale: ["vegan"], bild: "bilder/tabbouleh.jpg" },
         { name: { de: "Fattoush",    ar: "فتوش" },       text: { de: "Salat mit geröstetem Fladenbrot, Sumach",  ar: "سلطة مع خبز محمص وسماق" },     preis: 7.20, merkmale: ["vegan"] },
         { name: { de: "Warak Enab",  ar: "ورق عنب" },    text: { de: "Gefüllte Weinblätter, Reis, Kräuter",      ar: "ورق عنب محشي بالأرز والأعشاب" }, preis: 6.90, merkmale: ["vegan"] },
-        { name: { de: "Falafel",     ar: "فلافل" },      text: { de: "Sechs Stück, dazu Tahina",                 ar: "ست حبات مع طحينة" },           preis: 5.50, merkmale: ["vegan", "beliebt"] },
+        { name: { de: "Falafel",     ar: "فلافل" },      text: { de: "Sechs Stück, dazu Tahina",                 ar: "ست حبات مع طحينة" },           preis: 5.50, merkmale: ["vegan", "beliebt"], bild: "bilder/falafel.jpg" },
         { name: { de: "Kibbeh",      ar: "كبة" },        text: { de: "Vier Stück, Bulgur, Hackfleisch, Pinienkerne", ar: "أربع حبات، برغل، لحمة، صنوبر" }, preis: 7.50, merkmale: [] },
-        { name: { de: "Sambousek",   ar: "سمبوسك" },     text: { de: "Vier Teigtaschen, Käse oder Hackfleisch",  ar: "أربع قطع، جبنة أو لحمة" },     preis: 6.90, merkmale: [] }
+        { name: { de: "Sambousek",   ar: "سمبوسك" },     text: { de: "Vier Teigtaschen, Käse oder Hackfleisch",  ar: "أربع قطع، جبنة أو لحمة" },     preis: 6.90, merkmale: [], bild: "bilder/sambousek.jpg" }
       ]
     },
     {
@@ -70,7 +77,7 @@ const DATEN = {
       titel: { de: "Vom Grill", ar: "من الشواية" },
       unter: { de: "Über Holzkohle, mit Reis und Salat", ar: "على الفحم، مع الأرز والسلطة" },
       gerichte: [
-        { name: { de: "Shish Taouk",     ar: "شيش طاووق" },  text: { de: "Hähnchenspieße, Knoblauchcreme, Reis", ar: "شيش طاووق، ثومية، أرز" },     preis: 15.90, merkmale: ["beliebt"] },
+        { name: { de: "Shish Taouk",     ar: "شيش طاووق" },  text: { de: "Hähnchenspieße, Knoblauchcreme, Reis", ar: "شيش طاووق، ثومية، أرز" },     preis: 15.90, merkmale: ["beliebt"], bild: "bilder/teller.jpg" },
         { name: { de: "Kafta Halabi",    ar: "كفتة حلبية" }, text: { de: "Hackspieße, Petersilie, Zwiebel",      ar: "كفتة، بقدونس، بصل" },         preis: 15.50, merkmale: ["scharf"] },
         { name: { de: "Shish Kebab",     ar: "شيش كباب" },   text: { de: "Lammspieße, gegrilltes Gemüse",        ar: "شيش كباب، خضار مشوية" },      preis: 18.90, merkmale: [] },
         { name: { de: "Lammkoteletts",   ar: "ريش غنم" },    text: { de: "Vier Stück, Kräutermarinade",          ar: "أربع قطع، تتبيلة أعشاب" },    preis: 22.90, merkmale: [] },
@@ -82,7 +89,7 @@ const DATEN = {
       titel: { de: "Shawarma & Sandwich", ar: "شاورما وسندويش" },
       unter: { de: "Im Brot oder als Teller", ar: "بالخبز أو صحن" },
       gerichte: [
-        { name: { de: "Shawarma Hähnchen, im Brot", ar: "شاورما دجاج بالخبز" }, text: { de: "Knoblauchcreme, Essiggurke, Pommes", ar: "ثومية، مخلل، بطاطا" }, preis: 8.50, merkmale: ["beliebt"] },
+        { name: { de: "Shawarma Hähnchen, im Brot", ar: "شاورما دجاج بالخبز" }, text: { de: "Knoblauchcreme, Essiggurke, Pommes", ar: "ثومية، مخلل، بطاطا" }, preis: 8.50, merkmale: ["beliebt"], bild: "bilder/sandwiches.jpg" },
         { name: { de: "Shawarma Kalb, im Brot",     ar: "شاورما لحمة بالخبز" }, text: { de: "Tahina, Tomate, Petersilie",         ar: "طحينة، بندورة، بقدونس" }, preis: 9.50, merkmale: [] },
         { name: { de: "Shawarma Teller",            ar: "صحن شاورما" },        text: { de: "Mit Reis, Salat und Brot",           ar: "مع أرز وسلطة وخبز" },     preis: 14.90, merkmale: [] },
         { name: { de: "Falafel Sandwich",           ar: "سندويش فلافل" },      text: { de: "Tahina, Salat, Essiggurke",          ar: "طحينة، سلطة، مخلل" },     preis: 6.50, merkmale: ["vegan"] },
