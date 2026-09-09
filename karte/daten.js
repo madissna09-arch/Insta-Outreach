@@ -33,9 +33,8 @@ const DATEN = {
     instagram: ""                        /* z. B. "https://instagram.com/..." */
   },
 
-  /* 0 = Sonntag, 1 = Montag … 6 = Samstag. null = Ruhetag.
-     ACHTUNG: Bestätigt ist nur, dass um 23:00 geschlossen wird. Öffnungszeit
-     und Wochentage sind geschätzt und müssen noch abgefragt werden. */
+  /* Bestätigt: sieben Tage die Woche, 11:00 bis 23:00, kein Ruhetag.
+     0 = Sonntag, 1 = Montag … 6 = Samstag. null waere ein Ruhetag. */
   oeffnung: [
     { von: "11:00", bis: "23:00" },
     { von: "11:00", bis: "23:00" },
