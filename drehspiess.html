@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#17120E">
+<title>Zum Drehspieß – Döner &amp; türkische Küche in Osnabrück</title>
+<meta name="description" content="Zum Drehspieß in der Großen Hamkenstraße, Osnabrück. Seit 2015. Frisch gedrehter Döner, hausgemachtes Brot, Lahmacun aus dem Ofen, Kumpir und der erste vegane Seitan-Döner der Stadt.">
+
+<!--
+  ============================================================================
+  ZUM DREHSPIESS – Entwurf einer Website (Stand: September 2026)
+  ============================================================================
+
+  ZWEI DINGE VORAB, BITTE LESEN:
+
+  1) FOTOS FEHLEN NOCH.
+     Aus dieser Umgebung ist kein Zugriff auf Instagram, Facebook oder
+     zum-drehspiess.de möglich (Netzwerksperre). Es konnten deshalb KEINE
+     Bilder oder Videos geladen werden.
+     Die Seite ist so gebaut, dass sie auch ganz ohne Fotos sauber aussieht.
+     Sobald Bilder da sind: Ordner "bilder/" neben dieser Datei anlegen und
+     die Dateien mit genau diesen Namen ablegen – sie erscheinen dann von
+     selbst, ohne dass am Code etwas geändert werden muss:
+
+        bilder/spiess.jpg     – Drehspieß / Fleisch am Spieß (Hochformat)
+        bilder/doener.jpg     – klassischer Döner, angeschnitten
+        bilder/vegan.jpg      – veganer Seitan-Döner
+        bilder/kumpir.jpg     – Kumpir
+        bilder/lahmacun.jpg   – Lahmacun oder Pide aus dem Ofen
+        bilder/laden.jpg      – Theke / Innenraum / Fassade
+        bilder/team.jpg       – Team hinter der Theke
+        bilder/dessert.jpg    – San Sebastian Cheesecake
+
+     Querformat ca. 1600x1100 px, Hochformat ca. 1100x1500 px, je < 400 KB.
+
+  2) DIE MIT "PRUEFEN" MARKIERTEN DATEN IM BLOCK UNTEN BESTAETIGEN LASSEN.
+     Sie stammen aus Branchenverzeichnissen, nicht vom Betrieb selbst, und
+     widersprechen sich dort teilweise (Hausnummer, Telefon, Öffnungszeiten).
+     Alles steht gesammelt in "const DATEN" ganz unten im <script>.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317120E'/%3E%3Cpath d='M16 5c4 0 6.4 3.2 6.4 8.2S20 24 16 24s-6.4-5.8-6.4-10.8S12 5 16 5z' fill='%23D4462A'/%3E%3Crect x='15.2' y='2' width='1.6' height='28' fill='%23E8A33D'/%3E%3C/svg%3E">
+
+<style>
+  :root{
+    --kohle:#17120E;
+    --kohle-hell:#231C16;
+    --kohle-karte:#2B221A;
+    --glut:#D4462A;
+    --glut-hell:#E8613F;
+    --gold:#E8A33D;
+    --creme:#F7F1E6;
+    --creme-tief:#EBE2D2;
+    --kraut:#6E9B63;
+    --sand:#A79683;
+    --rand:rgba(247,241,230,.14);
+    --rand-dunkel:rgba(23,18,14,.12);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--creme);
+    color:var(--kohle);
+    font:16px/1.65 Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+  h1,h2,h3,.anton{
+    font-family:Anton,"Arial Narrow",Impact,sans-serif;
+    font-weight:400;letter-spacing:.012em;text-transform:uppercase;
+    line-height:.96;margin:0;
+  }
+  .lauf{font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
+
+  .huelle{max-width:1140px;margin:0 auto;padding:0 20px}
+  section{position:relative}
+
+  /* ---------------- Kopfleiste ---------------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    display:flex;align-items:center;gap:16px;
+    padding:calc(12px + env(safe-area-inset-top)) 20px 12px;
+    transition:background .3s ease,box-shadow .3s ease,padding .3s ease;
+  }
+  header.fest{
+    background:rgba(23,18,14,.94);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:0 1px 0 rgba(247,241,230,.1);
+  }
+  header .wortmarke{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:17px;letter-spacing:.09em;color:var(--creme);text-decoration:none;
+    white-space:nowrap;
+  }
+  header .wortmarke em{font-style:normal;color:var(--glut-hell)}
+  header nav{margin-left:auto;display:flex;align-items:center;gap:26px}
+  header nav a{
+    color:var(--creme);text-decoration:none;font-size:13px;font-weight:500;
+    opacity:.82;transition:opacity .2s,color .2s;
+  }
+  header nav a:hover{opacity:1;color:var(--gold)}
+  @media (max-width:860px){header nav .verbergen{display:none}}
+
+  .knopf{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:14px 24px;border-radius:999px;text-decoration:none;
+    font-size:13px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+    transition:transform .18s ease,background .2s ease,color .2s ease,border-color .2s ease;
+    white-space:nowrap;
+  }
+  .knopf:hover{transform:translateY(-2px)}
+  .knopf.glut{background:var(--glut);color:#fff}
+  .knopf.glut:hover{background:var(--glut-hell)}
+  .knopf.klar{border:1px solid var(--rand);color:var(--creme)}
+  .knopf.klar:hover{border-color:var(--gold);color:var(--gold)}
+  .knopf.dunkel{background:var(--kohle);color:var(--creme)}
+  .knopf.dunkel:hover{background:var(--kohle-hell)}
+  .knopf.klein{padding:11px 18px;font-size:12px}
+
+  /* ---------------- Bühne ---------------- */
+  #buehne{
+    background:var(--kohle);color:var(--creme);
+    padding:clamp(120px,17vh,170px) 0 clamp(56px,8vh,80px);
+    overflow:hidden;
+  }
+  #buehne::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(760px 520px at 76% 32%,rgba(212,70,42,.26),transparent 68%),
+      radial-gradient(520px 420px at 10% 92%,rgba(232,163,61,.13),transparent 70%);
+  }
+  .buehne-raster{
+    position:relative;display:grid;gap:46px;align-items:center;
+    grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  }
+  @media (max-width:900px){.buehne-raster{grid-template-columns:1fr;gap:34px}}
+
+  .status{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:7px 15px 7px 12px;border-radius:999px;
+    border:1px solid var(--rand);background:rgba(247,241,230,.05);
+    font-size:12px;font-weight:600;letter-spacing:.06em;margin:0 0 22px;
+  }
+  .status .punkt{
+    width:8px;height:8px;border-radius:50%;background:var(--sand);flex:0 0 auto;
+  }
+  .status.offen .punkt{background:#57C271;box-shadow:0 0 0 0 rgba(87,194,113,.6);animation:puls 2.4s infinite}
+  .status.zu .punkt{background:var(--glut)}
+  @keyframes puls{70%{box-shadow:0 0 0 9px rgba(87,194,113,0)}100%{box-shadow:0 0 0 0 rgba(87,194,113,0)}}
+  @media (prefers-reduced-motion:reduce){.status.offen .punkt{animation:none}}
+
+  #buehne h1{
+    font-size:clamp(50px,10.5vw,112px);
+    margin:0 0 20px;letter-spacing:.005em;
+  }
+  #buehne h1 .zeile2{display:block;color:var(--glut-hell)}
+  .buehne-text{
+    max-width:33ch;font-size:clamp(16px,1.9vw,18.5px);
+    color:rgba(247,241,230,.78);margin:0 0 30px;
+  }
+  .buehne-knoepfe{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 30px}
+  .buehne-fakten{
+    display:flex;flex-wrap:wrap;gap:12px 30px;
+    padding:22px 0 0;border-top:1px solid var(--rand);
+  }
+  .buehne-fakten div b{
+    display:block;font-family:Anton,Impact,sans-serif;font-size:27px;
+    letter-spacing:.02em;color:var(--gold);line-height:1.05;
+  }
+  .buehne-fakten div span{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sand)}
+
+  /* ---------------- Spieß-Grafik ---------------- */
+  .spiess-feld{position:relative;display:flex;justify-content:center;align-items:center;min-height:380px}
+  .spiess-feld .glut-schein{
+    position:absolute;width:74%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,70,42,.42),transparent 66%);
+    filter:blur(26px);
+  }
+  .spiess-feld svg{position:relative;width:min(330px,80%);height:auto;filter:drop-shadow(0 34px 44px rgba(0,0,0,.45))}
+  .spiess-feld .bild-schacht{
+    position:relative;width:min(340px,86%);aspect-ratio:3/4;border-radius:200px 200px 24px 24px;
+    overflow:hidden;border:1px solid var(--rand);
+  }
+  .spiess-feld .bild-schacht img{width:100%;height:100%;object-fit:cover}
+  @keyframes dreh{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+  .schimmer{animation:dreh 4.5s linear infinite}
+  @media (prefers-reduced-motion:reduce){.schimmer{animation:none;opacity:.35}}
+
+  /* ---------------- Laufband ---------------- */
+  .laufband{
+    background:var(--glut);color:#fff;padding:13px 0;overflow:hidden;
+    border-top:1px solid rgba(0,0,0,.14);border-bottom:1px solid rgba(0,0,0,.14);
+  }
+  .laufband .spur{display:flex;width:max-content;animation:schieb 34s linear infinite}
+  .laufband span{
+    font-family:Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.09em;
+    font-size:15px;padding:0 20px;white-space:nowrap;display:inline-flex;align-items:center;gap:20px;
+  }
+  .laufband span::after{content:"";width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}
+  @keyframes schieb{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.laufband .spur{animation:none}}
+
+  /* ---------------- Abschnittskopf ---------------- */
+  .kopf{max-width:640px;margin:0 0 44px}
+  .kopf .lauf{color:var(--glut);display:block;margin:0 0 14px}
+  .kopf h2{font-size:clamp(32px,5.2vw,52px);margin:0 0 16px}
+  .kopf p{margin:0;color:#5D5147;font-size:17px}
+  .dunkel-abschnitt .kopf .lauf{color:var(--gold)}
+  .dunkel-abschnitt .kopf p{color:rgba(247,241,230,.72)}
+
+  /* ---------------- Säulen ---------------- */
+  #werte{padding:clamp(70px,9vw,110px) 0}
+  .saeulen{display:grid;gap:1px;background:var(--rand-dunkel);border:1px solid var(--rand-dunkel);
+    grid-template-columns:repeat(3,1fr)}
+  @media (max-width:820px){.saeulen{grid-template-columns:1fr}}
+  .saeule{background:var(--creme);padding:34px 28px 32px;transition:background .25s ease}
+  .saeule:hover{background:#fff}
+  .saeule .zahl{font-family:Anton,Impact,sans-serif;font-size:13px;letter-spacing:.2em;color:var(--glut);display:block;margin:0 0 20px}
+  .saeule h3{font-size:24px;margin:0 0 12px}
+  .saeule p{margin:0;color:#5D5147;font-size:15.5px}
+  .saeule.vegan .zahl{color:var(--kraut)}
+
+  /* ---------------- Karte ---------------- */
+  #karte{background:var(--kohle);color:var(--creme);padding:clamp(70px,9vw,110px) 0}
+  .karte-kopfzeile{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between;margin:0 0 36px}
+  .karte-kopfzeile .kopf{margin:0}
+  .preis-anker{
+    border:1px solid var(--rand);padding:16px 22px;border-radius:14px;
+    background:rgba(247,241,230,.04);flex:0 0 auto;
+  }
+  .preis-anker b{display:block;font-family:Anton,Impact,sans-serif;font-size:30px;color:var(--gold);line-height:1.1}
+  .preis-anker span{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--sand)}
+
+  .reiter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 34px}
+  .reiter button{
+    padding:10px 19px;border-radius:999px;border:1px solid var(--rand);
+    font-size:12.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    color:rgba(247,241,230,.72);transition:all .2s ease;
+  }
+  .reiter button:hover{color:var(--creme);border-color:rgba(247,241,230,.4)}
+  .reiter button[aria-selected="true"]{background:var(--glut);border-color:var(--glut);color:#fff}
+
+  .gerichte{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rand)}
+  @media (max-width:760px){.gerichte{grid-template-columns:1fr}}
+  /* Ungerade Anzahl: das letzte Gericht nimmt die volle Breite,
+     damit keine leere Kachel stehen bleibt. */
+  .gerichte .gericht:last-child:nth-child(odd){grid-column:1 / -1}
+  .gericht{background:var(--kohle);padding:24px 26px;transition:background .2s ease}
+  .gericht:hover{background:var(--kohle-hell)}
+  .gericht .zeile{display:flex;align-items:baseline;gap:12px;margin:0 0 7px}
+  .gericht h3{font-size:19px;letter-spacing:.02em}
+  .gericht p{margin:0;font-size:14.5px;color:rgba(247,241,230,.62);line-height:1.6}
+  .fahne{
+    flex:0 0 auto;font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+    padding:4px 9px;border-radius:999px;
+  }
+  .fahne.v{background:rgba(110,155,99,.2);color:#9BC48F;border:1px solid rgba(110,155,99,.42)}
+  .fahne.top{background:rgba(232,163,61,.16);color:var(--gold);border:1px solid rgba(232,163,61,.4)}
+  .karte-fuss{
+    margin:32px 0 0;padding:20px 22px;border:1px solid var(--rand);border-radius:14px;
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+    font-size:14.5px;color:rgba(247,241,230,.72);
+  }
+
+  /* ---------------- Bilder ---------------- */
+  #galerie{padding:clamp(70px,9vw,110px) 0}
+  .gitter{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gitter .bild:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .gitter .bild:nth-child(4),
+  .gitter .bild:nth-child(5),
+  .gitter .bild:nth-child(6){grid-column:span 2}
+  @media (max-width:820px){
+    .gitter{grid-template-columns:repeat(2,1fr)}
+    /* Mobil: erstes Bild über die volle Breite, der Rest zu zweit. */
+    .gitter .bild{grid-column:span 1;aspect-ratio:1}
+    .gitter .bild:nth-child(1){grid-column:span 2;grid-row:auto;aspect-ratio:4/3}
+  }
+  .bild{position:relative;margin:0;overflow:hidden;border-radius:16px;background:var(--creme-tief);aspect-ratio:4/3}
+  .gitter .bild:nth-child(1){aspect-ratio:1}
+  .bild img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .bild:hover img{transform:scale(1.04)}
+  .bild figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:34px 18px 15px;
+    background:linear-gradient(transparent,rgba(23,18,14,.82));
+    color:var(--creme);font-size:13.5px;font-weight:600;letter-spacing:.03em;
+  }
+  /* Platzhalter, solange keine Datei in bilder/ liegt */
+  .bild.leer img{display:none}
+  .bild.leer{
+    background:
+      repeating-linear-gradient(135deg,rgba(23,18,14,.045) 0 12px,transparent 12px 24px),
+      var(--creme-tief);
+    border:1px dashed rgba(23,18,14,.22);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+  }
+  .bild.leer figcaption{
+    position:static;background:none;color:#8A7B6C;padding:22px;
+    font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:1.7;
+  }
+  .bild.leer figcaption small{display:block;text-transform:none;letter-spacing:0;font-weight:400;font-size:12px;color:#A3958A;margin-top:6px}
+
+  /* ---------------- Geschichte ---------------- */
+  #geschichte{background:var(--creme-tief);padding:clamp(70px,9vw,110px) 0}
+  .zwei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:54px;align-items:center}
+  @media (max-width:900px){.zwei{grid-template-columns:1fr;gap:38px}}
+  .zeitstrahl{list-style:none;margin:28px 0 0;padding:0}
+  .zeitstrahl li{position:relative;padding:0 0 26px 30px;border-left:2px solid rgba(23,18,14,.14)}
+  .zeitstrahl li:last-child{padding-bottom:0;border-left-color:transparent}
+  .zeitstrahl li::before{
+    content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;
+    background:var(--glut);border:3px solid var(--creme-tief);
+  }
+  .zeitstrahl b{display:block;font-family:Anton,Impact,sans-serif;text-transform:uppercase;
+    font-size:13px;letter-spacing:.14em;color:var(--glut);margin:0 0 4px}
+  .zeitstrahl p{margin:0;font-size:15.5px;color:#5D5147}
+
+  /* ---------------- Stimmen ---------------- */
+  #stimmen{padding:clamp(70px,9vw,110px) 0}
+  .noten{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 34px}
+  @media (max-width:760px){.noten{grid-template-columns:1fr}}
+  .note{border:1px solid var(--rand-dunkel);border-radius:16px;padding:24px;background:#fff}
+  .note .sterne{color:var(--gold);font-size:15px;letter-spacing:.14em;margin:0 0 10px}
+  .note b{display:block;font-family:Anton,Impact,sans-serif;font-size:36px;letter-spacing:.02em;line-height:1}
+  .note span{display:block;font-size:12.5px;color:#7A6D62;margin-top:6px}
+  .lob{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (max-width:760px){.lob{grid-template-columns:1fr}}
+  .lob div{
+    border-left:3px solid var(--glut);background:var(--creme-tief);
+    padding:20px 22px;border-radius:0 12px 12px 0;
+  }
+  .lob div b{display:block;font-size:15.5px;margin:0 0 5px}
+  .lob div p{margin:0;font-size:14.5px;color:#5D5147}
+  .quelle{margin:22px 0 0;font-size:12.5px;color:#8A7B6C}
+
+  /* ---------------- Bestellen ---------------- */
+  #bestellen{background:var(--kohle);color:var(--creme);padding:clamp(70px,9vw,110px) 0}
+  .wege{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:820px){.wege{grid-template-columns:1fr}}
+  .weg{
+    border:1px solid var(--rand);border-radius:18px;padding:28px 26px;
+    display:flex;flex-direction:column;gap:10px;text-decoration:none;
+    transition:border-color .22s ease,background .22s ease,transform .22s ease;
+  }
+  .weg:hover{border-color:var(--gold);background:rgba(247,241,230,.04);transform:translateY(-3px)}
+  .weg .lauf{color:var(--gold)}
+  .weg h3{font-size:25px}
+  .weg p{margin:0;font-size:14.5px;color:rgba(247,241,230,.66);flex:1}
+  .weg .pfeil{font-size:13px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--creme)}
+
+  /* ---------------- Finden ---------------- */
+  #finden{padding:clamp(70px,9vw,110px) 0}
+  .zeiten{width:100%;border-collapse:collapse;margin:0 0 8px}
+  .zeiten td{padding:12px 0;border-bottom:1px solid var(--rand-dunkel);font-size:15.5px}
+  .zeiten td:last-child{text-align:right;font-variant-numeric:tabular-nums;color:#5D5147}
+  .zeiten tr.heute td{font-weight:700;color:var(--glut)}
+  .zeiten tr.heute td:last-child{color:var(--glut)}
+  .kontaktliste{list-style:none;margin:0;padding:0}
+  .kontaktliste li{padding:16px 0;border-bottom:1px solid var(--rand-dunkel)}
+  .kontaktliste .lauf{display:block;color:#8A7B6C;margin:0 0 5px}
+  .kontaktliste a,.kontaktliste b{font-size:17px;font-weight:600;text-decoration:none}
+  .kontaktliste a:hover{color:var(--glut)}
+
+  /* ---------------- Fuß ---------------- */
+  footer{background:var(--kohle);color:var(--creme);padding:56px 0 calc(34px + env(safe-area-inset-bottom))}
+  .fuss-oben{display:flex;flex-wrap:wrap;gap:26px;justify-content:space-between;align-items:flex-start;
+    padding:0 0 30px;border-bottom:1px solid var(--rand)}
+  .fuss-marke{font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:27px;letter-spacing:.06em}
+  .fuss-marke em{font-style:normal;color:var(--glut-hell)}
+  .fuss-marke + p{margin:8px 0 0;font-size:14px;color:var(--sand);max-width:34ch}
+  .sozial{display:flex;gap:10px;flex-wrap:wrap}
+  .sozial a{
+    display:inline-flex;align-items:center;gap:8px;padding:11px 17px;border-radius:999px;
+    border:1px solid var(--rand);text-decoration:none;font-size:13px;font-weight:600;
+    transition:border-color .2s,color .2s;
+  }
+  .sozial a:hover{border-color:var(--gold);color:var(--gold)}
+  .fuss-unten{display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;
+    padding:24px 0 0;font-size:12.5px;color:var(--sand)}
+  .fuss-unten a{color:var(--sand)}
+
+  /* Einblenden beim Scrollen */
+  .auf{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .auf.da{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.auf{opacity:1;transform:none;transition:none}}
+
+  /* Sprungmarke für Tastatur */
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--gold);color:var(--kohle);padding:12px 18px;font-weight:600}
+  .skip:focus{left:12px;top:12px}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#karte">Direkt zur Speisekarte</a>
+
+<header id="leiste">
+  <a class="wortmarke" href="#buehne">Zum <em>Drehspieß</em></a>
+  <nav>
+    <a class="verbergen" href="#karte">Karte</a>
+    <a class="verbergen" href="#geschichte">Geschichte</a>
+    <a class="verbergen" href="#finden">Finden</a>
+    <a class="knopf glut klein" href="#bestellen">Bestellen</a>
+  </nav>
+</header>
+
+<!-- ============================ BÜHNE ============================ -->
+<section id="buehne">
+  <div class="huelle buehne-raster">
+
+    <div>
+      <p class="status" id="status">
+        <span class="punkt"></span>
+        <span id="statusText">Öffnungszeiten werden geprüft …</span>
+      </p>
+
+      <h1>Frisch<br>gedreht.<span class="zeile2">Seit 2015.</span></h1>
+
+      <p class="buehne-text">
+        Döner, Dürüm und Lahmacun mitten in der Osnabrücker Innenstadt.
+        Brot aus dem eigenen Ofen, Fleisch vom Spieß – und der erste
+        vegane Seitan-Döner der Stadt.
+      </p>
+
+      <div class="buehne-knoepfe">
+        <a class="knopf glut" href="#bestellen">Jetzt bestellen</a>
+        <a class="knopf klar" href="#karte">Zur Karte</a>
+      </div>
+
+      <div class="buehne-fakten">
+        <div><b id="faktJahre">10+</b><span>Jahre Hamkenstraße</span></div>
+        <div><b id="faktNote">4,6</b><span>Sterne im Schnitt</span></div>
+        <div><b id="faktZahl">1.600+</b><span>Bewertungen</span></div>
+      </div>
+    </div>
+
+    <div class="spiess-feld">
+      <div class="glut-schein"></div>
+
+      <!-- Sobald bilder/spiess.jpg existiert, ersetzt das Foto die Grafik. -->
+      <figure class="bild-schacht" id="spiessFoto" hidden style="margin:0">
+        <img src="bilder/spiess.jpg" alt="Drehspieß bei Zum Drehspieß in Osnabrück">
+      </figure>
+
+      <svg id="spiessGrafik" viewBox="0 0 220 300" role="img" aria-label="Illustration eines Dönerspießes">
+        <defs>
+          <linearGradient id="fleisch" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7E3418"/>
+            <stop offset="34%" stop-color="#C05128"/>
+            <stop offset="62%" stop-color="#E0743C"/>
+            <stop offset="100%" stop-color="#6E2C14"/>
+          </linearGradient>
+          <linearGradient id="stange" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#6E6256"/>
+            <stop offset="45%" stop-color="#CBBFAE"/>
+            <stop offset="100%" stop-color="#5B5148"/>
+          </linearGradient>
+          <linearGradient id="glanz" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#FFD9A8" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="korpus">
+            <path d="M110 26c30 0 47 26 51 74 4 44 1 96-9 124-6 17-22 26-42 26s-36-9-42-26C58 196 55 144 59 100 63 52 80 26 110 26z"/>
+          </clipPath>
+        </defs>
+
+        <!-- Stange -->
+        <rect x="105.5" y="4" width="9" height="292" rx="2" fill="url(#stange)"/>
+        <ellipse cx="110" cy="296" rx="30" ry="6" fill="#0D0A08" opacity=".55"/>
+
+        <!-- Fleischkorpus -->
+        <g clip-path="url(#korpus)">
+          <rect x="45" y="20" width="130" height="240" fill="url(#fleisch)"/>
+          <!-- Schichten -->
+          <g stroke="#4E1E0C" stroke-opacity=".38" stroke-width="1.6" fill="none">
+            <path d="M48 58c22 9 42 12 62 12s40-3 62-12"/>
+            <path d="M46 84c22 9 42 12 64 12s42-3 64-12"/>
+            <path d="M46 110c22 9 42 12 64 12s42-3 64-12"/>
+            <path d="M46 136c22 9 42 12 64 12s42-3 64-12"/>
+            <path d="M47 162c22 9 42 12 63 12s41-3 63-12"/>
+            <path d="M49 188c21 9 40 12 61 12s40-3 61-12"/>
+            <path d="M52 214c20 9 38 12 58 12s38-3 58-12"/>
+          </g>
+          <!-- Kruste oben -->
+          <path d="M45 20h130v34c-22 10-43 14-65 14S67 64 45 54z" fill="#8C3A18" opacity=".55"/>
+          <!-- Drehschimmer -->
+          <rect class="schimmer" x="-70" y="10" width="62" height="270" fill="url(#glanz)"/>
+        </g>
+
+        <!-- Kante -->
+        <path d="M110 26c30 0 47 26 51 74 4 44 1 96-9 124-6 17-22 26-42 26s-36-9-42-26C58 196 55 144 59 100 63 52 80 26 110 26z"
+              fill="none" stroke="#3A1608" stroke-opacity=".45" stroke-width="2"/>
+
+        <!-- Messer, das gerade schneidet -->
+        <g transform="translate(146 148) rotate(14)">
+          <path d="M2 0 L54 -4.5 L54 4 L2 3.2 Z" fill="#E2DCD1"/>
+          <path d="M2 3.2 L54 4 L54 5.6 L2 4.4 Z" fill="#9A9186"/>
+          <rect x="53" y="-6" width="26" height="12" rx="4" fill="#2A1F18"/>
+          <rect x="57" y="-2" width="17" height="1.6" rx="0.8" fill="#4A3A2C"/>
+        </g>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ LAUFBAND ============================ -->
+<div class="laufband" aria-hidden="true">
+  <div class="spur" id="spur"></div>
+</div>
+
+<!-- ============================ WERTE ============================ -->
+<section id="werte">
+  <div class="huelle">
+    <div class="kopf auf">
+      <span class="lauf">Worauf es hier ankommt</span>
+      <h2>Kein Schnickschnack.<br>Nur ordentlich gemacht.</h2>
+      <p>Seit dem ersten Tag wird hier alles auf Bestellung zubereitet – und nicht vorgelegt.</p>
+    </div>
+
+    <div class="saeulen auf">
+      <article class="saeule">
+        <span class="zahl">01 — Frisch</span>
+        <h3>Auf Bestellung</h3>
+        <p>Lahmacun und Dürüm werden erst gemacht, wenn sie bestellt sind. Das Brot kommt aus dem eigenen Ofen, nicht aus der Tüte.</p>
+      </article>
+      <article class="saeule vegan">
+        <span class="zahl">02 — Vegan</span>
+        <h3>Der Erste der Stadt</h3>
+        <p>Veganer Döner auf Seitan-Basis, dazu hausgemachte vegane Soße und Pide mit veganem Teig. Nach eigenen Angaben das erste Angebot dieser Art in Osnabrück.</p>
+      </article>
+      <article class="saeule">
+        <span class="zahl">03 — Mittendrin</span>
+        <h3>Große Hamkenstraße</h3>
+        <p>Zwei Schritte von der Kamp-Promenade. Mittags schnell, abends lange offen – am Wochenende bis in die Nacht.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KARTE ============================ -->
+<section id="karte" class="dunkel-abschnitt">
+  <div class="huelle">
+
+    <div class="karte-kopfzeile auf">
+      <div class="kopf" style="margin:0">
+        <span class="lauf">Speisekarte</span>
+        <h2>Was auf den Teller kommt</h2>
+        <p>Vom Klassiker im hausgemachten Brot bis zum Kumpir. Ein Auszug – die vollständige Karte liegt im Laden und bei den Lieferdiensten.</p>
+      </div>
+      <div class="preis-anker">
+        <b id="preisAb">ab 6,70 €</b>
+        <span>Döner im Brot</span>
+      </div>
+    </div>
+
+    <div class="reiter auf" role="tablist" id="reiter"></div>
+
+    <div class="gerichte auf" id="gerichte"></div>
+
+    <div class="karte-fuss auf">
+      <span>Alle Preise und die komplette Auswahl findest du bei den Lieferdiensten.</span>
+      <a class="knopf klar klein" href="#bestellen">Karte &amp; Preise ansehen</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ GALERIE ============================ -->
+<section id="galerie">
+  <div class="huelle">
+    <div class="kopf auf">
+      <span class="lauf">Einblicke</span>
+      <h2>So sieht das aus</h2>
+      <p>Bilder aus dem Laden und von der Theke.</p>
+    </div>
+
+    <div class="gitter auf" id="gitter"></div>
+  </div>
+</section>
+
+<!-- ============================ GESCHICHTE ============================ -->
+<section id="geschichte">
+  <div class="huelle zwei">
+    <div class="auf">
+      <div class="kopf" style="margin:0">
+        <span class="lauf">Seit dem 1. April 2015</span>
+        <h2>Ein Laden, der sich immer wieder neu erfindet</h2>
+        <p>Angefangen hat alles in der Fußgängerzone mit einem Spieß und dem Anspruch, Döner nicht einfach nur zu verkaufen.</p>
+      </div>
+
+      <ul class="zeitstrahl">
+        <li>
+          <b>2015 — Der Anfang</b>
+          <p>Eröffnung in der Großen Hamkenstraße. Lahmacun und Dürüm werden von Tag eins an frisch auf Bestellung gemacht.</p>
+        </li>
+        <li>
+          <b>Pionierarbeit</b>
+          <p>Als erster Gastronom in Osnabrück kommt neben dem klassischen Döner auch einer auf Seitan-Basis auf die Karte – dazu Sucuk-Döner.</p>
+        </li>
+        <li>
+          <b>2024 — EM-Coup</b>
+          <p>Zur Fußball-Europameisterschaft ein Versprechen, über das die halbe Stadt spricht: Wird Deutschland Europameister, gibt es tags darauf ein Sonderangebot.</p>
+        </li>
+        <li>
+          <b>1. April 2025 — Zehn Jahre</b>
+          <p>Zum Jubiläum kostet jeder Döner drei Euro – auch der Veggie- und der Chicken-Döner. Die Schlange reicht weit auf die Straße.</p>
+        </li>
+      </ul>
+    </div>
+
+    <figure class="bild auf" id="bildLaden" style="aspect-ratio:4/5">
+      <img src="bilder/laden.jpg" alt="Zum Drehspieß in der Großen Hamkenstraße, Osnabrück">
+      <figcaption>Große Hamkenstraße, Osnabrück<small>bilder/laden.jpg einfügen – Theke, Fassade oder Innenraum</small></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ STIMMEN ============================ -->
+<section id="stimmen">
+  <div class="huelle">
+    <div class="kopf auf">
+      <span class="lauf">Was Gäste sagen</span>
+      <h2>Über tausend Bewertungen</h2>
+      <p>Zusammengefasst aus öffentlichen Bewertungsportalen.</p>
+    </div>
+
+    <div class="noten auf">
+      <div class="note">
+        <p class="sterne">★★★★★</p>
+        <b>4,6</b>
+        <span>Durchschnitt über mehrere Portale</span>
+      </div>
+      <div class="note">
+        <p class="sterne">★★★★★</p>
+        <b>1.600+</b>
+        <span>Bewertungen bei Google</span>
+      </div>
+      <div class="note">
+        <p class="sterne">★★★★★</p>
+        <b>Nr. 1</b>
+        <span>Wird regelmäßig als bester Döner der Stadt genannt</span>
+      </div>
+    </div>
+
+    <div class="lob auf">
+      <div>
+        <b>Das Brot</b>
+        <p>Am häufigsten genannt: das hausgemachte Brot und dass alles frisch zubereitet wird.</p>
+      </div>
+      <div>
+        <b>Der vegane Döner</b>
+        <p>Wird in Bewertungen immer wieder als einer der besten veganen Döner überhaupt beschrieben.</p>
+      </div>
+      <div>
+        <b>Kumpir &amp; Iskender</b>
+        <p>Neben dem Döner werden vor allem Kumpir, Iskender Kebab und der San-Sebastian-Käsekuchen hervorgehoben.</p>
+      </div>
+      <div>
+        <b>Portionen &amp; Service</b>
+        <p>Großzügige Portionen, schneller und freundlicher Service, angemessene Preise.</p>
+      </div>
+    </div>
+
+    <p class="quelle">Angaben aus öffentlich einsehbaren Bewertungen (u. a. Google, HappyCow, coolibri, Restaurant Guru), Stand September 2026. Bewertungen schwanken; Einzelmeinungen weichen ab.</p>
+  </div>
+</section>
+
+<!-- ============================ BESTELLEN ============================ -->
+<section id="bestellen" class="dunkel-abschnitt">
+  <div class="huelle">
+    <div class="kopf auf">
+      <span class="lauf">Bestellen</span>
+      <h2>Abholen oder liefern lassen</h2>
+      <p>Am schnellsten geht es direkt am Tresen. Wer es nach Hause möchte, bestellt über einen der Lieferdienste.</p>
+    </div>
+
+    <div class="wege auf">
+      <a class="weg" href="tel:+495412669" id="wegTelefon">
+        <span class="lauf">Abholung</span>
+        <h3>Telefonisch<br>vorbestellen</h3>
+        <p>Anrufen, bestellen, abholen – ohne Wartezeit im Laden.</p>
+        <span class="pfeil" id="telefonAnzeige">Nummer prüfen</span>
+      </a>
+      <a class="weg" href="https://wolt.com/de/deu/osnabruck/restaurant/zum-drehspiess" target="_blank" rel="noopener">
+        <span class="lauf">Lieferung</span>
+        <h3>Wolt</h3>
+        <p>Vollständige Karte mit aktuellen Preisen, Lieferung im Stadtgebiet.</p>
+        <span class="pfeil">Bei Wolt öffnen →</span>
+      </a>
+      <a class="weg" href="https://www.lieferando.de/speisekarte/zum-drehspiess-grosse-hamkenstrasse" target="_blank" rel="noopener">
+        <span class="lauf">Lieferung</span>
+        <h3>Lieferando</h3>
+        <p>Bestellung nach Hause oder ins Büro, Bezahlung online möglich.</p>
+        <span class="pfeil">Bei Lieferando öffnen →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINDEN ============================ -->
+<section id="finden">
+  <div class="huelle zwei">
+
+    <div class="auf">
+      <div class="kopf" style="margin:0 0 20px">
+        <span class="lauf">Öffnungszeiten</span>
+        <h2>Wann offen ist</h2>
+      </div>
+      <table class="zeiten"><tbody id="zeitenKoerper"></tbody></table>
+      <p style="font-size:13px;color:#8A7B6C;margin:14px 0 0" id="zeitenHinweis"></p>
+    </div>
+
+    <div class="auf">
+      <div class="kopf" style="margin:0 0 20px">
+        <span class="lauf">Kontakt</span>
+        <h2>Wo du uns findest</h2>
+      </div>
+      <ul class="kontaktliste">
+        <li>
+          <span class="lauf">Adresse</span>
+          <a id="adresseLink" href="#" target="_blank" rel="noopener">Große Hamkenstraße 21<br>49074 Osnabrück</a>
+        </li>
+        <li>
+          <span class="lauf">Telefon</span>
+          <a id="telefonLink" href="#">0541 26696</a>
+        </li>
+        <li>
+          <span class="lauf">Instagram</span>
+          <a href="https://www.instagram.com/zumdrehspiess/" target="_blank" rel="noopener">@zumdrehspiess</a>
+        </li>
+      </ul>
+      <p style="margin:26px 0 0">
+        <a class="knopf dunkel" id="routeKnopf" href="#" target="_blank" rel="noopener">Route in Google Maps</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ FUSS ============================ -->
+<footer>
+  <div class="huelle">
+    <div class="fuss-oben">
+      <div>
+        <p class="fuss-marke">Zum <em>Drehspieß</em></p>
+        <p>Türkische Küche in der Osnabrücker Innenstadt. Frisch gedreht seit 2015.</p>
+      </div>
+      <div class="sozial">
+        <a href="https://www.instagram.com/zumdrehspiess/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/zumdrehspiess/" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.zum-drehspiess.de/" target="_blank" rel="noopener">Online bestellen</a>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© <span id="jahr">2026</span> Zum Drehspieß, Osnabrück</span>
+      <span>Entwurf – Impressum und Datenschutzerklärung müssen vor der Veröffentlichung ergänzt werden.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================================
+   DATEN – hier wird gepflegt, sonst nirgends.
+   =========================================================================== */
+const DATEN = {
+
+  /* --- PRUEFEN: Hausnummer ---------------------------------------------
+     Die meisten Verzeichnisse (Das Örtliche, coolibri, foodyas,
+     Restaurant Guru) nennen Nr. 21, Yelp nennt Nr. 19.
+     Vor dem Livegang beim Betrieb bestätigen lassen.                      */
+  strasse: "Große Hamkenstraße 21",
+  plz_ort: "49074 Osnabrück",
+
+  /* --- PRUEFEN: Telefonnummer ------------------------------------------
+     Mehrfach gefunden: 0541 26696. Eine Quelle nennt 0541 29969.
+     Vor dem Livegang einmal anrufen.                                      */
+  telefon_anzeige: "0541 26696",   /* tel:-Link wird daraus automatisch gebaut */
+
+  /* --- PRUEFEN: Öffnungszeiten -----------------------------------------
+     Verzeichnisse widersprechen sich (v. a. Do/Fr/So). Die hier
+     eingetragene Fassung ist die am häufigsten genannte.
+     Index 0 = Sonntag ... 6 = Samstag. "bis" kleiner als "von" heißt:
+     geht über Mitternacht.                                                */
+  zeiten: [
+    { tag:"Sonntag",    von:"12:00", bis:"22:00" },
+    { tag:"Montag",     von:"10:00", bis:"23:00" },
+    { tag:"Dienstag",   von:"10:00", bis:"23:00" },
+    { tag:"Mittwoch",   von:"10:00", bis:"23:00" },
+    { tag:"Donnerstag", von:"10:00", bis:"00:00" },
+    { tag:"Freitag",    von:"10:00", bis:"02:00" },
+    { tag:"Samstag",    von:"10:00", bis:"02:00" }
+  ],
+
+  gegruendet: 2015,
+
+  /* --- PRUEFEN: Preisanker ---------------------------------------------
+     6,70 € als Einstiegspreis stand im Sommer 2026 in mehreren
+     Portalen. Preise ändern sich – vor dem Livegang abgleichen.           */
+  preis_ab: "ab 6,70 €",
+
+  /* Speisekarte. Bewusst ohne Einzelpreise, weil die Portalangaben
+     veraltet sein können. Sobald die echte Karte vorliegt, kann hier
+     je Gericht ein "preis" ergänzt werden.                                */
+  karte: {
+    "Klassiker": [
+      { name:"Döner im Brot", text:"Hausgemachtes Fladenbrot, Fleisch vom Spieß, frischer Salat, Soße nach Wahl.", fahne:"top" },
+      { name:"Dürüm", text:"Im dünnen Teigfladen gerollt, frisch auf Bestellung gemacht." },
+      { name:"Döner Tasche", text:"Frisches Brot, knackiger Salat, saftiges Fleisch." },
+      { name:"Sucuk-Döner", text:"Mit kräftiger türkischer Knoblauchwurst vom Grill." },
+      { name:"Chicken-Döner", text:"Hähnchen vom Spieß, dieselbe Handschrift." },
+      { name:"Iskender Kebab", text:"Steak-Döner auf Brot, dazu aromatische Tomatensoße.", fahne:"top" }
+    ],
+    "Vegan & Veggie": [
+      { name:"Veganer Döner", text:"Auf Seitan-Basis, mit frischem Gemüse und hausgemachter veganer Soße.", fahne:"v" },
+      { name:"Veggie-Teller", text:"Fleischloser Döner-Ersatz mit Beilagen – auch für Skeptiker.", fahne:"v" },
+      { name:"Veggie-Burger", text:"Hausgemacht, nicht aus der Tiefkühltruhe.", fahne:"v" },
+      { name:"Pide mit veganem Teig", text:"Schiffchenform aus dem Ofen, Teig ohne tierische Zutaten.", fahne:"v" }
+    ],
+    "Aus dem Ofen": [
+      { name:"Lahmacun", text:"Dünner Fladen mit würziger Hackfleischpaste, dazu gemischter Salat und zwei Soßen nach Wahl." },
+      { name:"Pide", text:"Frischer Teig in Schiffchenform, direkt aus dem Ofen." },
+      { name:"Pizza", text:"Ebenfalls auf der Karte – frisch gebacken." }
+    ],
+    "Teller & Kumpir": [
+      { name:"Kumpir", text:"Ofenkartoffel mit Butter, Käse und einer langen Reihe Beilagen zum Zusammenstellen.", fahne:"top" },
+      { name:"Dönerteller", text:"Fleisch vom Spieß mit Beilagen und Salat." },
+      { name:"Salate", text:"Als Beilage oder als eigenständige Portion." },
+      { name:"Burger", text:"Mit Rindfleisch oder vegetarisch." }
+    ],
+    "Süßes": [
+      { name:"San Sebastian Cheesecake", text:"Hausgemacht, cremig, an der Oberfläche karamellisiert.", fahne:"top" }
+    ]
+  },
+
+  /* Bildplätze der Galerie. datei = Pfad, der geladen wird.
+     Fehlt die Datei, erscheint ein sauberer Platzhalter statt eines
+     kaputten Bildes.                                                      */
+  bilder: [
+    { datei:"bilder/doener.jpg",   titel:"Döner im hausgemachten Brot",  hinweis:"Querformat, angeschnitten" },
+    { datei:"bilder/vegan.jpg",    titel:"Veganer Seitan-Döner",         hinweis:"gern mit sichtbarem Gemüse" },
+    { datei:"bilder/kumpir.jpg",   titel:"Kumpir",                        hinweis:"von oben fotografiert" },
+    { datei:"bilder/lahmacun.jpg", titel:"Lahmacun aus dem Ofen",        hinweis:"Querformat, breit" },
+    { datei:"bilder/team.jpg",     titel:"Hinter der Theke",             hinweis:"Team bei der Arbeit" },
+    { datei:"bilder/dessert.jpg",  titel:"San Sebastian Cheesecake",     hinweis:"hausgemacht, Nahaufnahme" }
+  ],
+
+  laufband: [
+    "Hausgemachtes Brot",
+    "Veganer Seitan-Döner",
+    "Frisch auf Bestellung",
+    "Lahmacun aus dem Ofen",
+    "Kumpir",
+    "Iskender Kebab",
+    "Seit 2015 in Osnabrück"
+  ]
+};
+
+/* ===========================================================================
+   Hilfsfunktionen
+   =========================================================================== */
+const $  = (w, wo=document) => wo.querySelector(w);
+const $$ = (w, wo=document) => [...wo.querySelectorAll(w)];
+
+/* Texte aus DATEN sicher in HTML setzen (&, <, > kommen in Gerichtnamen vor). */
+function sicher(t){
+  return String(t).replace(/[&<>"]/g, z =>
+    ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[z]));
+}
+
+function minuten(hhmm){
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/* Aktuelle Zeit in Osnabrück, egal wo der Gast gerade sitzt. */
+function jetztInBerlin(){
+  const t = new Intl.DateTimeFormat("de-DE", {
+    timeZone: "Europe/Berlin",
+    weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false
+  }).formatToParts(new Date());
+  const hole = a => t.find(p => p.type === a)?.value ?? "";
+  const kuerzel = { "So":0, "Mo":1, "Di":2, "Mi":3, "Do":4, "Fr":5, "Sa":6 };
+  const wt = hole("weekday").replace(".", "").slice(0, 2);
+  return {
+    tag: kuerzel[wt] ?? new Date().getDay(),
+    min: Number(hole("hour")) * 60 + Number(hole("minute"))
+  };
+}
+
+/* Prüft auch Zeiten, die über Mitternacht laufen (Fr/Sa bis 02:00). */
+function offenStatus(){
+  const { tag, min } = jetztInBerlin();
+
+  for (const versatz of [0, 1]) {             // heute und der Vortag
+    const i = (tag - versatz + 7) % 7;
+    const z = DATEN.zeiten[i];
+    if (!z || !z.von || !z.bis) continue;
+
+    let von = minuten(z.von);
+    let bis = minuten(z.bis);
+    if (bis <= von) bis += 1440;               // läuft über Mitternacht
+    const wert = min + versatz * 1440;
+
+    if (wert >= von && wert < bis) {
+      const rest = bis - wert;
+      return {
+        offen: true,
+        text: rest <= 60
+          ? `Geöffnet – noch ${rest} Min.`
+          : `Jetzt geöffnet bis ${z.bis} Uhr`
+      };
+    }
+  }
+
+  /* Geschlossen: nächste Öffnung suchen. */
+  for (let i = 0; i < 8; i++) {
+    const idx = (tag + i) % 7;
+    const z = DATEN.zeiten[idx];
+    if (!z || !z.von) continue;
+    if (i === 0 && min >= minuten(z.von)) continue;
+    return {
+      offen: false,
+      text: i === 0
+        ? `Geschlossen – ab ${z.von} Uhr geöffnet`
+        : i === 1
+          ? `Geschlossen – morgen ab ${z.von} Uhr`
+          : `Geschlossen – ${z.tag} ab ${z.von} Uhr`
+    };
+  }
+  return { offen: false, text: "Öffnungszeiten erfragen" };
+}
+
+/* ===========================================================================
+   Aufbau
+   =========================================================================== */
+
+/* -- Status in der Bühne -- */
+function statusZeichnen(){
+  const s = offenStatus();
+  const el = $("#status");
+  el.classList.toggle("offen", s.offen);
+  el.classList.toggle("zu", !s.offen);
+  $("#statusText").textContent = s.text;
+}
+
+/* -- Laufband (doppelt, damit die Schleife nahtlos läuft) -- */
+function laufbandZeichnen(){
+  $("#spur").innerHTML = DATEN.laufband.map(t => `<span>${sicher(t)}</span>`).join("").repeat(2);
+}
+
+/* -- Speisekarte mit Reitern -- */
+function karteZeichnen(){
+  const gruppen = Object.keys(DATEN.karte);
+  const reiter = $("#reiter");
+
+  /* Über den Index ansprechen, nicht über den Namen – sonst stolpern
+     Gruppen mit "&" im Titel über die HTML-Maskierung. */
+  reiter.innerHTML = gruppen.map((g, i) =>
+    `<button role="tab" aria-selected="${i === 0}" data-nr="${i}">${sicher(g)}</button>`
+  ).join("");
+
+  function zeigen(nr){
+    const liste = DATEN.karte[gruppen[nr]] || [];
+    $("#gerichte").innerHTML = liste.map(g => `
+      <article class="gericht">
+        <div class="zeile">
+          <h3>${sicher(g.name)}</h3>
+          ${g.fahne === "v"   ? '<span class="fahne v">vegan</span>'    : ""}
+          ${g.fahne === "top" ? '<span class="fahne top">beliebt</span>' : ""}
+        </div>
+        <p>${sicher(g.text)}</p>
+      </article>
+    `).join("");
+  }
+
+  reiter.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    $$("button", reiter).forEach(x => x.setAttribute("aria-selected", x === b));
+    zeigen(Number(b.dataset.nr));
+  });
+
+  zeigen(0);
+  $("#preisAb").textContent = DATEN.preis_ab;
+}
+
+/* -- Galerie. Fehlende Datei => Platzhalter statt kaputtes Bild. -- */
+function galerieZeichnen(){
+  $("#gitter").innerHTML = DATEN.bilder.map(b => `
+    <figure class="bild">
+      <img src="${sicher(b.datei)}" alt="${sicher(b.titel)}" loading="lazy">
+      <figcaption>${sicher(b.titel)}<small>${sicher(b.datei)} – ${sicher(b.hinweis)}</small></figcaption>
+    </figure>
+  `).join("");
+
+  $$(".bild img").forEach(img => {
+    const leer = () => img.closest(".bild").classList.add("leer");
+    img.addEventListener("error", leer);
+    if (img.complete && img.naturalWidth === 0) leer();
+  });
+
+  /* Foto in der Bühne ersetzt die Spieß-Grafik, sobald es existiert. */
+  const probe = new Image();
+  probe.onload = () => {
+    $("#spiessFoto").hidden = false;
+    $("#spiessGrafik").hidden = true;
+  };
+  probe.src = "bilder/spiess.jpg";
+}
+
+/* -- Öffnungszeiten-Tabelle -- */
+function zeitenZeichnen(){
+  const { tag } = jetztInBerlin();
+  $("#zeitenKoerper").innerHTML = DATEN.zeiten.map((z, i) => `
+    <tr class="${i === tag ? "heute" : ""}">
+      <td>${z.tag}${i === tag ? " (heute)" : ""}</td>
+      <td>${z.von && z.bis ? `${z.von} – ${z.bis} Uhr` : "geschlossen"}</td>
+    </tr>
+  `).join("");
+  $("#zeitenHinweis").textContent =
+    "An Feiertagen können die Zeiten abweichen. Im Zweifel kurz anrufen.";
+}
+
+/* -- Kontaktdaten, Karten-Link, Jahreszahlen -- */
+function kontaktZeichnen(){
+  const tel = DATEN.telefon_anzeige;
+  const waehlbar = "+49" + tel.replace(/\D/g, "").replace(/^0/, "");
+
+  $("#telefonLink").textContent = tel;
+  $("#telefonLink").href = "tel:" + waehlbar;
+  $("#wegTelefon").href  = "tel:" + waehlbar;
+  $("#telefonAnzeige").textContent = tel + " →";
+
+  const adresse = `${DATEN.strasse}, ${DATEN.plz_ort}`;
+  $("#adresseLink").innerHTML = `${DATEN.strasse}<br>${DATEN.plz_ort}`;
+
+  const maps = "https://www.google.com/maps/search/?api=1&query=" +
+               encodeURIComponent("Zum Drehspieß, " + adresse);
+  $("#adresseLink").href = maps;
+  $("#routeKnopf").href  = maps;
+
+  const jahr = new Date().getFullYear();
+  $("#jahr").textContent = jahr;
+  $("#faktJahre").textContent = (jahr - DATEN.gegruendet) + "+";
+}
+
+/* -- Kopfleiste beim Scrollen -- */
+function leisteBeobachten(){
+  const leiste = $("#leiste");
+  const pruefen = () => leiste.classList.toggle("fest", window.scrollY > 40);
+  pruefen();
+  window.addEventListener("scroll", pruefen, { passive:true });
+}
+
+/* -- Sanftes Einblenden -- */
+function einblenden(){
+  if (!("IntersectionObserver" in window)) {
+    $$(".auf").forEach(e => e.classList.add("da"));
+    return;
+  }
+  const beob = new IntersectionObserver((eintraege, o) => {
+    eintraege.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("da"); o.unobserve(e.target); }
+    });
+  }, { threshold:.12, rootMargin:"0px 0px -60px 0px" });
+  $$(".auf").forEach(e => beob.observe(e));
+}
+
+/* -- Start -- */
+laufbandZeichnen();
+karteZeichnen();
+galerieZeichnen();
+zeitenZeichnen();
+kontaktZeichnen();
+statusZeichnen();
+leisteBeobachten();
+einblenden();
+
+/* Status alle fünf Minuten nachziehen, falls die Seite offen bleibt. */
+setInterval(statusZeichnen, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>
