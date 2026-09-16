@@ -25,15 +25,18 @@
      die Dateien mit genau diesen Namen ablegen – sie erscheinen dann von
      selbst, ohne dass am Code etwas geändert werden muss:
 
-        bilder/spiess.jpg     – Drehspieß / Fleisch am Spieß (Hochformat)
-        bilder/doener.jpg     – klassischer Döner, angeschnitten
-        bilder/vegan.jpg      – veganer Seitan-Döner
-        bilder/kumpir.jpg     – Kumpir
-        bilder/lahmacun.jpg   – Lahmacun oder Pide aus dem Ofen
-        bilder/laden.jpg      – Theke / Innenraum / Fassade
-        bilder/team.jpg       – Team hinter der Theke
-        bilder/dessert.jpg    – San Sebastian Cheesecake
+        bilder/spiess     – Drehspieß / Fleisch am Spieß (Hochformat)
+        bilder/doener     – Sandwich mit Kebap, angeschnitten
+        bilder/vegan      – Veggie-Döner aus Seitan
+        bilder/duerum     – Dürüm
+        bilder/lahmacun   – Lahmacun oder Pide aus dem Ofen
+        bilder/laden      – Theke / Innenraum / Fassade
+        bilder/team       – Team hinter der Theke
+        bilder/grill      – Grillteller
 
+     Die Endung ist egal: .jpg, .jpeg, .png und .webp werden der Reihe
+     nach durchprobiert. Downloads aus Instagram kommen mal so, mal so –
+     es muss also nichts umbenannt oder konvertiert werden.
      Querformat ca. 1600x1100 px, Hochformat ca. 1100x1500 px, je < 400 KB.
 
   2) DAS EMBLEM IST NACHGEBAUT, NICHT DIE ORIGINALDATEI.
@@ -105,7 +108,9 @@
   .lauf{font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
 
   .huelle{max-width:1140px;margin:0 auto;padding:0 20px}
-  section{position:relative}
+  /* Damit die feste Kopfleiste beim Sprung auf #karte & Co. nicht die
+     Ueberschrift verdeckt. */
+  section{position:relative;scroll-margin-top:76px}
 
   /* ---------------- Kopfleiste ---------------- */
   header{
@@ -270,14 +275,30 @@
   @media (max-width:760px){.gerichte{grid-template-columns:1fr}}
   /* Ungerade Anzahl: das letzte Gericht nimmt die volle Breite. */
   .gerichte .gericht:last-child:nth-child(odd){grid-column:1 / -1}
-  .gericht{background:var(--schwarz);padding:24px 26px;transition:background .2s ease}
+  /* Zwei Spalten: links Name und Kennzeichnung, rechts der Preis.
+     So rutscht der Preis auch bei langen Gerichtnamen nicht in eine
+     eigene Zeile. */
+  .gericht{
+    background:var(--schwarz);padding:24px 26px;transition:background .2s ease;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;
+    column-gap:18px;align-items:baseline;
+  }
   .gericht:hover{background:var(--schwarz-2)}
-  .gericht .zeile{display:flex;align-items:baseline;gap:12px;margin:0 0 7px;flex-wrap:wrap}
+  .gericht .zeile{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;min-width:0}
   .gericht h3{font-size:19px;letter-spacing:.02em}
-  .gericht p{margin:0;font-size:14.5px;color:rgba(255,255,255,.62);line-height:1.6}
+  .gericht .preis{
+    grid-column:2;grid-row:1;white-space:nowrap;
+    font-family:Anton,Impact,sans-serif;font-size:18px;letter-spacing:.03em;
+    color:var(--gruen);font-weight:400;font-variant-numeric:tabular-nums;
+  }
+  .gericht p{
+    grid-column:1 / -1;margin:7px 0 0;font-size:14.5px;
+    color:rgba(255,255,255,.62);line-height:1.6;max-width:48ch;
+  }
   .fahne{flex:0 0 auto;font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
     padding:4px 9px;border-radius:999px}
-  .fahne.v{background:var(--gruen);color:var(--schwarz)}
+  .fahne.vegan{background:var(--gruen);color:var(--schwarz)}
+  .fahne.veggie{background:transparent;color:var(--gruen);border:1px solid rgba(166,206,57,.5)}
   .fahne.top{background:transparent;color:var(--weiss);border:1px solid var(--rand)}
   .karte-fuss{
     margin:32px 0 0;padding:20px 22px;border:1px solid var(--rand);border-radius:14px;
@@ -358,8 +379,9 @@
 
   /* ---------------- Bestellen ---------------- */
   #bestellen{background:var(--schwarz);color:var(--weiss);padding:clamp(70px,9vw,110px) 0}
-  .wege{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  @media (max-width:820px){.wege{grid-template-columns:1fr}}
+  .wege{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media (max-width:1000px){.wege{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){.wege{grid-template-columns:1fr}}
   .weg{
     border:1px solid var(--rand);border-radius:18px;padding:28px 26px;
     display:flex;flex-direction:column;gap:10px;text-decoration:none;
@@ -460,7 +482,7 @@
 
       <!-- Erscheint nur, wenn bilder/spiess.jpg vorhanden ist. -->
       <figure class="foto" id="buehnenFoto" hidden>
-        <img src="bilder/spiess.jpg" alt="Drehspieß bei Zum Drehspieß in Osnabrück">
+        <img alt="Drehspieß bei Zum Drehspieß in Osnabrück">
       </figure>
 
       <!-- Nachbau des Emblems. Wird durch bilder/emblem.svg bzw. .png
@@ -552,7 +574,12 @@
       <article class="saeule">
         <span class="zahl">02 — Vegan</span>
         <h3>Der Erste der Stadt</h3>
-        <p>Veganer Döner auf Seitan-Basis, dazu hausgemachte vegane Soße und Pide mit veganem Teig. Nach eigenen Angaben das erste Angebot dieser Art in Osnabrück.</p>
+        <p>Nach eigenen Angaben der erste Gastronom Osnabrücks mit einem Döner
+           auf Seitan-Basis. Geblieben ist es nicht dabei: Pizza- und Pide-Teig
+           sind vegan, es gibt veganen Käseschmelz, den Vegacun mit Seitan-Paste
+           und eine vegane Currywurst. Zusammen
+           <b id="veganZahl">–</b> vegane und <b id="veggieZahl">–</b> vegetarische
+           Gerichte auf der Karte.</p>
       </article>
       <article class="saeule">
         <span class="zahl">03 — Mittendrin</span>
@@ -571,11 +598,11 @@
       <div class="kopf" style="margin:0">
         <span class="lauf">Speisekarte</span>
         <h2>Was auf den Teller kommt</h2>
-        <p>Vom Klassiker im hausgemachten Brot bis zum Kumpir. Ein Auszug – die vollständige Karte liegt im Laden und bei den Lieferdiensten.</p>
+        <p>Vom Sandwich mit Kebap über Lahmacun und Pide bis zum Grillteller. Fast jede Kategorie hat eine vegane oder vegetarische Variante – das ist hier kein Zusatz, sondern die halbe Karte.</p>
       </div>
       <div class="preis-anker">
-        <b id="preisAb">ab 6,70 €</b>
-        <span>Döner im Brot</span>
+        <b id="preisAb">ab 7,00 €</b>
+        <span id="preisWas">Döner im Sandwich</span>
       </div>
     </div>
 
@@ -583,8 +610,8 @@
     <div class="gerichte auf" id="gerichte"></div>
 
     <div class="karte-fuss auf">
-      <span>Alle Preise und die komplette Auswahl findest du bei den Lieferdiensten.</span>
-      <a class="knopf klar klein" href="#bestellen">Karte &amp; Preise ansehen</a>
+      <span>Preise Stand September 2026, Angaben ohne Gewähr. Getränke und Tagesangebote stehen im Laden aus.</span>
+      <a class="knopf klar klein" href="#bestellen">Online bestellen</a>
     </div>
 
   </div>
@@ -633,7 +660,7 @@
     </div>
 
     <figure class="bild auf" id="bildLaden" style="aspect-ratio:4/5">
-      <img src="bilder/laden.jpg" alt="Zum Drehspieß in der Großen Hamkenstraße, Osnabrück">
+      <img alt="Zum Drehspieß in der Großen Hamkenstraße, Osnabrück">
       <figcaption>Große Hamkenstraße, Osnabrück<small>bilder/laden.jpg einfügen – Theke, Fassade oder Innenraum</small></figcaption>
     </figure>
   </div>
@@ -676,8 +703,8 @@
         <p>Wird in Bewertungen immer wieder als einer der besten veganen Döner überhaupt beschrieben.</p>
       </div>
       <div>
-        <b>Kumpir &amp; Iskender</b>
-        <p>Neben dem Döner werden vor allem Kumpir, Iskender Kebab und der San-Sebastian-Käsekuchen hervorgehoben.</p>
+        <b>İskender &amp; Grill</b>
+        <p>Neben dem Döner wird vor allem der İskender Kebap mit Steakfleisch und Tomatensauce hervorgehoben.</p>
       </div>
       <div>
         <b>Portionen &amp; Service</b>
@@ -701,7 +728,7 @@
     <div class="wege auf">
       <a class="weg" href="#" id="wegTelefon">
         <span class="lauf">Abholung</span>
-        <h3>Telefonisch<br>vorbestellen</h3>
+        <h3>Telefon</h3>
         <p>Anrufen, bestellen, abholen – ohne Wartezeit im Laden.</p>
         <span class="pfeil" id="telefonAnzeige">Nummer prüfen</span>
       </a>
@@ -709,13 +736,19 @@
         <span class="lauf">Lieferung</span>
         <h3>Wolt</h3>
         <p>Vollständige Karte mit aktuellen Preisen, Lieferung im Stadtgebiet.</p>
-        <span class="pfeil">Bei Wolt öffnen →</span>
+        <span class="pfeil">Öffnen →</span>
       </a>
       <a class="weg" href="https://www.lieferando.de/speisekarte/zum-drehspiess-grosse-hamkenstrasse" target="_blank" rel="noopener">
         <span class="lauf">Lieferung</span>
         <h3>Lieferando</h3>
-        <p>Bestellung nach Hause oder ins Büro, Bezahlung online möglich.</p>
-        <span class="pfeil">Bei Lieferando öffnen →</span>
+        <p>Nach Hause oder ins Büro, Bezahlung online möglich.</p>
+        <span class="pfeil">Öffnen →</span>
+      </a>
+      <a class="weg" href="https://www.ubereats.com/de/store/zum-drehspiess/31evIwCRUUeKYMIQjEUJ1g" target="_blank" rel="noopener">
+        <span class="lauf">Lieferung</span>
+        <h3>Uber Eats</h3>
+        <p>Dritter Lieferweg, falls die anderen gerade ausgelastet sind.</p>
+        <span class="pfeil">Öffnen →</span>
       </a>
     </div>
   </div>
@@ -796,21 +829,27 @@ const DATEN = {
   plz_ort: "49074 Osnabrück",
 
   /* --- PRUEFEN: Telefonnummer ------------------------------------------
-     Mehrfach gefunden: 0541 26696. Eine Quelle nennt 0541 29969.
-     Vor dem Livegang einmal anrufen.                                      */
+     Drei Nummern kursieren in den Verzeichnissen:
+       0541 26696     (am haeufigsten, deshalb hier eingetragen)
+       0541 29969     (eine Quelle)
+       0541 99867030  (eine Quelle)
+     Das ist die wichtigste offene Frage auf dieser Seite – einmal
+     anrufen und die richtige eintragen.                                   */
   telefon_anzeige: "0541 26696",   /* tel:-Link wird daraus automatisch gebaut */
 
   /* --- PRUEFEN: Öffnungszeiten -----------------------------------------
-     Verzeichnisse widersprechen sich (v. a. Do/Fr/So). Die hier
-     eingetragene Fassung ist die am häufigsten genannte.
-     Index 0 = Sonntag ... 6 = Samstag. "bis" kleiner als "von" heißt:
-     geht über Mitternacht.                                                */
+     Eingetragen ist die Fassung von Gastroguide, die sich mit der
+     Mehrheit der uebrigen Verzeichnisse deckt.
+     Abweichungen, die vermutlich Datenmuell sind: eine Quelle nennt
+     freitags bis 06:00 Uhr, eine andere sonntags 08:00-11:00 Uhr.
+     Index 0 = Sonntag ... 6 = Samstag. "bis" kleiner als "von" heisst:
+     geht ueber Mitternacht.                                               */
   zeiten: [
     { tag:"Sonntag",    von:"12:00", bis:"22:00" },
     { tag:"Montag",     von:"10:00", bis:"23:00" },
     { tag:"Dienstag",   von:"10:00", bis:"23:00" },
     { tag:"Mittwoch",   von:"10:00", bis:"23:00" },
-    { tag:"Donnerstag", von:"10:00", bis:"00:00" },
+    { tag:"Donnerstag", von:"10:00", bis:"23:00" },
     { tag:"Freitag",    von:"10:00", bis:"02:00" },
     { tag:"Samstag",    von:"10:00", bis:"02:00" }
   ],
@@ -831,63 +870,143 @@ const DATEN = {
     fuss:   "seit 2015"
   },
 
-  /* --- PRUEFEN: Preisanker ---------------------------------------------
-     6,70 € als Einstiegspreis stand im Sommer 2026 in mehreren
-     Portalen. Preise ändern sich – vor dem Livegang abgleichen.           */
-  preis_ab: "ab 6,70 €",
+  /* Guenstigster Kebap auf der Karte. (Das vielerorts zitierte 6,70 € ist
+     NICHT der Doener, sondern das vegane Salat-Sandwich.)                 */
+  preis_ab: "ab 7,00 €",
+  preis_was: "Döner im Sandwich",
 
-  /* Speisekarte. Bewusst ohne Einzelpreise, weil die Portalangaben
-     veraltet sein können. Sobald die echte Karte vorliegt, kann hier
-     je Gericht ein "preis" ergänzt werden.                                */
+  /* ---------------------------------------------------------------------
+     SPEISEKARTE – uebernommen von der echten Karte des Betriebs,
+     Stand September 2026.
+     Zwei Schreibweisen aus der Vorlage habe ich vereinheitlicht bzw.
+     korrigiert: "Peymacun"/"Paymacun" -> durchgehend "Peymacun",
+     "Der Kalssische" -> "Der Klassische". "Viteller Kebap Teller" steht
+     unveraendert so auf der Karte – bitte einmal pruefen.
+     --------------------------------------------------------------------- */
   karte: {
-    "Klassiker": [
-      { name:"Döner im Brot", text:"Hausgemachtes Fladenbrot, Fleisch vom Spieß, frischer Salat, Soße nach Wahl.", fahne:"top" },
-      { name:"Dürüm", text:"Im dünnen Teigfladen gerollt, frisch auf Bestellung gemacht." },
-      { name:"Döner Tasche", text:"Frisches Brot, knackiger Salat, saftiges Fleisch." },
-      { name:"Sucuk-Döner", text:"Mit kräftiger türkischer Knoblauchwurst vom Grill." },
-      { name:"Chicken-Döner", text:"Hähnchen vom Spieß, dieselbe Handschrift." },
-      { name:"Iskender Kebab", text:"Steak-Döner auf Brot, dazu aromatische Tomatensoße.", fahne:"top" }
+    "Döner & Sandwich": [
+      { name:"Salat-Sandwich", preis:"6,70 €", text:"Nur Salat und Sauce – die günstigste Position der Karte.", fahne:"vegan" },
+      { name:"Sandwich Mini Kebap", preis:"7,00 €", text:"Kleine Portion vom Kalb- und Hähnchen-Hackfleischdrehspieß." },
+      { name:"Sandwich mit Kebap", preis:"7,70 €", text:"Der Klassiker: Kalb- und Hähnchen-Hackfleischdrehspieß nach Döner Art.", fahne:"top" },
+      { name:"Sandwich Gemüse", preis:"7,70 €", text:"Mit Salat und frittiertem Gemüse.", fahne:"vegan" },
+      { name:"Sandwich mit Falafel", preis:"7,70 €", text:"Falafel, gemischter Salat, zwei Saucen nach Wahl.", fahne:"vegan" },
+      { name:"Sandwich mit Weichkäse aus Kuhmilch", preis:"7,70 €", text:"Ohne Fleisch, mit Weichkäse.", fahne:"veggie" },
+      { name:"Sandwich mit Veggie-Döner aus Seitan", preis:"8,70 €", text:"Der vegane Döner, für den der Laden bekannt ist.", fahne:"vegan" },
+      { name:"Cheese-Kebap", preis:"9,00 €", text:"Mit Käse überbacken." },
+      { name:"Sucuk-Kebap", preis:"9,00 €", text:"Mit türkischer Knoblauchwurst." },
+      { name:"Nacho-Kebap", preis:"9,00 €", text:"Mit Nachos für den Biss." },
+      { name:"Sandwich Chili-Cheese Kebap", preis:"9,20 €", text:"Scharf, mit Käsesauce." },
+      { name:"Sandwich Gemüse Kebap", preis:"9,20 €", text:"Kebap zusammen mit frittiertem Gemüse." },
+      { name:"Steak Döner", preis:"9,50 €", text:"Mit Steakfleisch statt Drehspieß." },
+      { name:"Sandwich Veggie-Döner mit frittiertem Gemüse", preis:"9,70 €", text:"Seitan und frittiertes Gemüse zusammen." },
+      { name:"Pomm-Kebap", preis:"10,00 €", text:"Mit Pommes frites im Brot." },
+      { name:"Pommes frites-Kebap Special", preis:"7,00 €", text:"Mit Curry-Ketchup und Zwiebeln." }
     ],
-    "Vegan & Veggie": [
-      { name:"Veganer Döner", text:"Auf Seitan-Basis, mit frischem Gemüse und hausgemachter veganer Soße.", fahne:"v" },
-      { name:"Veggie-Teller", text:"Fleischloser Döner-Ersatz mit Beilagen – auch für Skeptiker.", fahne:"v" },
-      { name:"Veggie-Burger", text:"Hausgemacht, nicht aus der Tiefkühltruhe.", fahne:"v" },
-      { name:"Pide mit veganem Teig", text:"Schiffchenform aus dem Ofen, Teig ohne tierische Zutaten.", fahne:"v" }
+    "Dürüm": [
+      { name:"Dürüm", preis:"7,70 €", text:"Frisch zubereiteter Teigfladen, gemischter Salat, zwei Saucen nach Wahl.", fahne:"vegan" },
+      { name:"Dürüm mit Weichkäse aus Kuhmilch", preis:"8,70 €", text:"Ohne Fleisch, mit Weichkäse.", fahne:"veggie" },
+      { name:"Dürüm mit frittiertem Gemüse", preis:"9,00 €", text:"Gemüse aus der Fritteuse, gerollt.", fahne:"vegan" },
+      { name:"Dürüm mit Kebap", preis:"9,50 €", text:"Kalb- und Hähnchen-Hackfleischdrehspieß nach Döner Art.", fahne:"top" },
+      { name:"Dürüm mit Falafel", preis:"9,50 €", text:"Falafel im gerollten Fladen.", fahne:"vegan" },
+      { name:"Dürüm mit Kebap und frittiertem Gemüse", preis:"10,50 €", text:"Beides zusammen in einem Fladen." },
+      { name:"Steak Dürüm", preis:"10,50 €", text:"Mit Steakfleisch, Salat und Sauce." },
+      { name:"Dürüm mit Veggie-Döner aus Seitan", preis:"10,50 €", text:"Die vegane Variante, gerollt.", fahne:"vegan" }
     ],
-    "Aus dem Ofen": [
-      { name:"Lahmacun", text:"Dünner Fladen mit würziger Hackfleischpaste, dazu gemischter Salat und zwei Soßen nach Wahl." },
-      { name:"Pide", text:"Frischer Teig in Schiffchenform, direkt aus dem Ofen." },
-      { name:"Pizza", text:"Ebenfalls auf der Karte – frisch gebacken." }
+    "Lahmacun": [
+      { name:"Lahmacun", preis:"7,70 €", text:"Dünner Fladen mit würziger Hackfleischpaste, gemischter Salat, zwei Saucen." },
+      { name:"Peymacun", preis:"8,00 €", text:"Mit Weichkäse aus Kuhmilch statt Hackfleischpaste.", fahne:"veggie" },
+      { name:"Vegacun", preis:"8,50 €", text:"Mit Seitan-Paste statt Hackfleischpaste – die eigene Erfindung des Hauses.", fahne:"vegan" },
+      { name:"Lahmacun mit Weichkäse aus Kuhmilch", preis:"8,70 €", text:"Hackfleischpaste und Käse zusammen." },
+      { name:"Lahmacun mit Kebap", preis:"9,50 €", text:"Zusätzlich Kalb- und Hähnchen-Hackfleischdrehspieß." },
+      { name:"Peymacun mit Kebap", preis:"9,50 €", text:"Käsefladen mit Kebap belegt." },
+      { name:"Lahmacun mit Kebap und Weichkäse", preis:"10,50 €", text:"Die volle Belegung." },
+      { name:"Vegacun mit Veggie-Döner aus Seitan", preis:"10,50 €", text:"Seitan-Paste plus Seitan-Döner.", fahne:"vegan" }
     ],
-    "Teller & Kumpir": [
-      { name:"Kumpir", text:"Ofenkartoffel mit Butter, Käse und einer langen Reihe Beilagen zum Zusammenstellen.", fahne:"top" },
-      { name:"Dönerteller", text:"Fleisch vom Spieß mit Beilagen und Salat." },
-      { name:"Salate", text:"Als Beilage oder als eigenständige Portion." },
-      { name:"Burger", text:"Mit Rindfleisch oder vegetarisch." }
+    "Pide": [
+      { name:"Pide Käse", preis:"9,50 €", text:"Mit einer Zutat nach Wahl.", fahne:"veggie" },
+      { name:"Pide mit Spinat und Weichkäse", preis:"10,00 €", text:"Weichkäse aus Kuhmilch.", fahne:"veggie" },
+      { name:"Pide mit Hackfleisch und Käse", preis:"10,00 €", text:"Klassisch belegt." },
+      { name:"Pide mit Tomaten und Paprika", preis:"10,00 €", text:"Mit Weichkäse aus Kuhmilch, frischen Tomaten und Paprika.", fahne:"veggie" },
+      { name:"Pide mit Sucuk und Käse", preis:"10,50 €", text:"Mit türkischer Knoblauchwurst." },
+      { name:"Pide mit Kebap und Käse", preis:"10,50 €", text:"Kalb- und Hähnchen-Hackfleischdrehspieß nach Döner Art." },
+      { name:"Pide mit Thunfisch und Käse", preis:"10,50 €", text:"Aus dem Ofen, in Schiffchenform." },
+      { name:"Pide mit Kebap, scharf", preis:"11,00 €", text:"Mit Zwiebeln, Peperoni und Käse." }
     ],
-    "Süßes": [
-      { name:"San Sebastian Cheesecake", text:"Hausgemacht, cremig, an der Oberfläche karamellisiert.", fahne:"top" }
+    "Pizza": [
+      { name:"Pizza Margherita", preis:"9,00 €", text:"Tomatensauce und Käse, Ø 26 cm.", fahne:"veggie" },
+      { name:"Pizza Funghi", preis:"10,00 €", text:"Mit frischen Pilzen.", fahne:"veggie" },
+      { name:"Pizza Margherita vegan", preis:"10,50 €", text:"Mit veganem Käse.", fahne:"vegan" },
+      { name:"Pizza Salami", preis:"10,50 €", text:"Mit Putensalami." },
+      { name:"Pizza Thunfisch", preis:"10,50 €", text:"Tomatensauce, Käse, Thunfisch." },
+      { name:"Pizza Sucuk", preis:"10,50 €", text:"Mit türkischer Knoblauchwurst." },
+      { name:"Pizza Kebap", preis:"10,50 €", text:"Mit Kalb- und Hähnchen-Hackfleischdrehspieß nach Döner Art." },
+      { name:"Pizza Broccoli", preis:"10,50 €", text:"Mit Sauce Hollandaise.", fahne:"veggie" },
+      { name:"Pizza Spinat", preis:"11,50 €", text:"Mit Spinat und Weichkäse aus Kuhmilch.", fahne:"veggie" },
+      { name:"Pizza Curry Sucuk", preis:"11,50 €", text:"Mit Currysauce, Zwiebeln und Jalapeños." },
+      { name:"Pizza Kebap Spezial", preis:"11,50 €", text:"Kebap, Zwiebeln, Oliven und Jalapeños." },
+      { name:"Pizza Drehspieß", preis:"12,00 €", text:"Kebap, Pommes frites, Tomaten, Zwiebeln, Sauce Hollandaise.", fahne:"top" },
+      { name:"Vegan Pizza", preis:"12,50 €", text:"Paprika, Tomaten, Mais, Zwiebeln, Jalapeños, veganer Käseschmelz.", fahne:"vegan" },
+      { name:"Veggie-Pizza", preis:"13,00 €", text:"Frisches Gemüse, Broccoli, Veggie-Döner aus Seitan, Jalapeños.", fahne:"veggie" },
+      { name:"Pizza Vegan Döner", preis:"13,00 €", text:"Veggie-Döner aus Seitan, Zwiebeln, Mais, Jalapeños, veganer Käseschmelz.", fahne:"vegan" }
+    ],
+    "Teller": [
+      { name:"Falafel Teller", preis:"11,00 €", text:"Mit gemischtem Salat und zwei Saucen nach Wahl.", fahne:"vegan" },
+      { name:"Viteller Kebap Teller", preis:"11,00 €", text:"Mit Kalb- und Hähnchen-Hackfleischdrehspieß nach Döner Art." },
+      { name:"Falafel Teller mit Beilage", preis:"12,50 €", text:"Beilage nach Wahl." },
+      { name:"Kebap Teller mit Beilage", preis:"12,50 €", text:"Beilage nach Wahl, dazu Kebap.", fahne:"top" },
+      { name:"Veggie-Döner Teller", preis:"12,50 €", text:"Mit Veggie-Döner aus Seitan.", fahne:"vegan" },
+      { name:"Kebap Teller mit frittiertem Gemüse", preis:"13,50 €", text:"Beilage nach Wahl und frittiertes Gemüse." },
+      { name:"Veggie-Döner Teller mit Beilage", preis:"13,50 €", text:"Beilage nach Wahl, dazu Seitan-Döner." },
+      { name:"Veggie-Döner Teller mit frittiertem Gemüse", preis:"14,00 €", text:"Die große vegetarische Variante." }
+    ],
+    "Vom Grill": [
+      { name:"Hähnchenspieß", preis:"16,00 €", text:"Mit Reis oder Pommes, Salat und Sauce." },
+      { name:"Putenspieß", preis:"16,00 €", text:"Mit Reis oder Pommes, Salat und Sauce." },
+      { name:"Izgara Köfte", preis:"16,50 €", text:"Gegrillte Frikadellen mit Reis oder Pommes, Salat und Sauce." },
+      { name:"İskender Kebap", preis:"16,50 €", text:"Kebapfleisch auf geröstetem Brot, Joghurt, Tomatensauce und zerlassene Butter.", fahne:"top" },
+      { name:"Hackfleischspieße (Adana Kebap)", preis:"17,50 €", text:"Kalbfleischspieße mit Reis oder Pommes, Salat und Sauce." },
+      { name:"Lammkoteletts", preis:"17,50 €", text:"Mit Reis oder Pommes, Salat und Sauce." },
+      { name:"Grillteller", preis:"23,50 €", text:"Hackfleischspieß, Lammkotelett, Hähnchen- und Putenspieß und Frikadelle." },
+      { name:"Grillteller für zwei", preis:"43,00 €", text:"Dieselbe Platte, für zwei Personen." }
+    ],
+    "Burger, Beilagen & Salate": [
+      { name:"Pommes frites", preis:"4,00 €", text:"Mit Sauce nach Wahl.", fahne:"vegan" },
+      { name:"Hummus", preis:"4,00 €", text:"Mit Brot." },
+      { name:"Pommes Special", preis:"5,50 €", text:"Curry-Ketchup, Mayonnaise und Zwiebeln." },
+      { name:"Gemischter Salat", preis:"7,00 €", text:"Eisbergsalat, Krautsalat, Tomaten, Gurken, Zwiebeln und Mais.", fahne:"vegan" },
+      { name:"Mantaplatte", preis:"8,50 €", text:"Vegane Currywurst mit Pommes frites.", fahne:"vegan" },
+      { name:"Thunfisch Salat", preis:"8,50 €", text:"Der gemischte Salat mit Thunfisch." },
+      { name:"Der Klassische Burger", preis:"9,00 €", text:"Salat, Patty, Tomaten, Zwiebeln und Sauce." },
+      { name:"Der Käsige", preis:"10,00 €", text:"Zusätzlich mit Käse." },
+      { name:"Der Scharfe", preis:"11,00 €", text:"Mit Käse und Jalapeños." }
     ]
   },
 
-  /* Bildplätze der Galerie. Fehlt die Datei, erscheint ein sauberer
-     Platzhalter statt eines kaputten Bildes.                              */
+  /* Erlaubte Dateiendungen. Downloads aus Instagram kommen mal als .jpg,
+     mal als .webp – die Seite probiert der Reihe nach durch, damit es
+     nicht an der Endung scheitert.                                        */
+  endungen: ["jpg", "jpeg", "png", "webp"],
+
+  /* Bildplätze der Galerie. "basis" ist der Dateiname OHNE Endung.
+     Fehlt die Datei, erscheint ein sauberer Platzhalter statt eines
+     kaputten Bildes.                                                      */
   bilder: [
-    { datei:"bilder/doener.jpg",   titel:"Döner im hausgemachten Brot",  hinweis:"Querformat, angeschnitten" },
-    { datei:"bilder/vegan.jpg",    titel:"Veganer Seitan-Döner",         hinweis:"gern mit sichtbarem Gemüse" },
-    { datei:"bilder/kumpir.jpg",   titel:"Kumpir",                        hinweis:"von oben fotografiert" },
-    { datei:"bilder/lahmacun.jpg", titel:"Lahmacun aus dem Ofen",        hinweis:"Querformat, breit" },
-    { datei:"bilder/team.jpg",     titel:"Hinter der Theke",             hinweis:"Team bei der Arbeit" },
-    { datei:"bilder/dessert.jpg",  titel:"San Sebastian Cheesecake",     hinweis:"hausgemacht, Nahaufnahme" }
+    { basis:"bilder/doener",   titel:"Sandwich mit Kebap",       hinweis:"Querformat, angeschnitten" },
+    { basis:"bilder/vegan",    titel:"Veggie-Döner aus Seitan",  hinweis:"gern mit sichtbarem Gemüse" },
+    { basis:"bilder/duerum",   titel:"Dürüm, frisch gerollt",    hinweis:"von oben fotografiert" },
+    { basis:"bilder/lahmacun", titel:"Lahmacun aus dem Ofen",    hinweis:"Querformat, breit" },
+    { basis:"bilder/team",     titel:"Hinter der Theke",         hinweis:"Team bei der Arbeit" },
+    { basis:"bilder/grill",    titel:"Grillteller",              hinweis:"die große Platte" }
   ],
 
   laufband: [
     "Hausgemachtes Brot",
-    "Veganer Seitan-Döner",
+    "Veggie-Döner aus Seitan",
     "Frisch auf Bestellung",
     "Lahmacun aus dem Ofen",
-    "Kumpir",
-    "Iskender Kebab",
+    "Vegacun",
+    "İskender Kebap",
+    "Pide mit veganem Teig",
     "Seit 2015 in Osnabrück"
   ]
 };
@@ -902,6 +1021,23 @@ const $$ = (w, wo=document) => [...wo.querySelectorAll(w)];
 function sicher(t){
   return String(t ?? "").replace(/[&<>"]/g, z =>
     ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[z]));
+}
+
+/* Sucht zu einem Dateinamen ohne Endung die erste Datei, die es
+   tatsächlich gibt. Liefert den Pfad oder null. */
+function ersteDatei(basis, endungen = DATEN.endungen){
+  return new Promise(fertig => {
+    let i = 0;
+    const versuch = () => {
+      if (i >= endungen.length) return fertig(null);
+      const pfad = basis + "." + endungen[i++];
+      const probe = new Image();
+      probe.onload  = () => fertig(pfad);
+      probe.onerror = versuch;
+      probe.src = pfad;
+    };
+    versuch();
+  });
 }
 
 function minuten(hhmm){
@@ -999,17 +1135,11 @@ function emblemZeichnen(){
     .setAttribute("y", leer ? 196 : 176);
 
   /* Originaldatei schlägt den Nachbau, falls vorhanden. */
-  ["bilder/emblem.svg", "bilder/emblem.png"].forEach(pfad => {
-    const probe = new Image();
-    probe.onload = () => {
-      const bild = $("#emblemBild");
-      if (bild.hidden) {
-        bild.src = pfad;
-        bild.hidden = false;
-        $("#emblemGrafik").hidden = true;
-      }
-    };
-    probe.src = pfad;
+  ersteDatei("bilder/emblem", ["svg", "png", "webp", "jpg"]).then(pfad => {
+    if (!pfad) return;
+    $("#emblemBild").src = pfad;
+    $("#emblemBild").hidden = false;
+    $("#emblemGrafik").hidden = true;
   });
 }
 
@@ -1029,9 +1159,11 @@ function karteZeichnen(){
       <article class="gericht">
         <div class="zeile">
           <h3>${sicher(g.name)}</h3>
-          ${g.fahne === "v"   ? '<span class="fahne v">vegan</span>'    : ""}
-          ${g.fahne === "top" ? '<span class="fahne top">beliebt</span>' : ""}
+          ${g.fahne === "vegan"  ? '<span class="fahne vegan">vegan</span>'        : ""}
+          ${g.fahne === "veggie" ? '<span class="fahne veggie">vegetarisch</span>' : ""}
+          ${g.fahne === "top"    ? '<span class="fahne top">beliebt</span>'        : ""}
         </div>
+        ${g.preis ? `<b class="preis">${sicher(g.preis)}</b>` : ""}
         <p>${sicher(g.text)}</p>
       </article>
     `).join("");
@@ -1045,31 +1177,50 @@ function karteZeichnen(){
   });
 
   zeigen(0);
-  $("#preisAb").textContent = DATEN.preis_ab;
+  $("#preisAb").textContent  = DATEN.preis_ab;
+  $("#preisWas").textContent = DATEN.preis_was;
+
+  /* Aus der Karte gezählt statt im Text behauptet – so bleibt die Zahl
+     richtig, wenn oben Gerichte dazukommen oder wegfallen. */
+  const alle = Object.values(DATEN.karte).flat();
+  $("#veganZahl").textContent  = alle.filter(g => g.fahne === "vegan").length;
+  $("#veggieZahl").textContent = alle.filter(g => g.fahne === "veggie").length;
 }
 
 /* Galerie. Fehlende Datei => Platzhalter statt kaputtes Bild. */
 function galerieZeichnen(){
   $("#gitter").innerHTML = DATEN.bilder.map(b => `
-    <figure class="bild">
-      <img src="${sicher(b.datei)}" alt="${sicher(b.titel)}" loading="lazy">
-      <figcaption>${sicher(b.titel)}<small>${sicher(b.datei)} – ${sicher(b.hinweis)}</small></figcaption>
+    <figure class="bild leer">
+      <img alt="${sicher(b.titel)}" loading="lazy">
+      <figcaption>${sicher(b.titel)}<small>${sicher(b.basis)}.jpg – ${sicher(b.hinweis)}</small></figcaption>
     </figure>
   `).join("");
 
-  $$(".bild img").forEach(img => {
-    const leer = () => img.closest(".bild").classList.add("leer");
-    img.addEventListener("error", leer);
-    if (img.complete && img.naturalWidth === 0) leer();
+  /* Jede Kachel startet als Platzhalter und wird erst bestückt, wenn
+     wirklich eine Datei da ist. So blitzt nie ein kaputtes Bild auf. */
+  $$("#gitter .bild").forEach(async (kachel, i) => {
+    const pfad = await ersteDatei(DATEN.bilder[i].basis);
+    if (!pfad) return;
+    $("img", kachel).src = pfad;
+    kachel.classList.remove("leer");
+  });
+
+  /* Bild im Abschnitt Geschichte */
+  const laden = $("#bildLaden");
+  laden.classList.add("leer");
+  ersteDatei("bilder/laden").then(pfad => {
+    if (!pfad) return;
+    $("img", laden).src = pfad;
+    laden.classList.remove("leer");
   });
 
   /* Foto in der Bühne: Emblem rutscht dann als Aufkleber in die Ecke. */
-  const probe = new Image();
-  probe.onload = () => {
+  ersteDatei("bilder/spiess").then(pfad => {
+    if (!pfad) return;
+    $("#buehnenFoto img").src = pfad;
     $("#buehnenFoto").hidden = false;
     $("#emblemFeld").classList.add("mit-foto");
-  };
-  probe.src = "bilder/spiess.jpg";
+  });
 }
 
 function zeitenZeichnen(){
