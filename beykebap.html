@@ -11,7 +11,7 @@
 <meta property="og:type" content="restaurant">
 <meta property="og:title" content="Beykebap am Neumarkt – Döner in Osnabrück seit 2003">
 <meta property="og:description" content="Döner, Dürüm, Lahmacun, Falafel und Pizza. Neumarkt 5, 49074 Osnabrück.">
-<meta property="og:image" content="assets/beykebap-og.jpg">
+<meta property="og:image" content="assets/beykebap-doener.jpg">
 <meta property="og:locale" content="de_DE">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,14 +77,13 @@
     padding:0;overflow:hidden;
   }
   .hero-foto{
-    position:absolute;inset:-8%;
-    background:url("assets/beykebap-schild.jpg") 22% 30%/175% auto no-repeat;
-    opacity:.2;filter:grayscale(.55) contrast(1.1) blur(5px);
-    transform:scale(1.04);
+    position:absolute;inset:0;
+    background:url("assets/beykebap-doener.jpg") center 58%/cover no-repeat;
+    opacity:.42;filter:contrast(1.05) saturate(1.05);
   }
   .hero::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(18,18,19,.55) 0%,rgba(18,18,19,.82) 55%,var(--ink) 100%);
+    background:linear-gradient(180deg,rgba(18,18,19,.62) 0%,rgba(18,18,19,.78) 42%,rgba(18,18,19,.93) 78%,var(--ink) 100%);
   }
   .hero-inner{position:relative;z-index:2;padding:76px 20px 84px;max-width:1080px;margin:0 auto;text-align:center}
   .hero-logo{width:min(560px,86vw);margin:0 auto 26px;filter:drop-shadow(0 12px 40px rgba(0,0,0,.55))}
@@ -150,6 +149,24 @@
   .hinweis{
     margin-top:30px;padding:16px 18px;background:var(--cream-2);
     border-left:3px solid var(--green);font-size:14.5px;color:var(--muted-l);
+  }
+
+  /* ---------- Der Laden ---------- */
+  .laden{background:var(--ink);color:var(--cream)}
+  .laden-kopf{max-width:620px}
+  .laden-bilder{
+    display:grid;grid-template-columns:1.55fr 1fr;gap:14px;margin-top:38px;align-items:stretch;
+  }
+  @media(max-width:760px){.laden-bilder{grid-template-columns:1fr}}
+  .bild{position:relative;overflow:hidden;background:var(--ink-3);margin:0}
+  .bild img{width:100%;height:100%;object-fit:cover;display:block}
+  .bild.quer{aspect-ratio:4/3}
+  .bild.hoch{aspect-ratio:3/4}
+  @media(max-width:760px){.bild.hoch{aspect-ratio:4/3}}
+  .bild figcaption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:34px 18px 14px;font-size:13.5px;color:rgba(246,243,236,.92);
+    background:linear-gradient(180deg,transparent,rgba(18,18,19,.85));
   }
 
   /* ---------- Zeiten ---------- */
@@ -232,6 +249,7 @@
     </a>
     <nav class="nav">
       <a href="#karte">Speisekarte</a>
+      <a href="#laden">Der Laden</a>
       <a href="#zeiten">Öffnungszeiten</a>
       <a href="#bestellen">Bestellen</a>
       <a href="#kontakt">Kontakt</a>
@@ -302,7 +320,7 @@
       <div class="gruppe">
         <h3>Vom Drehspieß</h3>
         <ul>
-          <li><b>Döner Kebab</b><span>Hähnchen oder Kalb, im Fladenbrot</span></li>
+          <li><b>Döner Kebab</b><span>im Fladenbrot, mit Salat, Kraut und Soße</span></li>
           <li><b>Dürüm Döner</b><span>gerollt im dünnen Yufka</span></li>
           <li><b>Döner Teller</b><span>mit Beilage und Salat</span></li>
           <li><b>Gyros</b><span>vom Spieß, mit Soße und Salat</span></li>
@@ -333,6 +351,7 @@
         <h3>Dazu</h3>
         <ul>
           <li><b>Soßen</b><span>Kräuter, Knoblauch, scharf</span></li>
+          <li><b>Çay</b><span>türkischer Schwarztee, im Glas</span></li>
           <li><b>Ayran</b><span>gekühlt</span></li>
           <li><b>Softdrinks &amp; Wasser</b><span>Flasche oder Dose</span></li>
           <li><b>Tagesangebote</b><span>wechselnd – fragt am Tresen</span></li>
@@ -346,6 +365,32 @@
       Fragen zu Allergenen und Zutaten beantworten wir gern direkt am Tresen oder
       am Telefon.
     </p>
+  </div>
+</section>
+
+<!-- ============ DER LADEN ============ -->
+<section class="laden" id="laden">
+  <div class="wrap">
+    <div class="laden-kopf">
+      <p class="eyebrow hell">Der Laden</p>
+      <h2>Mitnehmen oder<br>Platz nehmen</h2>
+      <p class="intro">
+        Offene Front zur Straße, der Spieß gleich hinter der Theke, Tische im
+        hinteren Teil. Wer nach dem Döner noch sitzen bleibt, trinkt seinen Çay dazu.
+      </p>
+    </div>
+    <div class="laden-bilder">
+      <figure class="bild quer">
+        <img src="assets/beykebap-laden.jpg" alt="Blick von der Straße in den Laden: Theke, Kühlschrank und der Drehspieß"
+             loading="lazy" width="1170" height="860">
+        <figcaption>Offene Front, Theke und Drehspieß direkt im Blick</figcaption>
+      </figure>
+      <figure class="bild hoch">
+        <img src="assets/beykebap-cay.jpg" alt="Zwei Gläser türkischer Çay auf einem Holztisch"
+             loading="lazy" width="913" height="1200">
+        <figcaption>Çay zum Nachsitzen</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -466,7 +511,7 @@
   "@context":"https://schema.org",
   "@type":"Restaurant",
   "name":"Beykebap am Neumarkt",
-  "image":"assets/beykebap-og.jpg",
+  "image":"assets/beykebap-doener.jpg",
   "servesCuisine":["Türkisch","Döner","Pizza"],
   "priceRange":"€",
   "foundingDate":"2003",
