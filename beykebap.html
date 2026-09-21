@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beykebap am Neumarkt – Döner in Osnabrück seit 2003</title>
+<meta name="description" content="Beykebap am Neumarkt in Osnabrück: Döner, Dürüm, Lahmacun, Falafel und Pizza – frisch vom Drehspieß, seit 2003 am Neumarkt 5. Täglich geöffnet bis tief in die Nacht.">
+<meta name="theme-color" content="#121213">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Beykebap am Neumarkt – Döner in Osnabrück seit 2003">
+<meta property="og:description" content="Döner, Dürüm, Lahmacun, Falafel und Pizza. Neumarkt 5, 49074 Osnabrück.">
+<meta property="og:image" content="assets/beykebap-og.jpg">
+<meta property="og:locale" content="de_DE">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121213; --ink-2:#1b1b1d; --ink-3:#262629;
+    --cream:#F6F3EC; --cream-2:#EBE6DB;
+    --green:#7CC132; --green-d:#4F8419;
+    --red:#D24540;
+    --muted:#8A8A90; --muted-l:#5E5E66;
+    --line:rgba(18,18,19,.12); --line-d:rgba(246,243,236,.14);
+    --display:"Oswald","Haettenschweiler","Arial Narrow",system-ui,sans-serif;
+    --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--cream);color:var(--ink);
+    font:16px/1.65 var(--body);-webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:.02em;margin:0}
+  .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+  .eyebrow{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.26em;
+    font-size:12px;color:var(--green-d);margin:0 0 12px
+  }
+  .eyebrow.hell{color:var(--green)}
+  section{padding:72px 0}
+
+  /* ---------- Kopf ---------- */
+  .kopf{
+    position:sticky;top:0;z-index:50;background:rgba(18,18,19,.93);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-d);
+  }
+  .kopf-inner{
+    display:flex;align-items:center;gap:18px;
+    padding:10px 20px calc(10px + env(safe-area-inset-bottom,0px));
+    max-width:1080px;margin:0 auto;min-height:60px;
+  }
+  .kopf img{height:30px;width:auto}
+  .nav{margin-left:auto;display:flex;gap:26px;align-items:center}
+  .nav a{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;
+    font-size:13px;color:var(--cream);text-decoration:none;opacity:.82;
+  }
+  .nav a:hover{opacity:1;color:var(--green)}
+  @media(max-width:760px){.nav{display:none}}
+  .tel-knopf{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-size:13px;
+    background:var(--green);color:#0e1a05;text-decoration:none;
+    padding:9px 16px;border-radius:999px;white-space:nowrap;
+  }
+  @media(max-width:760px){.kopf .tel-knopf{margin-left:auto}}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;background:var(--ink);color:var(--cream);
+    padding:0;overflow:hidden;
+  }
+  .hero-foto{
+    position:absolute;inset:-8%;
+    background:url("assets/beykebap-schild.jpg") 22% 30%/175% auto no-repeat;
+    opacity:.2;filter:grayscale(.55) contrast(1.1) blur(5px);
+    transform:scale(1.04);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(18,18,19,.55) 0%,rgba(18,18,19,.82) 55%,var(--ink) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;padding:76px 20px 84px;max-width:1080px;margin:0 auto;text-align:center}
+  .hero-logo{width:min(560px,86vw);margin:0 auto 26px;filter:drop-shadow(0 12px 40px rgba(0,0,0,.55))}
+  .hero h1{
+    font-size:clamp(28px,5.2vw,46px);line-height:1.12;text-transform:uppercase;
+    letter-spacing:.04em;margin:0 0 14px;
+  }
+  .hero h1 em{font-style:normal;color:var(--green)}
+  .hero p.lead{
+    max-width:600px;margin:0 auto 30px;color:rgba(246,243,236,.76);font-size:17px;
+  }
+  .ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .knopf{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:14px;
+    text-decoration:none;padding:14px 26px;border-radius:999px;
+    border:1px solid transparent;transition:transform .15s ease,background .15s ease;
+  }
+  .knopf:active{transform:translateY(1px)}
+  .knopf-voll{background:var(--green);color:#0e1a05}
+  .knopf-voll:hover{background:#8BD43B}
+  .knopf-rand{border-color:rgba(246,243,236,.4);color:var(--cream)}
+  .knopf-rand:hover{border-color:var(--green);color:var(--green)}
+  .knopf-dunkel{background:var(--ink);color:var(--cream)}
+
+  /* Status-Pille */
+  .status{
+    display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.18em;font-size:12px;
+    background:rgba(246,243,236,.08);border:1px solid rgba(246,243,236,.16);
+    padding:8px 16px;border-radius:999px;color:rgba(246,243,236,.9);
+  }
+  .punkt{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+  .status.offen .punkt{background:var(--green);box-shadow:0 0 0 4px rgba(124,193,50,.22)}
+  .status.zu .punkt{background:var(--red);box-shadow:0 0 0 4px rgba(210,69,64,.2)}
+
+  /* ---------- Merkmale ---------- */
+  .merkmale{background:var(--ink);color:var(--cream);padding-top:0;padding-bottom:78px}
+  .karten{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-d);border:1px solid var(--line-d)}
+  @media(max-width:760px){.karten{grid-template-columns:1fr}}
+  .karte{background:var(--ink);padding:30px 26px}
+  .karte .zahl{font-family:var(--display);font-size:34px;color:var(--green);line-height:1;margin-bottom:10px}
+  .karte h3{font-size:16px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}
+  .karte p{margin:0;color:rgba(246,243,236,.66);font-size:15px}
+
+  /* ---------- Speisekarte ---------- */
+  .karte-raster{display:grid;grid-template-columns:repeat(2,1fr);gap:34px 48px;margin-top:38px}
+  @media(max-width:760px){.karte-raster{grid-template-columns:1fr;gap:30px}}
+  .gruppe h3{
+    font-size:15px;text-transform:uppercase;letter-spacing:.2em;
+    padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:6px;
+  }
+  .gruppe ul{list-style:none;margin:0;padding:0}
+  .gruppe li{
+    padding:11px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:14px;align-items:baseline;
+  }
+  .gruppe li b{font-weight:600;font-size:15.5px}
+  .gruppe li span{color:var(--muted-l);font-size:14px;margin-left:auto;text-align:right}
+  .veg{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--green);flex:none;transform:translateY(-2px)
+  }
+  .hinweis{
+    margin-top:30px;padding:16px 18px;background:var(--cream-2);
+    border-left:3px solid var(--green);font-size:14.5px;color:var(--muted-l);
+  }
+
+  /* ---------- Zeiten ---------- */
+  .zeiten-block{background:var(--ink-2);color:var(--cream)}
+  .zeiten-raster{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
+  @media(max-width:860px){.zeiten-raster{grid-template-columns:1fr;gap:34px}}
+  table.zeiten{width:100%;border-collapse:collapse;margin-top:22px}
+  table.zeiten td{padding:12px 0;border-bottom:1px solid var(--line-d);font-size:15.5px}
+  table.zeiten td:first-child{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:13.5px;
+    color:rgba(246,243,236,.72)
+  }
+  table.zeiten td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  table.zeiten tr.heute td{color:var(--green)}
+  table.zeiten tr.heute td:first-child{color:var(--green)}
+  .zeiten-block .hinweis{background:rgba(246,243,236,.06);border-left-color:var(--green);color:rgba(246,243,236,.66)}
+
+  /* ---------- Bestellen ---------- */
+  .liefer{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+  @media(max-width:760px){.liefer{grid-template-columns:1fr}}
+  .liefer a{
+    display:block;padding:22px 20px;background:#fff;border:1px solid var(--line);
+    text-decoration:none;transition:border-color .15s ease,transform .15s ease;
+  }
+  .liefer a:hover{border-color:var(--green);transform:translateY(-2px)}
+  .liefer strong{display:block;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:15px;margin-bottom:5px}
+  .liefer span{font-size:14px;color:var(--muted-l)}
+
+  /* ---------- Kontakt ---------- */
+  .kontakt{background:var(--ink);color:var(--cream)}
+  .kontakt-raster{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  @media(max-width:860px){.kontakt-raster{grid-template-columns:1fr;gap:34px}}
+  .kontakt dl{margin:22px 0 0}
+  .kontakt dt{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.2em;font-size:11.5px;
+    color:var(--green);margin-top:20px
+  }
+  .kontakt dt:first-child{margin-top:0}
+  .kontakt dd{margin:5px 0 0;font-size:16.5px}
+  .kontakt dd a{color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(124,193,50,.5)}
+  .kontakt dd a:hover{color:var(--green)}
+  .karte-bild{
+    display:block;border:1px solid var(--line-d);background:var(--ink-3);
+    text-decoration:none;color:var(--cream);padding:0;overflow:hidden;
+  }
+  .karte-bild img{width:100%;height:auto}
+  .karte-rahmen{position:relative;height:340px;background:var(--ink-3)}
+  @media(max-width:860px){.karte-rahmen{height:280px}}
+  .karte-rahmen::before{
+    content:"Neumarkt 5 · 49074 Osnabrück";position:absolute;inset:0;z-index:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);text-transform:uppercase;letter-spacing:.2em;
+    font-size:12px;color:rgba(246,243,236,.35);text-align:center;padding:20px;
+  }
+  .karte-rahmen iframe{
+    position:relative;z-index:1;width:100%;height:100%;border:0;display:block;
+    filter:grayscale(.25) contrast(1.04);
+  }
+  .karte-bild .fuss{padding:16px 20px;display:flex;align-items:center;gap:12px;font-size:14.5px}
+  .karte-bild .fuss span{margin-left:auto;color:var(--green);font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:12px}
+
+  /* ---------- Fuß ---------- */
+  footer{background:var(--ink);color:rgba(246,243,236,.5);padding:34px 0 46px;border-top:1px solid var(--line-d);font-size:13.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  footer a{color:rgba(246,243,236,.7)}
+  footer .rechts{margin-left:auto;display:flex;gap:18px}
+  @media(max-width:600px){footer .rechts{margin-left:0}}
+
+  section h2{font-size:clamp(24px,4vw,34px);text-transform:uppercase;letter-spacing:.05em;line-height:1.15}
+  section > .wrap > p.intro{max-width:620px;color:var(--muted-l);margin:14px 0 0;font-size:16.5px}
+  .kontakt p.intro,.zeiten-block p.intro{color:rgba(246,243,236,.66)}
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <div class="kopf-inner">
+    <a href="#oben" aria-label="Beykebap am Neumarkt – Startseite">
+      <img src="assets/beykebap-logo.png" alt="Beykebap am Neumarkt">
+    </a>
+    <nav class="nav">
+      <a href="#karte">Speisekarte</a>
+      <a href="#zeiten">Öffnungszeiten</a>
+      <a href="#bestellen">Bestellen</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="tel-knopf" href="tel:+495412023153">0541 2023153</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero" id="oben">
+  <div class="hero-foto" role="img" aria-label="Das Schild von Beykebap am Neumarkt in Osnabrück"></div>
+  <div class="hero-inner">
+    <img class="hero-logo" src="assets/beykebap-logo.png" alt="Beykebap am Neumarkt – seit 2003">
+    <div class="status" id="status" hidden>
+      <i class="punkt"></i><span id="status-text">Öffnungszeiten prüfen</span>
+    </div>
+    <h1>Döner am Neumarkt.<br><em>Seit 2003.</em></h1>
+    <p class="lead">
+      Frisch vom Drehspieß, mitten in der Osnabrücker Innenstadt – vom schnellen
+      Döner in der Mittagspause bis zum Dürüm um drei Uhr nachts.
+    </p>
+    <div class="ctas">
+      <a class="knopf knopf-voll" href="tel:+495412023153">Jetzt anrufen</a>
+      <a class="knopf knopf-rand" href="#karte">Speisekarte ansehen</a>
+      <a class="knopf knopf-rand" href="https://www.google.com/maps/search/?api=1&query=Beykebap%2C%20Neumarkt%205%2C%2049074%20Osnabr%C3%BCck" target="_blank" rel="noopener">Route planen</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MERKMALE ============ -->
+<section class="merkmale">
+  <div class="wrap">
+    <div class="karten">
+      <div class="karte">
+        <div class="zahl">2003</div>
+        <h3>Seit über 20 Jahren</h3>
+        <p>Am Neumarkt 5 – ein fester Teil der Osnabrücker Innenstadt, Generation für Generation.</p>
+      </div>
+      <div class="karte">
+        <div class="zahl">7/7</div>
+        <h3>Jeden Tag offen</h3>
+        <p>Ab 10:30 Uhr, am Wochenende bis in den frühen Morgen. Kein Ruhetag.</p>
+      </div>
+      <div class="karte">
+        <div class="zahl">★ 4,2</div>
+        <h3>Hunderte Bewertungen</h3>
+        <p>Gelobt werden vor allem die Fleischqualität, die Soßen und die Portionen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPEISEKARTE ============
+     HINWEIS FÜR DEN BETREIBER: Die folgenden Gerichte sind aus öffentlichen
+     Einträgen (Lieferando, speisekarte.de, Bewertungsportale) zusammengetragen.
+     Bitte vor dem Veröffentlichen gegen die echte Karte prüfen und Preise ergänzen.
+================================================= -->
+<section id="karte">
+  <div class="wrap">
+    <p class="eyebrow">Speisekarte</p>
+    <h2>Vom Spieß, aus dem Ofen,<br>frisch auf die Hand</h2>
+    <p class="intro">
+      Hähnchen und Kalb vom Drehspieß, dazu Klassiker aus dem Steinofen und
+      eine ordentliche Auswahl für alle, die es ohne Fleisch mögen.
+    </p>
+
+    <div class="karte-raster">
+      <div class="gruppe">
+        <h3>Vom Drehspieß</h3>
+        <ul>
+          <li><b>Döner Kebab</b><span>Hähnchen oder Kalb, im Fladenbrot</span></li>
+          <li><b>Dürüm Döner</b><span>gerollt im dünnen Yufka</span></li>
+          <li><b>Döner Teller</b><span>mit Beilage und Salat</span></li>
+          <li><b>Gyros</b><span>vom Spieß, mit Soße und Salat</span></li>
+        </ul>
+      </div>
+
+      <div class="gruppe">
+        <h3>Aus dem Ofen</h3>
+        <ul>
+          <li><b>Lahmacun</b><span>dünn, würzig, zum Rollen</span></li>
+          <li><b>Döner-Pizza</b><span>Pizza mit Dönerfleisch</span></li>
+          <li><b>Pizza Margherita</b><span>Tomate, Käse</span></li>
+          <li><b>Pizza Vegetarisch <i class="veg" aria-hidden="true"></i></b><span>Gemüse der Saison</span></li>
+        </ul>
+      </div>
+
+      <div class="gruppe">
+        <h3>Ohne Fleisch <i class="veg" aria-hidden="true"></i></h3>
+        <ul>
+          <li><b>Falafel im Fladenbrot</b><span>mit Salat und Soße</span></li>
+          <li><b>Falafel Dürüm</b><span>gerollt im Yufka</span></li>
+          <li><b>Großer Salat</b><span>Tomate, Gurke, Zwiebel, Kraut</span></li>
+          <li><b>Pommes</b><span>klassisch, mit Soße</span></li>
+        </ul>
+      </div>
+
+      <div class="gruppe">
+        <h3>Dazu</h3>
+        <ul>
+          <li><b>Soßen</b><span>Kräuter, Knoblauch, scharf</span></li>
+          <li><b>Ayran</b><span>gekühlt</span></li>
+          <li><b>Softdrinks &amp; Wasser</b><span>Flasche oder Dose</span></li>
+          <li><b>Tagesangebote</b><span>wechselnd – fragt am Tresen</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="hinweis">
+      <strong>Auswahl aus der Karte.</strong> Die vollständige Karte mit allen
+      aktuellen Preisen hängt im Laden aus und steht bei den Lieferdiensten unten.
+      Fragen zu Allergenen und Zutaten beantworten wir gern direkt am Tresen oder
+      am Telefon.
+    </p>
+  </div>
+</section>
+
+<!-- ============ ÖFFNUNGSZEITEN ============ -->
+<section class="zeiten-block" id="zeiten">
+  <div class="wrap">
+    <div class="zeiten-raster">
+      <div>
+        <p class="eyebrow hell">Öffnungszeiten</p>
+        <h2>Von mittags<br>bis tief in die Nacht</h2>
+        <p class="intro">
+          Sieben Tage die Woche geöffnet. Donnerstag bis Samstag bleibt die
+          Theke bis in den frühen Morgen auf – praktisch, wenn der Abend
+          am Neumarkt länger wird.
+        </p>
+      </div>
+      <div>
+        <table class="zeiten" id="zeiten-tabelle">
+          <tbody>
+            <tr data-tag="1"><td>Montag</td><td>10:30 – 02:00</td></tr>
+            <tr data-tag="2"><td>Dienstag</td><td>10:30 – 06:00</td></tr>
+            <tr data-tag="3"><td>Mittwoch</td><td>10:30 – 02:00</td></tr>
+            <tr data-tag="4"><td>Donnerstag</td><td>10:30 – 06:00</td></tr>
+            <tr data-tag="5"><td>Freitag</td><td>10:30 – 07:00</td></tr>
+            <tr data-tag="6"><td>Samstag</td><td>10:30 – 07:00</td></tr>
+            <tr data-tag="0"><td>Sonntag</td><td>10:30 – 02:00</td></tr>
+          </tbody>
+        </table>
+        <p class="hinweis">
+          An Feiertagen und bei Veranstaltungen am Neumarkt können die Zeiten
+          abweichen. Im Zweifel kurz anrufen: <a href="tel:+495412023153" style="color:var(--green)">0541 2023153</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BESTELLEN ============ -->
+<section id="bestellen">
+  <div class="wrap">
+    <p class="eyebrow">Abholen &amp; Liefern</p>
+    <h2>Lieber vorbestellen?</h2>
+    <p class="intro">
+      Ruf durch und hol ab, ohne zu warten – oder lass dir das Essen über einen
+      der Lieferdienste nach Hause bringen.
+    </p>
+    <div class="liefer">
+      <a href="tel:+495412023153">
+        <strong>Telefonisch</strong>
+        <span>0541 2023153 – zur Abholung vorbestellen</span>
+      </a>
+      <a href="https://www.lieferando.de/speisekarte/beykebap-49074-osnabruck" target="_blank" rel="noopener">
+        <strong>Lieferando</strong>
+        <span>Lieferung und Abholung, komplette Karte mit Preisen</span>
+      </a>
+      <a href="https://www.instagram.com/beykebap.os/" target="_blank" rel="noopener">
+        <strong>Instagram</strong>
+        <span>@beykebap.os – Angebote und Neues aus dem Laden</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section class="kontakt" id="kontakt">
+  <div class="wrap">
+    <div class="kontakt-raster">
+      <div>
+        <p class="eyebrow hell">Kontakt &amp; Anfahrt</p>
+        <h2>Neumarkt 5,<br>mitten in Osnabrück</h2>
+        <p class="intro">
+          Direkt am Neumarkt, wenige Schritte von den Bushaltestellen entfernt –
+          und keine zehn Minuten vom Hauptbahnhof.
+        </p>
+        <dl>
+          <dt>Adresse</dt>
+          <dd>Beykebap am Neumarkt<br>Neumarkt 5<br>49074 Osnabrück</dd>
+          <dt>Telefon</dt>
+          <dd><a href="tel:+495412023153">0541 2023153</a></dd>
+          <dt>Mobil</dt>
+          <dd><a href="tel:+4915732115830">0157 32115830</a></dd>
+          <dt>Instagram</dt>
+          <dd><a href="https://www.instagram.com/beykebap.os/" target="_blank" rel="noopener">@beykebap.os</a></dd>
+        </dl>
+      </div>
+      <div>
+        <div class="karte-bild">
+          <div class="karte-rahmen">
+            <iframe
+              title="Karte: Beykebap am Neumarkt, Neumarkt 5, 49074 Osnabrück"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=8.0430%2C52.2701%2C8.0550%2C52.2761&amp;layer=mapnik&amp;marker=52.2731091%2C8.0490061"></iframe>
+          </div>
+          <a class="fuss" href="https://www.google.com/maps/search/?api=1&amp;query=Beykebap%2C%20Neumarkt%205%2C%2049074%20Osnabr%C3%BCck"
+             target="_blank" rel="noopener" style="text-decoration:none">
+            Neumarkt 5, 49074 Osnabrück <span>Route öffnen →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="jahr">2026</span> Beykebap am Neumarkt · Neumarkt 5, 49074 Osnabrück</div>
+    <div class="rechts">
+      <a href="tel:+495412023153">0541 2023153</a>
+      <a href="https://www.instagram.com/beykebap.os/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Karte © OpenStreetMap</a>
+      <a href="#oben">Nach oben</a>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Restaurant",
+  "name":"Beykebap am Neumarkt",
+  "image":"assets/beykebap-og.jpg",
+  "servesCuisine":["Türkisch","Döner","Pizza"],
+  "priceRange":"€",
+  "foundingDate":"2003",
+  "telephone":"+49 541 2023153",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Neumarkt 5",
+    "postalCode":"49074",
+    "addressLocality":"Osnabrück",
+    "addressRegion":"Niedersachsen",
+    "addressCountry":"DE"
+  },
+  "sameAs":["https://www.instagram.com/beykebap.os/"],
+  "openingHoursSpecification":[
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Monday","opens":"10:30","closes":"02:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Tuesday","opens":"10:30","closes":"06:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"10:30","closes":"02:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Thursday","opens":"10:30","closes":"06:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"10:30","closes":"07:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:30","closes":"07:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:30","closes":"02:00"}
+  ]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+
+  // Schliesszeit als Minuten ab Mitternacht DIESES Tages (>1440 = naechster Tag)
+  var ZEITEN = {
+    0:[630,1560],  // So 10:30 - 02:00
+    1:[630,1560],  // Mo
+    2:[630,1800],  // Di 10:30 - 06:00
+    3:[630,1560],  // Mi
+    4:[630,1800],  // Do
+    5:[630,1860],  // Fr 10:30 - 07:00
+    6:[630,1860]   // Sa
+  };
+
+  function hhmm(min){
+    var m = ((min % 1440) + 1440) % 1440;
+    return String(Math.floor(m/60)).padStart(2,"0") + ":" + String(m%60).padStart(2,"0");
+  }
+
+  // Ortszeit Europe/Berlin, unabhaengig von der Geraete-Zeitzone
+  function jetztInOsnabrueck(){
+    var teile = new Intl.DateTimeFormat("de-DE",{
+      timeZone:"Europe/Berlin", weekday:"short", hour:"2-digit", minute:"2-digit", hour12:false
+    }).formatToParts(new Date());
+    var v = {};
+    teile.forEach(function(t){ v[t.type] = t.value; });
+    var kurz = {"So":0,"Mo":1,"Di":2,"Mi":3,"Do":4,"Fr":5,"Sa":6};
+    var tag = kurz[v.weekday.replace(".","").slice(0,2)];
+    var stunde = parseInt(v.hour,10) % 24;
+    return { tag: (tag === undefined ? new Date().getDay() : tag),
+             minuten: stunde*60 + parseInt(v.minute,10) };
+  }
+
+  function status(){
+    var n = jetztInOsnabrueck();
+    // heute und gestern pruefen (Nachtschicht laeuft ueber Mitternacht)
+    for (var zurueck = 0; zurueck <= 1; zurueck++){
+      var tag = (n.tag - zurueck + 7) % 7;
+      var z = ZEITEN[tag];
+      var min = n.minuten + zurueck*1440;
+      if (min >= z[0] && min < z[1]){
+        return { offen:true, bis:hhmm(z[1]) };
+      }
+    }
+    // naechste Oeffnung finden
+    for (var vor = 0; vor <= 7; vor++){
+      var t2 = (n.tag + vor) % 7;
+      var start = ZEITEN[t2][0] + vor*1440;
+      if (start > n.minuten) return { offen:false, ab:hhmm(ZEITEN[t2][0]), heute: vor === 0 };
+    }
+    return { offen:false, ab:"10:30", heute:false };
+  }
+
+  function zeichnen(){
+    var el = document.getElementById("status");
+    var txt = document.getElementById("status-text");
+    if (!el || !txt) return;
+    var s = status();
+    el.hidden = false;
+    el.classList.toggle("offen", s.offen);
+    el.classList.toggle("zu", !s.offen);
+    txt.textContent = s.offen
+      ? "Jetzt geöffnet · bis " + s.bis + " Uhr"
+      : "Gerade geschlossen · öffnet " + (s.heute ? "heute" : "wieder") + " um " + s.ab + " Uhr";
+
+    var heute = jetztInOsnabrueck().tag;
+    var zeilen = document.querySelectorAll("#zeiten-tabelle tr");
+    for (var i = 0; i < zeilen.length; i++){
+      zeilen[i].classList.toggle("heute", Number(zeilen[i].dataset.tag) === heute);
+    }
+  }
+
+  var j = document.getElementById("jahr");
+  if (j) j.textContent = new Date().getFullYear();
+
+  zeichnen();
+  setInterval(zeichnen, 60000);
+})();
+</script>
+
+</body>
+</html>
