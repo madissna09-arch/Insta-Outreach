@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Café Frühstückstraum Osnabrück – Pancake-Türme, Brioche &amp; Kaffee</title>
+<meta name="description" content="Café Frühstückstraum in Osnabrück, Hasestraße 5: Pancake-Türme, Brioche-Sandwiches, Sauerteigstullen, hausgemachte Kuchen und Kaffeespezialitäten. Dienstag bis Sonntag ab 9 Uhr.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f6eee3">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Café Frühstückstraum – Frühstück, wie geträumt.">
+<meta property="og:description" content="Pancake-Türme, Brioche-Sandwiches und guter Kaffee in Osnabrück. Hasestraße 5, Di–So ab 9 Uhr.">
+<link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%235b3a29'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-style='italic' font-size='30' text-anchor='middle' fill='%23f6eee3'%3EF%3C/text%3E%3C/svg%3E">
+
+<!--
+  Quellen der Angaben (Stand Oktober 2026):
+  - Adresse, Inhaber, Eröffnung Mai 2025, frühere Eisdiele Rialto, 38 Plätze, Gerichte „Brunch me Baby“ und „Holy Guacamoly“, Zitate:
+    HASEPOST, 9. Juli 2025 („Frühstück statt Fußball“)
+  - Pancake-Türme, Brioche-Sandwiches, Eröffnung 11.05.2025: neueroeffnung.info
+  - Kuchen, digitale Speisekarte: destination.one (Tourismusgesellschaft Osnabrücker Land), geändert 24.07.2026
+  - Öffnungszeiten Di–So 9–16 Uhr, Mo Ruhetag, Kartenzahlung, Spielecke: coolibri.de und Instagram-Profil
+    (neueroeffnung.info nennt 16:30 Uhr – beim Café bestätigen lassen)
+  - Fotos und Videos: Platzhalter, bis die Dateien aus @fruehstueckstraum.os vorliegen (siehe BILDER.md)
+-->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "Café Frühstückstraum",
+  "description": "Frühstückscafé in Osnabrück mit Pancake-Türmen, Brioche-Sandwiches, Sauerteigstullen, hausgemachten Kuchen und Kaffeespezialitäten.",
+  "servesCuisine": ["Frühstück", "Brunch", "Café", "Kuchen"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Hasestraße 5",
+    "postalCode": "49074",
+    "addressLocality": "Osnabrück",
+    "addressRegion": "Niedersachsen",
+    "addressCountry": "DE"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 52.2807515, "longitude": 8.0435217 },
+  "sameAs": ["https://www.instagram.com/fruehstueckstraum.os/"],
+  "paymentAccepted": "Kreditkarte",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "16:00" }
+  ]
+}
+</script>
+
+<style>
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Jost"; src: url("fonts/jost.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+:root {
+  --crema: #f6eee3;
+  --paper: #fffaf4;
+  --latte: #e8d6bf;
+  --latte-soft: #f2e6d6;
+  --caramel: #c27a3e;
+  --caramel-deep: #8f4a1c;
+  --honey: #e3a548;
+  --mocha: #5b3a29;
+  --mocha-dark: #47291b;
+  --espresso: #2a1b14;
+  --muted: #6e5a4c;
+  --line: #e6d7c4;
+  --radius: 22px;
+  --shadow: 0 1px 2px rgba(42, 27, 20, .06), 0 12px 32px -12px rgba(42, 27, 20, .26);
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Jost", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --wrap: min(1180px, 100% - 40px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--crema);
+  color: var(--espresso);
+  font: 400 17px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, video { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 450; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
+h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+h2 em, h1 em { font-style: italic; color: var(--caramel-deep); font-weight: 400; }
+p { margin: 0; }
+.wrap { width: var(--wrap); margin-inline: auto; }
+.kicker {
+  font: 500 .78rem/1 var(--sans);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--caramel-deep);
+  display: inline-flex; align-items: center; gap: .6em;
+}
+.kicker::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+.lead { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 34em; }
+.icon { width: 1.1em; height: 1.1em; flex: none; }
+:focus-visible { outline: 2px solid var(--caramel-deep); outline-offset: 3px; border-radius: 6px; }
+
+/* Platzhalter fuer Angaben, die das Café noch liefern muss */
+.fill { background: #fff3c4; color: #6b5300; border: 1px dashed #c9a400; padding: 0 .35em; border-radius: 4px; font-style: normal; font-size: .92em; white-space: nowrap; }
+
+/* Bildplaetze: Foto liegt ueber dem Platzhalter. Fehlt die Datei, entfernt onerror das Bild und der Platzhalter bleibt sichtbar. */
+.slot { position: relative; overflow: hidden; background-color: var(--latte); }
+.slot::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(91, 58, 41, .12) 0 2px, transparent 2.5px) 0 0 / 22px 22px;
+}
+.slot::after {
+  content: attr(data-label); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: max-content; max-width: 80%; text-align: center;
+  font: italic 450 1rem/1.3 var(--serif); color: var(--mocha);
+  background: rgba(255, 250, 244, .9); padding: .55em 1em; border-radius: 999px;
+}
+.slot > img, .slot > video { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: .55em;
+  padding: .95em 1.5em; border-radius: 999px;
+  font: 500 .98rem/1 var(--sans); text-decoration: none; letter-spacing: .01em;
+  border: 1.5px solid transparent; cursor: pointer;
+  transition: transform .25s ease, background-color .25s ease, color .25s ease, box-shadow .25s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--mocha); color: var(--paper); box-shadow: 0 10px 24px -12px rgba(91, 58, 41, .85); }
+.btn-primary:hover { background: var(--mocha-dark); }
+.btn-ghost { border-color: var(--espresso); color: var(--espresso); }
+.btn-ghost:hover { background: var(--espresso); color: var(--paper); }
+.btn-light { background: var(--paper); color: var(--espresso); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(246, 238, 227, .84);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s ease;
+}
+.site-header.scrolled { border-bottom-color: var(--line); }
+.nav { display: flex; align-items: center; gap: 28px; height: 72px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
+.brand svg { width: 46px; height: 46px; }
+.brand-word { display: flex; flex-direction: column; line-height: 1; }
+.brand-word b { font: italic 500 1.35rem/1 var(--serif); letter-spacing: -.005em; }
+.brand-word span { font: 400 .62rem/1 var(--sans); letter-spacing: .3em; color: var(--muted); margin-top: 6px; }
+.nav-links { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-weight: 450; font-size: .98rem; position: relative; padding: 4px 0; }
+.nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px; background: var(--caramel); transition: right .3s ease; }
+.nav-links a:hover::after { right: 0; }
+.nav .btn { padding: .75em 1.2em; font-size: .92rem; }
+.menu-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; color: var(--espresso); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; padding: clamp(28px, 5vw, 64px) 0 clamp(56px, 8vw, 110px); overflow: hidden; }
+.hero::before, .hero::after {
+  content: ""; position: absolute; border-radius: 50%; filter: blur(60px); z-index: -1; opacity: .75;
+}
+.hero::before { width: 520px; height: 520px; background: #f0d2ab; right: -120px; top: -140px; }
+.hero::after { width: 420px; height: 420px; background: var(--latte); left: -160px; bottom: -120px; }
+.hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+.status {
+  display: inline-flex; align-items: center; gap: .6em;
+  background: var(--paper); border: 1px solid var(--line);
+  padding: .5em 1em; border-radius: 999px; font-size: .9rem; color: var(--muted);
+}
+.status i { width: 9px; height: 9px; border-radius: 50%; background: #b9ab9c; flex: none; }
+.status.open i { background: #4f9a5b; box-shadow: 0 0 0 4px rgba(79, 154, 91, .18); animation: pulse 2.4s ease-in-out infinite; }
+.status b { color: var(--espresso); font-weight: 500; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(79, 154, 91, 0); } }
+.hero h1 { font-size: clamp(2.8rem, 6.6vw, 5.9rem); margin: 22px 0 22px; font-weight: 420; }
+.hero h1 .line { display: block; overflow: hidden; padding-bottom: .08em; }
+.hero h1 .line > span { display: inline-block; white-space: nowrap; transform: translateY(105%); animation: rise 1s cubic-bezier(.2, .8, .2, 1) forwards; }
+.hero h1 .line:nth-child(2) > span { animation-delay: .12s; }
+@keyframes rise { to { transform: none; } }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 28px; }
+.press { display: inline-flex; align-items: center; gap: .7em; text-decoration: none; font-size: .95rem; color: var(--muted); }
+.press b { font: 600 .74rem/1 var(--sans); letter-spacing: .16em; color: var(--espresso); border: 1.5px solid var(--espresso); padding: 5px 7px; border-radius: 6px; }
+.press em { font-family: var(--serif); color: var(--espresso); }
+.press:hover span { text-decoration: underline; }
+
+.hero-visual { position: relative; justify-self: center; width: min(100%, 440px); }
+.arch {
+  aspect-ratio: 9 / 13.2; border-radius: 999px 999px 28px 28px; box-shadow: var(--shadow);
+  outline: 1.5px solid var(--caramel); outline-offset: 10px;
+}
+.badge {
+  position: absolute; left: -54px; bottom: 70px; width: 132px; height: 132px; z-index: 2;
+  background: var(--paper); border-radius: 50%; box-shadow: var(--shadow); display: grid; place-items: center;
+}
+.badge svg.ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 22s linear infinite; }
+.badge svg.ring text { font: 500 10.4px var(--sans); letter-spacing: 3.1px; fill: var(--caramel-deep); text-transform: uppercase; }
+.badge .cup { width: 40px; height: 40px; color: var(--mocha); }
+.badge .cup .steam { animation: steam 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes steam { 0%, 100% { opacity: .35; transform: translateY(1px); } 50% { opacity: 1; transform: translateY(-2px); } }
+.float-card {
+  position: absolute; right: -28px; top: 48px; z-index: 2; background: var(--paper); border-radius: 18px;
+  padding: 14px 18px; box-shadow: var(--shadow); max-width: 220px; font-size: .88rem; line-height: 1.35;
+  animation: bob 6s ease-in-out infinite;
+}
+.float-card small { display: block; font: 600 .66rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--caramel-deep); margin-bottom: 6px; }
+.float-card b { display: block; font: 500 1.12rem/1.15 var(--serif); margin-bottom: 4px; }
+.float-card span { color: var(--muted); }
+@keyframes bob { 50% { transform: translateY(-8px); } }
+
+/* ---------- Sections ---------- */
+section { position: relative; }
+.section { padding: clamp(72px, 10vw, 130px) 0; }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px 48px; flex-wrap: wrap; margin-bottom: clamp(36px, 5vw, 56px); }
+.section-head > div { max-width: 640px; }
+.section-head h2 { margin-top: 16px; }
+.section-head .lead { margin-top: 18px; }
+
+/* Lieblinge */
+.faves { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.fave {
+  position: relative; background: var(--paper); border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--line); display: flex; flex-direction: column;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.fave:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.fave .slot { aspect-ratio: 4 / 4.6; }
+.fave .slot img { transition: transform .8s ease; }
+.fave:hover .slot img { transform: scale(1.05); }
+.fave .body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.fave .when { font: 500 .75rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--caramel-deep); }
+.fave h3 { font-size: 1.6rem; }
+.fave p { color: var(--muted); font-size: .97rem; }
+.fave .flag {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  background: var(--mocha); color: var(--paper); font: 600 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
+  padding: 7px 11px; border-radius: 999px;
+}
+
+/* Karte */
+.karte { background: var(--paper); }
+.karte-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 6vw, 88px); align-items: start; }
+.karte-intro { position: sticky; top: 104px; }
+.karte-intro h2 { margin: 16px 0 18px; }
+.karte-photo { border-radius: 300px 300px var(--radius) var(--radius); aspect-ratio: 4 / 4.4; max-width: 320px; box-shadow: var(--shadow); margin-top: 32px; }
+.karte-stand { font-size: .86rem; color: var(--muted); margin-top: 20px; }
+.qr-note { display: flex; gap: 14px; align-items: center; margin-top: 26px; background: var(--crema); border-radius: 16px; padding: 14px 16px; font-size: .94rem; }
+.qr-note svg { width: 34px; height: 34px; color: var(--mocha); flex: none; }
+
+.menu-board { display: grid; gap: 14px; }
+.menu-block { border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); background: var(--paper); }
+.menu-block > header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.menu-block > header .ico { width: 48px; height: 48px; border-radius: 50%; background: var(--latte-soft); display: grid; place-items: center; flex: none; }
+.menu-block > header .ico svg { width: 26px; height: 26px; color: var(--mocha); }
+.menu-block > header b { display: block; font: 450 1.5rem/1.15 var(--serif); }
+.menu-block > header small { display: block; font: italic 400 .95rem/1.35 var(--serif); color: var(--muted); }
+.mi-list { list-style: none; margin: 0; padding: 0; }
+.mi { padding: 13px 0; }
+.mi + .mi { border-top: 1px dashed var(--line); }
+.mi h4 { margin: 0; font: 500 1.05rem/1.35 var(--sans); }
+.mi p { margin-top: 2px; font: italic 400 .95rem/1.45 var(--serif); color: var(--muted); max-width: 46em; }
+.tag { font: 600 .62rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; padding: 4px 7px; border-radius: 999px; display: inline-flex; align-items: center; vertical-align: 2px; margin-left: 6px; }
+.tag-best { background: var(--caramel-deep); color: #fff; }
+.tag-sweet { background: #f6dfc0; color: var(--caramel-deep); }
+
+/* Signature */
+.signature { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+.sig-media { position: relative; }
+.sig-media .main { border-radius: 300px 300px var(--radius) var(--radius); aspect-ratio: 3 / 4; box-shadow: var(--shadow); }
+.sig-media .small {
+  position: absolute; right: -24px; bottom: -36px; width: 42%; aspect-ratio: 1; border-radius: 50%; z-index: 2;
+  border: 8px solid var(--crema); box-shadow: var(--shadow);
+}
+.sig-media .small::after { font-size: .85rem; padding: .4em .8em; }
+.sig-text h2 { margin: 16px 0 22px; }
+.sig-list { list-style: none; padding: 0; margin: 28px 0 32px; display: grid; gap: 12px; }
+.sig-list li { display: flex; gap: 12px; align-items: baseline; }
+.sig-list li::before { content: ""; width: 10px; height: 7px; border-radius: 50%; background: var(--caramel); flex: none; transform: translateY(-2px) rotate(-30deg); box-shadow: inset 2px 0 0 -1px var(--mocha); }
+
+/* Galerie */
+.gallery { columns: 3 260px; column-gap: 16px; }
+.gallery button {
+  display: block; width: 100%; margin: 0 0 16px; padding: 0; border: 0;
+  border-radius: 18px; cursor: zoom-in; break-inside: avoid;
+}
+.gallery button.r45 { aspect-ratio: 4 / 5; }
+.gallery button.r11 { aspect-ratio: 1; }
+.gallery button.r34 { aspect-ratio: 3 / 4; }
+.gallery img { transition: transform .8s ease; }
+.gallery button:hover img { transform: scale(1.04); }
+.gallery button > span {
+  position: absolute; left: 12px; bottom: 12px; z-index: 2; background: rgba(255, 250, 244, .92); color: var(--espresso);
+  font-size: .82rem; padding: 6px 10px; border-radius: 999px; opacity: 0; transform: translateY(6px); transition: .3s ease;
+}
+.gallery button:has(img):hover > span, .gallery button:has(img):focus-visible > span { opacity: 1; transform: none; }
+.gallery button:not(:has(img)) { cursor: default; }
+dialog.lightbox { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1000px); max-height: 92vh; }
+dialog.lightbox::backdrop { background: rgba(30, 19, 13, .88); }
+dialog.lightbox img { max-height: 86vh; width: auto; margin: auto; border-radius: 14px; }
+dialog.lightbox p { color: #f3e9dc; text-align: center; margin-top: 10px; font-size: .95rem; }
+dialog.lightbox button { position: fixed; top: 16px; right: 16px; background: var(--paper); border: 0; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+
+/* Reels */
+.reels-sec { background: var(--espresso); color: var(--paper); overflow: hidden; }
+.reels-sec .kicker { color: var(--honey); }
+.reels-sec h2 em { color: var(--honey); }
+.reels-sec .lead { color: #d3c3b4; }
+.reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.reel { text-decoration: none; display: block; }
+.reel .phone {
+  aspect-ratio: 9 / 16; border-radius: 28px; background-color: #3a2a21;
+  border: 6px solid #4d3a2f; transition: transform .4s ease;
+}
+.reel .phone::before { background: radial-gradient(circle at 50% 50%, rgba(255, 250, 244, .08) 0 2px, transparent 2.5px) 0 0 / 22px 22px; }
+.reel .phone::after { background: rgba(42, 27, 20, .85); color: #f3e3cf; }
+.reel:nth-child(2) .phone { transform: translateY(32px); }
+.reel:hover .phone { transform: translateY(-6px); }
+.reel:nth-child(2):hover .phone { transform: translateY(26px); }
+.reel .label { margin-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.reel:nth-child(2) .label { margin-top: 50px; }
+.reel .label b { font: 450 1.3rem/1.2 var(--serif); }
+.reel .label span { font-size: .85rem; color: #c2b0a0; white-space: nowrap; }
+.insta-cta { margin-top: 64px; display: flex; justify-content: center; }
+
+/* Story */
+.story-sec { background: var(--latte-soft); }
+.story { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+.story-photo { border-radius: var(--radius); aspect-ratio: 4 / 5; box-shadow: var(--shadow); max-width: 480px; }
+.story-text h2 { margin: 16px 0 20px; }
+.story-text .lead + .lead { margin-top: 14px; }
+.quote { margin: 44px 0 0; background: var(--paper); border-radius: var(--radius); padding: 30px 28px 26px; position: relative; }
+.quote::before { content: "„"; position: absolute; top: -64px; left: 20px; font: 400 5rem/1 var(--serif); color: var(--caramel); }
+.quote p { font: italic 420 1.3rem/1.4 var(--serif); }
+.quote footer { margin-top: 12px; font-size: .9rem; color: var(--muted); }
+.quote footer a { color: var(--caramel-deep); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+.facts div { background: var(--paper); border-radius: 16px; padding: 16px; }
+.facts b { display: block; font: 450 1.6rem/1.1 var(--serif); color: var(--mocha); }
+.facts span { font-size: .88rem; color: var(--muted); }
+
+/* Besuch */
+.visit { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.visit-card { background: var(--paper); border-radius: var(--radius); padding: clamp(24px, 4vw, 40px); border: 1px solid var(--line); }
+.visit-card h3 { font-size: 1.7rem; margin-bottom: 18px; }
+.contact-list { list-style: none; padding: 0; margin: 0 0 26px; display: grid; gap: 14px; }
+.contact-list li { display: flex; gap: 14px; align-items: flex-start; }
+.contact-list svg { width: 20px; height: 20px; color: var(--mocha); margin-top: 3px; flex: none; }
+.contact-list a { text-decoration: none; border-bottom: 1px solid var(--line); }
+.contact-list a:hover { border-color: var(--caramel); }
+.hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.hours td { padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.hours td:last-child { text-align: right; }
+.hours tr.closed td:last-child { color: var(--muted); font-style: italic; }
+.hours tr.is-today td { font-weight: 600; color: var(--caramel-deep); }
+.hours tr.is-today td:first-child::after { content: "heute"; margin-left: 10px; font: 600 .66rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; background: var(--latte-soft); padding: 4px 7px; border-radius: 999px; vertical-align: 2px; }
+.perks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.perks span { display: inline-flex; align-items: center; gap: 7px; background: var(--crema); border-radius: 999px; padding: 8px 13px; font-size: .88rem; }
+.perks svg { width: 16px; height: 16px; color: var(--mocha); }
+.fine { font-size: .86rem; color: var(--muted); margin-top: 16px; }
+.map {
+  grid-column: 1 / -1; border-radius: var(--radius); overflow: hidden; min-height: 340px; position: relative;
+  background: var(--mocha) url("bilder/draussen.webp") center / cover; display: grid; place-items: center;
+}
+.map::before { content: ""; position: absolute; inset: 0; background: rgba(71, 41, 27, .74); }
+.map-inner { position: relative; text-align: center; color: var(--paper); padding: 32px 20px; max-width: 460px; display: grid; gap: 14px; justify-items: center; }
+.map-inner h3 { font-size: clamp(1.7rem, 3vw, 2.2rem); }
+.map-inner p { font-size: .9rem; opacity: .92; }
+.map-inner .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.hello { margin-top: 22px; display: flex; gap: 18px 32px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--latte-soft); border-radius: var(--radius); padding: 24px 28px; }
+.hello h3 { font-size: 1.5rem; }
+.hello p { color: var(--muted); font-size: .97rem; margin-top: 4px; max-width: 44em; }
+
+/* Footer + Recht */
+.site-footer { background: var(--espresso); color: #eadccd; padding: 72px 0 120px; font-size: .95rem; }
+.foot-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; }
+.site-footer h3 { font: 500 .78rem/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--honey); margin-bottom: 16px; }
+.site-footer a { color: #fff; text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.foot-brand p { margin-top: 18px; max-width: 26em; color: #d3c3b4; }
+.legal { margin-top: 56px; display: grid; gap: 12px; }
+.legal details { border-top: 1px solid rgba(255, 255, 255, .12); padding-top: 12px; }
+.legal summary { cursor: pointer; font: 450 1.3rem/1.3 var(--serif); color: #fff; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.legal summary::-webkit-details-marker { display: none; }
+.legal summary::after { content: "+"; font-family: var(--sans); font-size: 1.4rem; color: var(--honey); }
+.legal details[open] summary::after { content: "–"; }
+.legal .txt { padding: 14px 0 6px; color: #d3c3b4; display: grid; gap: 10px; max-width: 70ch; font-size: .92rem; }
+.legal .txt h4 { color: #fff; font: 500 1rem/1.3 var(--sans); margin: 8px 0 0; }
+.legal .fill { color: #6b5300; }
+.copy { margin-top: 40px; font-size: .82rem; color: #ad9c8d; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* Mobile-Aktionsleiste */
+.action-bar { display: none; }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2, .8, .2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; } .reveal.d3 { transition-delay: .24s; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1060px) {
+  .faves { grid-template-columns: repeat(2, 1fr); }
+  .float-card { right: -8px; }
+}
+@media (max-width: 900px) {
+  .karte-grid { grid-template-columns: 1fr; }
+  .karte-intro { position: static; }
+  .karte-photo { display: none; }
+  .nav-links, .nav .btn { display: none; }
+  .menu-toggle { display: inline-flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column; gap: 0; position: absolute; top: 72px; left: 0; right: 0;
+    background: var(--crema); border-bottom: 1px solid var(--line); padding: 8px 20px 18px;
+  }
+  .nav-links.open a { display: block; padding: 14px 0; font-size: 1.15rem; border-bottom: 1px solid var(--line); }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { width: min(86%, 380px); margin-top: 8px; }
+  .badge { left: -30px; width: 108px; height: 108px; bottom: 40px; }
+  .signature, .story, .visit { grid-template-columns: 1fr; }
+  .sig-media { max-width: 520px; margin-right: 24px; }
+  .story-photo { max-width: 420px; }
+  .reels { grid-template-columns: repeat(3, 72%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-right: -20px; padding-right: 20px; }
+  .reel { scroll-snap-align: start; }
+  .reel:nth-child(2) .phone, .reel:nth-child(2):hover .phone { transform: none; }
+  .reel:nth-child(2) .label { margin-top: 18px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .foot-brand { grid-column: 1 / -1; }
+  .action-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 10px; right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 60; background: var(--espresso); border-radius: 20px;
+    box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .45); overflow: hidden;
+  }
+  .action-bar a { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 11px 6px 10px; color: var(--paper); text-decoration: none; font-size: .78rem; letter-spacing: .02em; }
+  .action-bar a + a { border-left: 1px solid rgba(255, 255, 255, .1); }
+  .action-bar a.main { background: var(--mocha); }
+  .action-bar svg { width: 21px; height: 21px; }
+  body { padding-bottom: 84px; }
+}
+@media (max-width: 560px) {
+  :root { --wrap: min(1180px, 100% - 32px); }
+  body { font-size: 16px; }
+  .faves { grid-template-columns: 1fr; }
+  .float-card { display: none; }
+  .hero-cta .btn { flex: 1 1 auto; justify-content: center; }
+  .sig-media .small { right: -14px; bottom: -24px; }
+  .facts { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero h1 .line > span { transform: none; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.6"/></g></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 8h14l-1.2 12.5H6.2Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/></g></symbol>
+    <symbol id="i-blocks" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/><path d="M12 3.5 16.5 11h-9Z"/></g></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM18 14h2.5M14 18v2.5" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-bread" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 11.5a4.5 4.5 0 0 1 2-8h10a4.5 4.5 0 0 1 2 8V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19Z"/><path d="M9 9.5c.8.6 1.6.6 2.4 0M13 13c.8.6 1.6.6 2.4 0" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-stack" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="12" cy="17.5" rx="8.5" ry="2.5"/><path d="M3.5 17.5v-2.5M20.5 17.5v-2.5"/><ellipse cx="12" cy="13" rx="8" ry="2.3"/><path d="M4 13v-2.4M20 13v-2.4"/><ellipse cx="12" cy="8.6" rx="7.5" ry="2.2"/><path d="M14.5 6.5c1 1.6 1 3.5.2 5"/></g></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5h12v4.5a6 6 0 0 1-6 6h0a6 6 0 0 1-6-6Z"/><path d="M16.5 11h1.5a2.5 2.5 0 0 1 0 5h-2"/><path d="M8.5 3.5c-.8 1 .8 1.8 0 3M12.5 3.5c-.8 1 .8 1.8 0 3"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="logo" viewBox="0 0 120 120"><circle cx="60" cy="60" r="60" fill="#5b3a29"/><g fill="none" stroke="#f6eee3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M36 54h40v12a20 20 0 0 1-20 20h0a20 20 0 0 1-20-20Z"/><path d="M76 58h4a8 8 0 0 1 0 16h-5"/><path d="M48 30c-3 4 3 6 0 11M58 27c-3 5 3 7 0 13M68 30c-3 4 3 6 0 11"/></g><path d="M30 93h60" stroke="#e3a548" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header" id="top">
+  <nav class="nav wrap" aria-label="Hauptnavigation">
+    <a class="brand" href="#start" aria-label="Café Frühstückstraum – zum Anfang">
+      <svg aria-hidden="true"><use href="#logo"/></svg>
+      <span class="brand-word"><b>Frühstückstraum</b><span>CAFÉ · OSNABRÜCK</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#lieblinge">Lieblinge</a></li>
+      <li><a href="#karte">Karte</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#story">Über uns</a></li>
+      <li><a href="#besuch">Besuch</a></li>
+    </ul>
+    <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Hasestra%C3%9Fe+5%2C+49074+Osnabr%C3%BCck" target="_blank" rel="noopener">Route planen</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menü öffnen"><svg width="26" height="26" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </nav>
+</header>
+
+<main>
+<!-- ================= HERO ================= -->
+<section class="hero" id="start">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="status" id="status"><i></i><span>Di–So 9–16 Uhr · Montag Ruhetag</span></p>
+      <h1><span class="line"><span>Frühstück,</span></span><span class="line"><span>wie <em>geträumt.</em></span></span></h1>
+      <p class="lead">Pancake-Türme, Brioche-Sandwiches, Sauerteigstullen und hausgemachter Kuchen – dazu guter Kaffee. Mitten in der Osnabrücker Altstadt, Hasestraße&nbsp;5.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#karte">Zur Karte <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Hasestra%C3%9Fe+5%2C+49074+Osnabr%C3%BCck" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Route planen</a>
+      </div>
+      <a class="press" href="https://www.hasepost.de/fruehstueck-statt-fussball-cafe-fruehstueckstraum-begeistert-die-osnabruecker-altstadt-612622/" target="_blank" rel="noopener">
+        <b>HASEPOST</b><span>Bekannt aus: <em>„Frühstück statt Fußball“</em></span>
+      </a>
+    </div>
+
+    <div class="hero-visual">
+      <div class="arch slot" data-label="Video: Pancake-Turm">
+        <video autoplay muted loop playsinline preload="auto" poster="video/hero-poster.webp" aria-label="Pancake-Turm im Café Frühstückstraum">
+          <source src="video/hero.mp4" type="video/mp4" onerror="this.parentNode.remove()">
+        </video>
+      </div>
+      <div class="badge" aria-hidden="true">
+        <svg class="ring" viewBox="0 0 132 132"><defs><path id="circ" d="M66 66m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0"/></defs><text><textPath href="#circ">Frühstück · Kaffee · Kuchen ·&nbsp;</textPath></text></svg>
+        <svg class="cup" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19h25v9a12 12 0 0 1-12 12h-1A12 12 0 0 1 9 28Z"/><path d="M34 22h3a5 5 0 0 1 0 10h-4"/><g class="steam"><path d="M17 7c-2 2.5 2 4 0 7M23 5c-2 3 2 5 0 9M29 7c-2 2.5 2 4 0 7"/></g></g></svg>
+      </div>
+      <div class="float-card"><small>Bestseller</small><b>Brunch me Baby</b><span>Brioche mit Rührei, Avocado, Buttersoße und Cheddar</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIEBLINGE ================= -->
+<section class="section" id="lieblinge">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="kicker">Die Lieblinge</span>
+        <h2>Darauf freut man sich <em>schon abends</em></h2>
+      </div>
+      <p class="lead reveal d1">Herzhaft auf Brioche oder Sauerteig, süß als Pancake-Turm – und zum Schluss ein Stück selbstgebackener Kuchen.</p>
+    </div>
+
+    <div class="faves">
+      <article class="fave reveal">
+        <span class="flag">Bestseller</span>
+        <div class="slot" data-label="Foto: Brunch me Baby"><img src="bilder/brunch-me-baby.webp" alt="Brunch me Baby: Briochebrot mit Rührei, Avocado und Cheddar" loading="lazy" onerror="this.remove()"></div>
+        <div class="body">
+          <span class="when">Brioche</span>
+          <h3>Brunch me Baby</h3>
+          <p>Briochebrot mit Rührei, Avocado, Buttersoße und Cheddar – der Klassiker des Hauses.</p>
+        </div>
+      </article>
+      <article class="fave reveal d1">
+        <span class="flag">Bestseller</span>
+        <div class="slot" data-label="Foto: Holy Guacamoly"><img src="bilder/holy-guacamoly.webp" alt="Holy Guacamoly auf Sauerteigbrot" loading="lazy" onerror="this.remove()"></div>
+        <div class="body">
+          <span class="when">Sauerteig</span>
+          <h3>Holy Guacamoly</h3>
+          <p>Die Sauerteigstulle, die neben Brunch me Baby am häufigsten bestellt wird.</p>
+        </div>
+      </article>
+      <article class="fave reveal d2">
+        <div class="slot" data-label="Foto: Pancake-Turm"><img src="bilder/pancake-turm.webp" alt="Hoch gestapelter Pancake-Turm" loading="lazy" onerror="this.remove()"></div>
+        <div class="body">
+          <span class="when">Süß</span>
+          <h3>Pancake-Türme</h3>
+          <p>Hoch gestapelt und kreativ getoppt – das süße Markenzeichen vom Frühstückstraum.</p>
+        </div>
+      </article>
+      <article class="fave reveal d3">
+        <div class="slot" data-label="Foto: Kuchen"><img src="bilder/kuchen.webp" alt="Hausgemachter Kuchen in der Theke" loading="lazy" onerror="this.remove()"></div>
+        <div class="body">
+          <span class="when">Hausgemacht</span>
+          <h3>Kuchen &amp; Torten</h3>
+          <p>Selbst gebacken und wechselnd – passt zum Cappuccino genauso wie als Abschluss nach dem Frühstück.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KARTE ================= -->
+<section class="section karte" id="karte">
+  <div class="wrap karte-grid">
+    <div class="karte-intro reveal">
+      <span class="kicker">Die Karte</span>
+      <h2>Ein kleiner <em>Vorgeschmack</em></h2>
+      <p class="lead">Herzhaft, süß und frisch aufgebrüht. Hier steht, wofür die Gäste immer wiederkommen.</p>
+      <div class="qr-note"><svg aria-hidden="true"><use href="#i-qr"/></svg><span>Die komplette Karte mit allen Preisen gibt es vor Ort – einfach den QR-Code am Tisch scannen.</span></div>
+      <div class="karte-photo slot" data-label="Foto: Cappuccino"><img src="bilder/cappuccino.webp" alt="Cappuccino mit Latte Art" loading="lazy" onerror="this.remove()"></div>
+      <p class="karte-stand">Stand: Oktober 2026 · Preise: <em class="fill">[aus der Karte ergänzen]</em></p>
+    </div>
+
+    <div class="menu-board reveal d1">
+      <div class="menu-block">
+        <header><span class="ico"><svg aria-hidden="true"><use href="#i-bread"/></svg></span><div><b>Brioche &amp; Sauerteig</b><small>Herzhaft belegt, warm serviert</small></div></header>
+        <ul class="mi-list">
+          <li class="mi"><h4>Brunch me Baby <span class="tag tag-best">Bestseller</span></h4><p>Briochebrot mit Rührei, Avocado, Buttersoße und Cheddar.</p></li>
+          <li class="mi"><h4>Holy Guacamoly <span class="tag tag-best">Bestseller</span></h4><p>Die Sauerteigstulle unter den Verkaufsschlagern.</p></li>
+          <li class="mi"><h4>Brioche-Sandwiches</h4><p>Herzhaft belegt, in wechselnden Varianten.</p></li>
+        </ul>
+      </div>
+      <div class="menu-block">
+        <header><span class="ico"><svg aria-hidden="true"><use href="#i-stack"/></svg></span><div><b>Pancakes &amp; Süßes</b><small>Für alle, die zum Frühstück lieber süß mögen</small></div></header>
+        <ul class="mi-list">
+          <li class="mi"><h4>Pancake-Türme <span class="tag tag-sweet">Signature</span></h4><p>Hoch gestapelt, kreativ getoppt.</p></li>
+          <li class="mi"><h4>French Toast</h4><p>Süß, goldbraun gebraten.</p></li>
+          <li class="mi"><h4>Hausgemachte Kuchen &amp; Torten</h4><p>Selbst gebacken, die Sorten wechseln.</p></li>
+        </ul>
+      </div>
+      <div class="menu-block">
+        <header><span class="ico"><svg aria-hidden="true"><use href="#i-coffee"/></svg></span><div><b>Kaffee &amp; Getränke</b><small>Frisch aufgebrüht und frisch gepresst</small></div></header>
+        <ul class="mi-list">
+          <li class="mi"><h4>Kaffeespezialitäten</h4><p>Vom Espresso bis zum Cappuccino.</p></li>
+          <li class="mi"><h4>Matcha</h4><p>Für alle, die es grün mögen.</p></li>
+          <li class="mi"><h4>Tee</h4><p>Zum Beispiel frischer Minztee.</p></li>
+          <li class="mi"><h4>Frisch gepresster Orangensaft</h4><p>Gehört zu einem richtigen Frühstück einfach dazu.</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SIGNATURE ================= -->
+<section class="section" id="pancakes">
+  <div class="wrap signature">
+    <div class="sig-media reveal">
+      <div class="main slot" data-label="Foto: Pancake-Turm groß"><img src="bilder/pancake-turm.webp" alt="Pancake-Turm von der Seite" loading="lazy" onerror="this.remove()"></div>
+      <div class="small slot" data-label="Foto: Detail"><img src="bilder/french-toast.webp" alt="French Toast" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="sig-text reveal d1">
+      <span class="kicker">Signature</span>
+      <h2>Pancakes, <em>aber als Turm.</em></h2>
+      <p class="lead">Ein Pancake allein ist Frühstück. Ein ganzer Turm davon ist ein Frühstückstraum. Kreativ gestapelt und so getoppt, dass erst mal das Handy gezückt wird.</p>
+      <ul class="sig-list">
+        <li>Pancake-Türme als süßes Markenzeichen</li>
+        <li>Brioche-Sandwiches für alle, die es herzhaft mögen</li>
+        <li>Selbstgemachte Kuchen und Torten zum Kaffee</li>
+      </ul>
+      <a class="btn btn-ghost" href="#besuch">So findest du uns <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERIE ================= -->
+<section class="section karte" id="galerie">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="kicker">Galerie</span>
+        <h2>Erst ein Foto, <em>dann der erste Bissen</em></h2>
+      </div>
+      <p class="lead reveal d1">Ein Turm Pancakes, ein warmer Cappuccino, ein Platz unter der Markise. So sieht ein Morgen im Frühstückstraum aus.</p>
+    </div>
+    <div class="gallery reveal">
+      <button class="slot r45" data-full="bilder/pancake-turm.webp" data-label="Pancake-Turm"><img src="bilder/pancake-turm.webp" alt="Pancake-Turm" loading="lazy" onerror="this.remove()"><span>Pancake-Turm</span></button>
+      <button class="slot r11" data-full="bilder/cappuccino.webp" data-label="Cappuccino"><img src="bilder/cappuccino.webp" alt="Cappuccino mit Latte Art" loading="lazy" onerror="this.remove()"><span>Cappuccino</span></button>
+      <button class="slot r34" data-full="bilder/cafe-innen.webp" data-label="Blick ins Café"><img src="bilder/cafe-innen.webp" alt="Blick in das Café Frühstückstraum" loading="lazy" onerror="this.remove()"><span>Blick ins Café</span></button>
+      <button class="slot r45" data-full="bilder/brunch-me-baby.webp" data-label="Brunch me Baby"><img src="bilder/brunch-me-baby.webp" alt="Brunch me Baby" loading="lazy" onerror="this.remove()"><span>Brunch me Baby</span></button>
+      <button class="slot r11" data-full="bilder/o-saft.webp" data-label="Frisch gepresster O-Saft"><img src="bilder/o-saft.webp" alt="Frisch gepresster Orangensaft" loading="lazy" onerror="this.remove()"><span>Frisch gepresster O-Saft</span></button>
+      <button class="slot r45" data-full="bilder/holy-guacamoly.webp" data-label="Holy Guacamoly"><img src="bilder/holy-guacamoly.webp" alt="Holy Guacamoly" loading="lazy" onerror="this.remove()"><span>Holy Guacamoly</span></button>
+      <button class="slot r34" data-full="bilder/kuchen.webp" data-label="Kuchen"><img src="bilder/kuchen.webp" alt="Hausgemachter Kuchen" loading="lazy" onerror="this.remove()"><span>Kuchen</span></button>
+      <button class="slot r11" data-full="bilder/french-toast.webp" data-label="French Toast"><img src="bilder/french-toast.webp" alt="French Toast" loading="lazy" onerror="this.remove()"><span>French Toast</span></button>
+      <button class="slot r45" data-full="bilder/draussen.webp" data-label="Draußen unter der Markise"><img src="bilder/draussen.webp" alt="Tische draußen unter der Markise in der Hasestraße" loading="lazy" onerror="this.remove()"><span>Draußen sitzen</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REELS ================= -->
+<section class="section reels-sec" id="reels">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="kicker">@fruehstueckstraum.os</span>
+        <h2>Frisch auf <em>Instagram</em></h2>
+      </div>
+      <p class="lead reveal d1">Neue Kreationen, neue Kuchen, neue Ideen – zuerst immer auf Instagram.</p>
+    </div>
+    <div class="reels">
+      <a class="reel reveal" href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener">
+        <div class="phone slot" data-label="Reel 1"><video muted loop playsinline preload="none" poster="video/reel-1.webp" aria-label="Reel vom Café Frühstückstraum"><source src="video/reel-1.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video></div>
+        <div class="label"><b>Pancake-Türme</b><span><em class="fill">[Monat]</em></span></div>
+      </a>
+      <a class="reel reveal d1" href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener">
+        <div class="phone slot" data-label="Reel 2"><video muted loop playsinline preload="none" poster="video/reel-2.webp" aria-label="Reel vom Café Frühstückstraum"><source src="video/reel-2.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video></div>
+        <div class="label"><b>Brunch me Baby</b><span><em class="fill">[Monat]</em></span></div>
+      </a>
+      <a class="reel reveal d2" href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener">
+        <div class="phone slot" data-label="Reel 3"><video muted loop playsinline preload="none" poster="video/reel-3.webp" aria-label="Reel vom Café Frühstückstraum"><source src="video/reel-3.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video></div>
+        <div class="label"><b>Hinter dem Tresen</b><span><em class="fill">[Monat]</em></span></div>
+      </a>
+    </div>
+    <div class="insta-cta"><a class="btn btn-light" href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-insta"/></svg>Frühstückstraum auf Instagram folgen</a></div>
+  </div>
+</section>
+
+<!-- ================= STORY ================= -->
+<section class="section story-sec" id="story">
+  <div class="wrap story">
+    <div class="story-photo slot reveal" data-label="Foto: Jeremy &amp; Team"><img src="bilder/team.webp" alt="Jeremy Karikari mit seinem Team im Café" loading="lazy" onerror="this.remove()"></div>
+    <div class="story-text reveal d1">
+      <span class="kicker">Über uns</span>
+      <h2>Frühstück <em>statt Fußball</em></h2>
+      <p class="lead">Jeremy Karikari war Fußballprofi. Seit Mai 2025 steht er für sein eigenes Café ein: in den frisch renovierten Räumen der früheren Eisdiele Rialto in der Hasestraße.</p>
+      <p class="lead">Zum Frühstück kommen alle – Studierende, Eltern mit Kinderwagen, ältere Stammgäste. Für die Kleinsten gibt es eine Spielecke.</p>
+      <blockquote class="quote">
+        <p>Ich habe von Tag eins an ein super Team. Wir kommen immer besser rein. Es ist halt Learning by Doing.</p>
+        <footer>Jeremy Karikari im Gespräch mit der <a href="https://www.hasepost.de/fruehstueck-statt-fussball-cafe-fruehstueckstraum-begeistert-die-osnabruecker-altstadt-612622/" target="_blank" rel="noopener">HASEPOST</a>, Juli 2025</footer>
+      </blockquote>
+      <div class="facts">
+        <div><b>Mai 2025</b><span>eröffnet</span></div>
+        <div><b>38</b><span>Plätze, draußen inklusive</span></div>
+        <div><b>Di–So</b><span>ab 9 Uhr geöffnet</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BESUCH ================= -->
+<section class="section" id="besuch">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="kicker">Besuch</span>
+        <h2>Komm vorbei, <em>der Kaffee läuft schon</em></h2>
+      </div>
+      <p class="lead reveal d1">In der Osnabrücker Altstadt, Hasestraße 5. Drinnen gemütlich, draußen unter der Markise.</p>
+    </div>
+    <div class="visit">
+      <div class="visit-card reveal">
+        <h3>Café Frühstückstraum</h3>
+        <ul class="contact-list">
+          <li><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Hasestraße 5<br>49074 Osnabrück</span></li>
+          <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span>Dienstag bis Sonntag ab 9 Uhr</span></li>
+          <li><svg aria-hidden="true"><use href="#i-insta"/></svg><a href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener">@fruehstueckstraum.os</a></li>
+        </ul>
+        <div class="perks">
+          <span><svg aria-hidden="true"><use href="#i-sun"/></svg>Draußen sitzen</span>
+          <span><svg aria-hidden="true"><use href="#i-bag"/></svg>Zum Mitnehmen</span>
+          <span><svg aria-hidden="true"><use href="#i-blocks"/></svg>Spielecke für Kinder</span>
+          <span><svg aria-hidden="true"><use href="#i-card"/></svg>Kartenzahlung</span>
+        </div>
+      </div>
+      <div class="visit-card reveal d1">
+        <h3>Öffnungszeiten</h3>
+        <table class="hours">
+          <tbody>
+            <tr data-day="1" class="closed"><td>Montag</td><td>Ruhetag</td></tr>
+            <tr data-day="2"><td>Dienstag</td><td>09:00 – 16:00</td></tr>
+            <tr data-day="3"><td>Mittwoch</td><td>09:00 – 16:00</td></tr>
+            <tr data-day="4"><td>Donnerstag</td><td>09:00 – 16:00</td></tr>
+            <tr data-day="5"><td>Freitag</td><td>09:00 – 16:00</td></tr>
+            <tr data-day="6"><td>Samstag</td><td>09:00 – 16:00</td></tr>
+            <tr data-day="0"><td>Sonntag</td><td>09:00 – 16:00</td></tr>
+          </tbody>
+        </table>
+        <p class="fine">An Feiertagen können die Zeiten abweichen – aktuelle Infos stehen immer auf Instagram.</p>
+      </div>
+      <div class="map reveal" id="map">
+        <div class="map-inner">
+          <svg width="40" height="40" aria-hidden="true"><use href="#i-pin"/></svg>
+          <h3>Hasestraße 5</h3>
+          <p>Die Karte wird erst nach Klick von OpenStreetMap geladen. Dabei wird deine IP-Adresse an OpenStreetMap übertragen.</p>
+          <div class="row">
+            <button class="btn btn-light" id="load-map" type="button">Karte anzeigen</button>
+            <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Hasestra%C3%9Fe+5%2C+49074+Osnabr%C3%BCck" target="_blank" rel="noopener">Route planen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hello reveal">
+      <div>
+        <h3>Mit Kinderwagen, Laptop oder der ganzen Clique?</h3>
+        <p>Alle sind willkommen. Für die Kleinen gibt es eine Spielecke, für alle anderen Kaffee und Pancakes.</p>
+      </div>
+      <a class="btn btn-primary" href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-insta"/></svg>Neuigkeiten auf Instagram</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#start" aria-label="Café Frühstückstraum – zum Anfang"><svg aria-hidden="true" width="56" height="56"><use href="#logo"/></svg><span class="brand-word"><b style="color:#fff">Frühstückstraum</b><span style="color:#d3c3b4">CAFÉ · OSNABRÜCK</span></span></a>
+        <p>Pancake-Türme, Brioche-Sandwiches, hausgemachter Kuchen und guter Kaffee – in der Hasestraße&nbsp;5.</p>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <ul>
+          <li>Hasestraße 5, 49074 Osnabrück</li>
+          <li><a href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener">Instagram</a></li>
+          <li>Telefon: <em class="fill">[bitte ergänzen]</em></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Geöffnet</h3>
+        <ul>
+          <li>Di–So 9–16 Uhr</li>
+          <li>Montag Ruhetag</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal">
+      <details id="impressum">
+        <summary>Impressum</summary>
+        <div class="txt">
+          <h4>Angaben gemäß § 5 DDG</h4>
+          <p>Café Frühstückstraum<br>Inhaber/in bzw. Firma: <em class="fill">[bitte ergänzen]</em><br>Hasestraße 5<br>49074 Osnabrück</p>
+          <h4>Kontakt</h4>
+          <p>Telefon: <em class="fill">[bitte ergänzen]</em><br>E-Mail: <em class="fill">[bitte ergänzen]</em></p>
+          <h4>Umsatzsteuer</h4>
+          <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG bzw. Steuernummer: <em class="fill">[bitte ergänzen]</em></p>
+          <h4>Verantwortlich für den Inhalt</h4>
+          <p><em class="fill">[Name und Anschrift bitte ergänzen]</em></p>
+          <h4>Verbraucherstreitbeilegung</h4>
+          <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        </div>
+      </details>
+      <details id="datenschutz">
+        <summary>Datenschutz</summary>
+        <div class="txt">
+          <h4>Verantwortliche Stelle</h4>
+          <p>Café Frühstückstraum, <em class="fill">[Inhaber/in bitte ergänzen]</em>, Hasestraße 5, 49074 Osnabrück.</p>
+          <h4>Hosting und Server-Logfiles</h4>
+          <p>Beim Aufruf dieser Seite verarbeitet der Hoster technisch notwendige Daten (IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browsertyp), um die Seite auszuliefern und die Sicherheit zu gewährleisten (Art. 6 Abs. 1 lit. f DSGVO). Hoster: <em class="fill">[bitte ergänzen]</em></p>
+          <h4>Keine Cookies, kein Tracking</h4>
+          <p>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Werbedienste. Schriften, Bilder und Videos liegen auf unserem eigenen Server; beim Aufruf werden keine Daten an Google oder andere Dritte übertragen.</p>
+          <h4>Karte (OpenStreetMap)</h4>
+          <p>Die Karte im Bereich „Besuch“ wird erst geladen, wenn du auf „Karte anzeigen“ klickst. Dann wird deine IP-Adresse an die OpenStreetMap Foundation übertragen (Art. 6 Abs. 1 lit. a DSGVO).</p>
+          <h4>Externe Links</h4>
+          <p>Links zu Instagram, Google Maps und zur HASEPOST führen auf Angebote anderer Anbieter. Erst beim Anklicken gelten deren Datenschutzbestimmungen.</p>
+          <h4>Deine Rechte</h4>
+          <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde, etwa der Landesbeauftragten für den Datenschutz Niedersachsen.</p>
+        </div>
+      </details>
+    </div>
+    <div class="copy">
+      <span>© <span id="year">2026</span> Café Frühstückstraum, Osnabrück · Designentwurf, keine offizielle Website</span>
+      <span><a href="#impressum" data-open="impressum">Impressum</a> · <a href="#datenschutz" data-open="datenschutz">Datenschutz</a></span>
+    </div>
+  </div>
+</footer>
+
+<nav class="action-bar" aria-label="Schnellzugriff">
+  <a href="#karte"><svg aria-hidden="true"><use href="#i-coffee"/></svg>Karte</a>
+  <a class="main" href="https://www.google.com/maps/dir/?api=1&amp;destination=Hasestra%C3%9Fe+5%2C+49074+Osnabr%C3%BCck" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-pin"/></svg>Route</a>
+  <a href="https://www.instagram.com/fruehstueckstraum.os/" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-insta"/></svg>Instagram</a>
+</nav>
+
+<dialog class="lightbox" id="lightbox" aria-label="Bild vergrößert">
+  <button type="button" aria-label="Schließen"><svg width="22" height="22" aria-hidden="true"><use href="#i-close"/></svg></button>
+  <img alt="">
+  <p></p>
+</dialog>
+
+<script>
+(() => {
+  // Öffnungszeiten in Osnabrück, unabhängig von der Zeitzone des Besuchers (null = Ruhetag)
+  const HOURS = { 0: [9, 16], 1: null, 2: [9, 16], 3: [9, 16], 4: [9, 16], 5: [9, 16], 6: [9, 16] };
+  const DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Berlin', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false })
+    .formatToParts(new Date()).map(p => [p.type, p.value]));
+  const today = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+  const now = (+parts.hour % 24) + (+parts.minute) / 60;
+  const pad = h => String(h).padStart(2, '0') + ':00';
+  const nextOpen = () => {
+    for (let k = 1; k <= 7; k++) {
+      const d = (today + k) % 7;
+      if (HOURS[d]) return `öffnet ${k === 1 ? 'morgen' : DAYS[d]} um ${pad(HOURS[d][0])} Uhr`;
+    }
+    return '';
+  };
+  const status = document.getElementById('status');
+  const h = HOURS[today];
+  let text;
+  if (!h) text = `<b>Heute Ruhetag</b> · ${nextOpen()}`;
+  else if (now >= h[0] && now < h[1]) { status.classList.add('open'); text = `<b>Jetzt geöffnet</b> · heute bis ${pad(h[1])} Uhr`; }
+  else if (now < h[0]) text = `<b>Noch geschlossen</b> · öffnet heute um ${pad(h[0])} Uhr`;
+  else text = `<b>Geschlossen</b> · ${nextOpen()}`;
+  status.querySelector('span').innerHTML = text;
+  document.querySelector(`.hours tr[data-day="${today}"]`)?.classList.add('is-today');
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Header-Linie beim Scrollen
+  const header = document.querySelector('.site-header');
+  const onScroll = () => header.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Mobile-Menü
+  const toggle = document.querySelector('.menu-toggle');
+  const links = document.getElementById('nav-links');
+  toggle.addEventListener('click', () => {
+    const isOpen = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
+  });
+  links.addEventListener('click', e => { if (e.target.closest('a')) { links.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } });
+
+  // Einblenden beim Scrollen
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add('in');
+      io.unobserve(en.target);
+    });
+  }, { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Reels nur abspielen, wenn sichtbar
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const vio = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      const v = en.target;
+      if (en.isIntersecting && !reduce) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+    });
+  }, { threshold: .35 });
+  document.querySelectorAll('.reel video').forEach(v => vio.observe(v));
+
+  // Hero-Video: falls der Browser Autoplay verweigert, beim ersten Tippen/Scrollen starten
+  const hero = document.querySelector('.arch video');
+  if (hero) {
+    if (reduce) hero.pause();
+    else if (hero.paused) {
+      const kick = () => hero.isConnected && hero.play().then(() => ['pointerdown', 'scroll', 'keydown'].forEach(t => removeEventListener(t, kick))).catch(() => {});
+      kick();
+      ['pointerdown', 'scroll', 'keydown'].forEach(t => addEventListener(t, kick, { passive: true }));
+    }
+  }
+
+  // Lightbox (nur für Bilder, die wirklich da sind)
+  const box = document.getElementById('lightbox');
+  document.querySelectorAll('.gallery button').forEach(b => b.addEventListener('click', () => {
+    const img = b.querySelector('img');
+    if (!img) return;
+    box.querySelector('img').src = b.dataset.full;
+    box.querySelector('img').alt = img.alt;
+    box.querySelector('p').textContent = b.querySelector('span').textContent;
+    box.showModal();
+  }));
+  box.addEventListener('click', e => { if (e.target === box || e.target.closest('button')) box.close(); });
+
+  // Karte erst nach Klick laden
+  document.getElementById('load-map').addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.title = 'Karte: Café Frühstückstraum, Hasestraße 5, Osnabrück';
+    f.loading = 'lazy';
+    f.src = 'https://www.openstreetmap.org/export/embed.html?bbox=8.0399%2C52.2789%2C8.0472%2C52.2826&layer=mapnik&marker=52.2807515%2C8.0435217';
+    document.getElementById('map').appendChild(f);
+  });
+
+  // Impressum/Datenschutz aus dem Footer-Link aufklappen
+  document.querySelectorAll('[data-open]').forEach(a => a.addEventListener('click', () => { document.getElementById(a.dataset.open).open = true; }));
+  if (location.hash === '#impressum' || location.hash === '#datenschutz') document.querySelector(location.hash).open = true;
+})();
+</script>
+</body>
+</html>
