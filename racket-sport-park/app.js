@@ -20,6 +20,7 @@
   const DAY_SHORT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   const GRID_START = 600, GRID_END = 1320;
   const MAX_SLOTS = 4;
+  const EMBED = !!window.RSP_EMBED; // eingebettete Vorschau: keine Datei-Downloads, fester Seitentitel
 
   const SPORTS = {
     padel: {
@@ -222,8 +223,8 @@
           <div class="sport-price">${esc(s.from)} <small>${esc(s.fromUnit)}</small></div>
           <p>${esc(s.teaser)}</p>
           <div class="sport-actions">
-            <a class="btn btn-dark" href="#/buchen?sport=${k}">Buchen</a>
-            <a class="btn btn-ghost" href="#/sport/${k}">Infos</a>
+            <a class="btn btn-dark" href="#buchen-${k}">Buchen</a>
+            <a class="btn btn-ghost" href="#sport-${k}">Infos</a>
           </div>
         </div>
       </article>`;
@@ -246,17 +247,17 @@
 
   function renderSport(key) {
     const s = SPORTS[key], v = $('#view-sport');
-    if (!s) { location.hash = '#/sportarten'; return; }
+    if (!s) { location.hash = '#sportarten'; return; }
     v.innerHTML = `<div class="wrap section" style="--acc:${s.color}">
-      <p class="crumb"><a href="#/sportarten">Sportarten</a> / ${esc(s.name)}</p>
+      <p class="crumb"><a href="#sportarten">Sportarten</a> / ${esc(s.name)}</p>
       <div class="sport-hero">
         <div>
           <p class="eyebrow">Sportart</p>
           <h1>${esc(s.name)}</h1>
           <p class="lead-dark">${esc(s.intro)}</p>
           <div class="hero-actions">
-            <a class="btn btn-dark btn-lg" href="#/buchen?sport=${key}">${esc(s.name)} buchen</a>
-            <a class="btn btn-ghost btn-lg" href="#/preise" data-jump="p-${key}">Preise</a>
+            <a class="btn btn-dark btn-lg" href="#buchen-${key}">${esc(s.name)} buchen</a>
+            <a class="btn btn-ghost btn-lg" href="#preise" data-jump="p-${key}">Preise</a>
           </div>
         </div>
         <div class="art">${courtSvg(key)}</div>
@@ -344,8 +345,8 @@
     h += `</div><div class="panel"><h2>Leihmaterial</h2>
       <div class="opt"><div><b>Leihschläger</b><span>${eur(s.rent.racket)} pro Person, einmal pro Buchung</span></div>${numStepper('rackets', B.rackets, 0, B.players, 'Leihschläger')}</div>`;
     if (s.rent.shoes) h += `<div class="opt"><div><b>Leih-Tennisschuhe</b><span>${eur(s.rent.shoes)} pro Person. Pflicht sind Teppichschuhe ohne Profil.</span></div>${numStepper('shoes', B.shoes, 0, B.players, 'Leihschuhe')}</div>`;
-    if (s.rent.balls) h += `<div class="opt"><label class="check"><input type="checkbox" data-flag="balls" ${B.balls ? 'checked' : ''}><span><b>Leihbälle</b> · ${eur(s.rent.balls)} pro Buchung</span></label></div>`;
-    if (s.rent.ttball) h += `<div class="opt"><label class="check"><input type="checkbox" data-flag="ttball" ${B.ttball ? 'checked' : ''}><span><b>Touchtennisball kaufen</b> · ${eur(s.rent.ttball)}. Ohne eigenen Ball geht es nicht.</span></label></div>`;
+    if (s.rent.balls) h += `<div class="opt"><label class="check"><input type="checkbox" id="b-balls" data-flag="balls" ${B.balls ? 'checked' : ''}><span><b>Leihbälle</b> · ${eur(s.rent.balls)} pro Buchung</span></label></div>`;
+    if (s.rent.ttball) h += `<div class="opt"><label class="check"><input type="checkbox" id="b-ttball" data-flag="ttball" ${B.ttball ? 'checked' : ''}><span><b>Touchtennisball kaufen</b> · ${eur(s.rent.ttball)}. Ohne eigenen Ball geht es nicht.</span></label></div>`;
     h += `</div>
       <div class="notice info"><div><b>Hansefit-Mitglied?</b>Eine Einheit pro Tag ist für dich enthalten. Dein Anteil wird an der Theke abgezogen, Mitspieler zahlen ihren Anteil.</div></div>
       <div class="notice warn"><div><b>Schuhe</b>${esc(s.shoes)}</div></div>`;
@@ -357,9 +358,9 @@
     const e = B.errors;
     return `<div class="panel"><h2>Deine Angaben</h2>
         <div class="form-grid">
-          <label class="full">Vor- und Nachname <input data-field="name" autocomplete="name" value="${esc(B.name)}" class="${e.name ? 'err' : ''}">${e.name ? `<span class="field-err">${e.name}</span>` : ''}</label>
-          <label>E-Mail für die Bestätigung <input data-field="email" type="email" autocomplete="email" inputmode="email" value="${esc(B.email)}" class="${e.email ? 'err' : ''}">${e.email ? `<span class="field-err">${e.email}</span>` : ''}</label>
-          <label>Telefon (optional) <input data-field="phone" type="tel" autocomplete="tel" value="${esc(B.phone)}"></label>
+          <label class="full">Vor- und Nachname <input id="b-name" data-field="name" autocomplete="name" value="${esc(B.name)}" class="${e.name ? 'err' : ''}">${e.name ? `<span class="field-err">${e.name}</span>` : ''}</label>
+          <label>E-Mail für die Bestätigung <input id="b-email" data-field="email" type="email" autocomplete="email" inputmode="email" value="${esc(B.email)}" class="${e.email ? 'err' : ''}">${e.email ? `<span class="field-err">${e.email}</span>` : ''}</label>
+          <label>Telefon (optional) <input id="b-phone" data-field="phone" type="tel" autocomplete="tel" value="${esc(B.phone)}"></label>
         </div>
         <p class="hint">Kein Kundenkonto nötig. Mit einem Konto könntest du später Stammdaten speichern.</p>
       </div>
@@ -367,7 +368,7 @@
         <div class="notice ${late ? 'warn' : 'ok'}"><div><b>${late ? 'Nicht mehr kostenlos stornierbar' : 'Kostenlos stornierbar bis ' + stamp(dl)}</b>${late ? 'Der Termin beginnt in weniger als 24 Stunden. Bei einer Absage wird der Platz voll berechnet.' : 'Danach wird der Platz voll berechnet.'}</div></div>
         <div class="notice info"><div><b>Bezahlung vor Ort</b>Du zahlst an der Theke. Online wird nichts abgebucht.</div></div>
         <div class="notice warn"><div><b>Schuhe</b>${esc(s.shoes)}</div></div>
-        <label class="check" style="margin-top:16px"><input type="checkbox" data-flag="agree" ${B.agree ? 'checked' : ''}><span>Ich habe die Stornoregel und die Schuhregel gelesen.</span></label>
+        <label class="check" style="margin-top:16px"><input type="checkbox" id="b-agree" data-flag="agree" ${B.agree ? 'checked' : ''}><span>Ich habe die Stornoregel und die Schuhregel gelesen.</span></label>
         ${e.agree ? `<span class="field-err">${e.agree}</span>` : ''}
       </div>`;
   }
@@ -405,8 +406,8 @@
         <dt>Kostenlos stornierbar</dt><dd>${late ? 'nicht mehr möglich' : 'bis ' + stamp(dl)}</dd>
       </dl></div>
       <div class="confirm-actions">
-        <button type="button" class="btn btn-dark" data-ics="${esc(bk.id)}">In den Kalender eintragen</button>
-        <a class="btn btn-ghost" href="#/meine-buchungen">Meine Buchungen</a>
+        ${EMBED ? '' : `<button type="button" class="btn btn-dark" data-ics="${esc(bk.id)}">In den Kalender eintragen</button>`}
+        <a class="btn ${EMBED ? 'btn-dark' : 'btn-ghost'}" href="#meine-buchungen">Meine Buchungen</a>
         <button type="button" class="btn btn-ghost" data-again>Weitere Zeit buchen</button>
       </div>
       <p class="hint" style="margin-top:18px">Design-Entwurf: Es wurde nichts an den Racket Sport Park übermittelt und keine E-Mail verschickt.</p>
@@ -485,14 +486,14 @@
   function renderMine() {
     const all = store.get(), root = $('#mineRoot');
     if (!all.length) {
-      root.innerHTML = `<div class="panel empty"><p><b>Du hast noch nichts gebucht.</b></p><p style="margin:6px 0 16px">Sobald du eine Buchung abschließt, erscheint sie hier mit Buchungsnummer und Stornofrist.</p><a class="btn btn-dark" href="#/buchen">Freie Plätze ansehen</a></div>`;
+      root.innerHTML = `<div class="panel empty"><p><b>Du hast noch nichts gebucht.</b></p><p style="margin:6px 0 16px">Sobald du eine Buchung abschließt, erscheint sie hier mit Buchungsnummer und Stornofrist.</p><a class="btn btn-dark" href="#buchen">Freie Plätze ansehen</a></div>`;
       return;
     }
     root.innerHTML = all.map(bk => {
       const s = SPORTS[bk.sport], st = bookingState(bk), dl = new Date(bk.deadline), free = dl > new Date();
       const chip = st === 'confirmed' ? '<span class="state-chip ok"><i></i>Gebucht</span>' : st === 'cancelled' ? '<span class="state-chip bad"><i></i>Storniert</span>' : '<span class="state-chip past"><i></i>Vorbei</span>';
       const foot = st === 'confirmed'
-        ? `<span>${free ? 'Kostenlos stornierbar bis ' + stamp(dl) : 'Stornofrist abgelaufen: Absage wird voll berechnet'}</span><div><button type="button" class="btn btn-ghost" data-ics="${esc(bk.id)}">Kalender</button><button type="button" class="btn btn-ghost" data-cancel="${esc(bk.id)}">Stornieren</button></div>`
+        ? `<span>${free ? 'Kostenlos stornierbar bis ' + stamp(dl) : 'Stornofrist abgelaufen: Absage wird voll berechnet'}</span><div>${EMBED ? '' : `<button type="button" class="btn btn-ghost" data-ics="${esc(bk.id)}">Kalender</button>`}<button type="button" class="btn btn-ghost" data-cancel="${esc(bk.id)}">Stornieren</button></div>`
         : st === 'cancelled' ? `<span>Storniert am ${stamp(new Date(bk.cancelledAt))}${bk.fee ? ' · Platz wird berechnet' : ' · kostenlos'}</span>` : `<span>Dieser Termin liegt in der Vergangenheit.</span>`;
       return `<article class="booking ${st}" style="--acc:${s.color}">
         <div class="booking-head"><div>${chip}<h2>${esc(s.name)} · ${dateFull(bk.date)}</h2>
@@ -534,14 +535,17 @@
   let pendingJump = null;
 
   function route() {
-    const raw = location.hash.replace(/^#\/?/, ''), [path, query] = raw.split('?');
-    const parts = path.split('/').filter(Boolean), params = new URLSearchParams(query || '');
-    let view = parts[0] || 'home';
+    // Adressen sind schlichte Anker: #preise, #sport-padel, #buchen-padel
+    const raw = location.hash.slice(1);
+    let view = raw || 'home', arg = null;
+    if (raw === 'start') view = 'home';
+    else if (raw.indexOf('sport-') === 0) { view = 'sport'; arg = raw.slice(6); }
+    else if (raw.indexOf('buchen-') === 0) { view = 'buchen'; arg = raw.slice(7); }
     if (VIEWS.indexOf(view) < 0) view = 'home';
 
-    if (view === 'sport') renderSport(parts[1]);
+    if (view === 'sport') renderSport(arg);
     if (view === 'buchen') {
-      const sp = params.get('sport');
+      const sp = arg;
       if (sp && SPORTS[sp] && (sp !== B.sport || B.step === 4)) { setSport(sp); B.date = firstBookableDate(); }
       else if (B.step === 4) { B.step = 1; }
       if (isPast(B.date, GRID_END)) B.date = firstBookableDate();
@@ -554,7 +558,7 @@
       const on = a.dataset.nav === view || (a.dataset.nav === 'sportarten' && view === 'sport');
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
-    document.title = (view === 'sport' && SPORTS[parts[1]] ? SPORTS[parts[1]].name : TITLES[view]) + ' – Racket Sport Park Osnabrück (Entwurf)';
+    if (!EMBED) document.title = (view === 'sport' && SPORTS[arg] ? SPORTS[arg].name : TITLES[view]) + ' – Racket Sport Park Osnabrück (Entwurf)';
     $('#nav').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', 'false');
 
     if (pendingJump) { const t = document.getElementById(pendingJump); pendingJump = null; if (t) { t.scrollIntoView(); return; } }
@@ -565,13 +569,14 @@
   document.addEventListener('click', e => {
     const t = e.target.closest('button, a'); if (!t) return;
 
+    if (t.hasAttribute('data-skip')) { e.preventDefault(); $('#main').focus(); return; }
     if (t.dataset.jump) {
       pendingJump = t.dataset.jump;
       if (location.hash === t.getAttribute('href')) { e.preventDefault(); route(); }
       return;
     }
     if (t.id === 'menuBtn') { const open = $('#nav').classList.toggle('open'); t.setAttribute('aria-expanded', open); return; }
-    if (t.dataset.sport) { setSport(t.dataset.sport); B.date = firstBookableDate(); history.replaceState(null, '', '#/buchen?sport=' + B.sport); return renderBooking(); }
+    if (t.dataset.sport) { setSport(t.dataset.sport); B.date = firstBookableDate(); return renderBooking(); }
     if (t.dataset.date) { B.date = t.dataset.date; B.slots = []; return renderBooking(); }
     if (t.dataset.start !== undefined && t.classList.contains('slot')) {
       const c = +t.dataset.court, st = +t.dataset.start, i = B.slots.findIndex(x => x.court === c && x.start === st);

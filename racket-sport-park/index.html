@@ -16,15 +16,14 @@
 </head>
 <body>
 
-<div class="demo-bar" role="note">
-  <strong>Design-Entwurf</strong> · keine offizielle Seite des Racket Sport Park · Belegung simuliert, Buchungen werden nicht übermittelt
-</div>
-
-<a class="skip" href="#main">Zum Inhalt springen</a>
+<a class="skip" href="#start" data-skip>Zum Inhalt springen</a>
 
 <header class="site-header">
+  <div class="demo-bar" role="note">
+    <strong>Design-Entwurf</strong> · keine offizielle Seite<span class="long"> des Racket Sport Park · Belegung simuliert</span> · Buchungen sind nicht echt
+  </div>
   <div class="wrap header-row">
-    <a class="brand" href="#/" aria-label="Racket Sport Park – Startseite">
+    <a class="brand" href="#start" aria-label="Racket Sport Park – Startseite">
       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#D4F03A"/><path d="M5 12c8 3 12 9 12 17M35 12c-8 3-12 9-12 17" fill="none" stroke="#0E2A20" stroke-width="2.4" stroke-linecap="round"/></svg>
       <span><b>Racket Sport Park</b><small>Osnabrück</small></span>
     </a>
@@ -34,13 +33,13 @@
     </button>
 
     <nav id="nav" class="nav" aria-label="Hauptnavigation">
-      <a href="#/sportarten" data-nav="sportarten">Sportarten</a>
-      <a href="#/preise" data-nav="preise">Preise</a>
-      <a href="#/angebote" data-nav="angebote">Angebote</a>
-      <a href="#/park" data-nav="park">Der Park</a>
-      <a href="#/kontakt" data-nav="kontakt">Kontakt</a>
-      <a href="#/meine-buchungen" data-nav="meine-buchungen" class="nav-mine">Meine Buchungen <span class="count" id="mineCount" hidden>0</span></a>
-      <a href="#/buchen" data-nav="buchen" class="btn btn-accent nav-cta">Platz buchen</a>
+      <a href="#sportarten" data-nav="sportarten">Sportarten</a>
+      <a href="#preise" data-nav="preise">Preise</a>
+      <a href="#angebote" data-nav="angebote">Angebote</a>
+      <a href="#park" data-nav="park">Der Park</a>
+      <a href="#kontakt" data-nav="kontakt">Kontakt</a>
+      <a href="#meine-buchungen" data-nav="meine-buchungen" class="nav-mine">Meine Buchungen <span class="count" id="mineCount" hidden>0</span></a>
+      <a href="#buchen" data-nav="buchen" class="btn btn-accent nav-cta">Platz buchen</a>
     </nav>
   </div>
 </header>
@@ -56,8 +55,8 @@
           <h1>Vier Schlägersportarten.<br>Ein Dach. <em>Ein Klick zum Platz.</em></h1>
           <p class="lead">Such dir Sportart, Tag und Uhrzeit aus – der Preis steht direkt am freien Platz. Du siehst jederzeit, ob du schon gebucht hast oder noch nicht.</p>
           <div class="hero-actions">
-            <a class="btn btn-accent btn-lg" href="#/buchen">Freie Plätze ansehen</a>
-            <a class="btn btn-ghost-light btn-lg" href="#/preise">Alle Preise</a>
+            <a class="btn btn-accent btn-lg" href="#buchen">Freie Plätze ansehen</a>
+            <a class="btn btn-ghost-light btn-lg" href="#preise">Alle Preise</a>
           </div>
         </div>
         <aside class="status-card" aria-label="Öffnungszeiten">
@@ -95,22 +94,22 @@
         <h2>Mehr im Park</h2>
       </div>
       <div class="tiles">
-        <a class="tile" href="#/angebote">
+        <a class="tile" href="#angebote">
           <span class="tag">Für Kinder</span>
           <h3>Geburtstag auf dem Badmintoncourt</h3>
           <p>Ab 9 € pro Kind, Schläger und Bälle inklusive. Das Geburtstagskind spielt gratis.</p>
         </a>
-        <a class="tile" href="#/angebote">
+        <a class="tile" href="#angebote">
           <span class="tag">Montags 18:15 Uhr</span>
           <h3>Offener Badminton-Spielertreff</h3>
           <p>Neue Spielpartner finden. Schläger und Bälle werden gestellt.</p>
         </a>
-        <a class="tile" href="#/angebote">
+        <a class="tile" href="#angebote">
           <span class="tag">Hansefit</span>
           <h3>Mit Hansefit spielen</h3>
           <p>Eine Einheit pro Tag ist für Mitglieder enthalten.</p>
         </a>
-        <a class="tile" href="#/park">
+        <a class="tile" href="#park">
           <span class="tag">Vor Ort</span>
           <h3>Gastronomie, Biergarten &amp; Shop</h3>
           <p>Nach dem Match etwas trinken, Schläger bespannen lassen oder neues Material testen.</p>
@@ -166,11 +165,11 @@
       </div>
 
       <nav class="chip-nav" aria-label="Sprung zu Sportart">
-        <a href="#/preise" data-jump="p-padel">Padel</a>
-        <a href="#/preise" data-jump="p-tennis">Tennis</a>
-        <a href="#/preise" data-jump="p-badminton">Badminton</a>
-        <a href="#/preise" data-jump="p-touchtennis">Touchtennis</a>
-        <a href="#/preise" data-jump="p-leih">Leihmaterial</a>
+        <a href="#preise" data-jump="p-padel">Padel</a>
+        <a href="#preise" data-jump="p-tennis">Tennis</a>
+        <a href="#preise" data-jump="p-badminton">Badminton</a>
+        <a href="#preise" data-jump="p-touchtennis">Touchtennis</a>
+        <a href="#preise" data-jump="p-leih">Leihmaterial</a>
       </nav>
 
       <div class="price-grid">
@@ -188,7 +187,7 @@
             <li>Kinder bis 12 Jahre: 4,50 € je Stunde</li>
             <li>Schüler bis 18 &amp; Studierende: −1 € je Stunde</li>
           </ul>
-          <a class="btn btn-dark" href="#/buchen?sport=padel">Padel buchen</a>
+          <a class="btn btn-dark" href="#buchen-padel">Padel buchen</a>
         </article>
 
         <article class="price-card" id="p-tennis" style="--acc:var(--tennis)">
@@ -207,7 +206,7 @@
             <li>Schüler bis 18 &amp; Studierende: −1 €</li>
             <li>Tennis-Abo: Preis auf Anfrage</li>
           </ul>
-          <a class="btn btn-dark" href="#/buchen?sport=tennis">Tennis buchen</a>
+          <a class="btn btn-dark" href="#buchen-tennis">Tennis buchen</a>
         </article>
 
         <article class="price-card" id="p-badminton" style="--acc:var(--badminton)">
@@ -226,7 +225,7 @@
             <li>Licht inklusive</li>
             <li>Schüler bis 18 &amp; Studierende: −1 €</li>
           </ul>
-          <a class="btn btn-dark" href="#/buchen?sport=badminton">Badminton buchen</a>
+          <a class="btn btn-dark" href="#buchen-badminton">Badminton buchen</a>
         </article>
 
         <article class="price-card" id="p-touchtennis" style="--acc:var(--touch)">
@@ -242,7 +241,7 @@
             <li>Licht inklusive, gleicher Preis zu allen Zeiten</li>
             <li>Der Touchtennisball wird gekauft: 6 €</li>
           </ul>
-          <a class="btn btn-dark" href="#/buchen?sport=touchtennis">Touchtennis buchen</a>
+          <a class="btn btn-dark" href="#buchen-touchtennis">Touchtennis buchen</a>
         </article>
       </div>
 
@@ -269,7 +268,7 @@
         <article class="info-card">
           <h2>Stornieren</h2>
           <p>Bis 24 Stunden vor Spielbeginn kostenlos. Danach wird der Platz voll berechnet. Die genaue Frist steht in jeder Buchung.</p>
-          <a class="text-link" href="#/meine-buchungen">Zu meinen Buchungen</a>
+          <a class="text-link" href="#meine-buchungen">Zu meinen Buchungen</a>
         </article>
       </div>
     </div>
@@ -292,7 +291,7 @@
             <li>Die Aufsicht bleibt bei den Begleitpersonen.</li>
             <li>Saubere Hallenschuhe mit heller Sohle mitbringen.</li>
           </ul>
-          <a class="btn btn-dark" href="#/kontakt">Geburtstag anfragen</a>
+          <a class="btn btn-dark" href="#kontakt">Geburtstag anfragen</a>
         </div>
         <div class="packages">
           <div class="package">
@@ -345,7 +344,7 @@
           <span class="tag">Tennis</span>
           <h2>Abo &amp; Training</h2>
           <p>Feste Wochenstunde gesucht oder Interesse an Training? Abo-Preise und Trainingszeiten gibt es auf Anfrage.</p>
-          <a class="text-link" href="#/kontakt">Anfrage stellen</a>
+          <a class="text-link" href="#kontakt">Anfrage stellen</a>
         </article>
       </div>
     </div>
@@ -376,7 +375,7 @@
         <article class="info-card">
           <h2>Leihmaterial</h2>
           <p>Schläger für alle Sportarten, Bälle und Tennisschuhe kannst du direkt bei der Buchung dazunehmen.</p>
-          <a class="text-link" href="#/preise" data-jump="p-leih">Leihpreise ansehen</a>
+          <a class="text-link" href="#preise" data-jump="p-leih">Leihpreise ansehen</a>
         </article>
       </div>
 
@@ -390,7 +389,7 @@
           <span class="tag">Job</span>
           <h3>Theken- und Servicekraft (m/w/d), Minijob</h3>
           <p>Gäste bedienen, Buchungen annehmen, kassieren. Freitags 15–22 Uhr, am Wochenende 10–20 Uhr. Die Plätze nutzt du kostenlos.</p>
-          <a class="text-link" href="mailto:info@racketsportpark.de">Per E-Mail bewerben</a>
+          <p>Bewerbung an <a class="text-link" href="mailto:info@racketsportpark.de">info@racketsportpark.de</a></p>
         </aside>
       </div>
     </div>
@@ -416,7 +415,7 @@
         <form class="info-card form" id="contactForm" novalidate>
           <h2>Nachricht schreiben</h2>
           <label>Worum geht es?
-            <select name="topic">
+            <select name="topic" id="c-topic">
               <option>Allgemeine Frage</option>
               <option>Kindergeburtstag</option>
               <option>Tennis-Abo oder Training</option>
@@ -424,9 +423,9 @@
               <option>Shop &amp; Besaitung</option>
             </select>
           </label>
-          <label>Name <input name="name" autocomplete="name" required></label>
-          <label>E-Mail <input name="email" type="email" autocomplete="email" required></label>
-          <label>Nachricht <textarea name="msg" rows="5" required></textarea></label>
+          <label>Name <input name="name" id="c-name" autocomplete="name" required></label>
+          <label>E-Mail <input name="email" id="c-email" type="email" autocomplete="email" required></label>
+          <label>Nachricht <textarea name="msg" id="c-msg" rows="5" required></textarea></label>
           <button class="btn btn-dark" type="submit">Nachricht senden</button>
           <p class="form-note" id="contactNote" role="status"></p>
         </form>
@@ -444,15 +443,15 @@
     </div>
     <div>
       <b>Spielen</b>
-      <a href="#/buchen">Platz buchen</a>
-      <a href="#/preise">Preise</a>
-      <a href="#/meine-buchungen">Meine Buchungen</a>
+      <a href="#buchen">Platz buchen</a>
+      <a href="#preise">Preise</a>
+      <a href="#meine-buchungen">Meine Buchungen</a>
     </div>
     <div>
       <b>Park</b>
-      <a href="#/angebote">Angebote</a>
-      <a href="#/park">Gastronomie &amp; Shop</a>
-      <a href="#/kontakt">Kontakt</a>
+      <a href="#angebote">Angebote</a>
+      <a href="#park">Gastronomie &amp; Shop</a>
+      <a href="#kontakt">Kontakt</a>
     </div>
     <div>
       <b>Rechtliches</b>
