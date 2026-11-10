@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<!--
+  Design-Entwurf / Usability-Konzept für den Racket Sport Park Osnabrück.
+  KEINE offizielle Seite. Fakten (Preise, Zeiten, Plätze) stammen von racketsportpark.de,
+  Stand 10.11.2026. Texte und Gestaltung sind eigenständig. Belegung ist simuliert,
+  Buchungen bleiben im Browser (localStorage) und werden nirgendwohin übermittelt.
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E2A20">
+<title>Racket Sport Park Osnabrück – Design-Entwurf</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="demo-bar" role="note">
+  <strong>Design-Entwurf</strong> · keine offizielle Seite des Racket Sport Park · Belegung simuliert, Buchungen werden nicht übermittelt
+</div>
+
+<a class="skip" href="#main">Zum Inhalt springen</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#/" aria-label="Racket Sport Park – Startseite">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#D4F03A"/><path d="M5 12c8 3 12 9 12 17M35 12c-8 3-12 9-12 17" fill="none" stroke="#0E2A20" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span><b>Racket Sport Park</b><small>Osnabrück</small></span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">
+      <span class="sr">Menü</span><i></i><i></i><i></i>
+    </button>
+
+    <nav id="nav" class="nav" aria-label="Hauptnavigation">
+      <a href="#/sportarten" data-nav="sportarten">Sportarten</a>
+      <a href="#/preise" data-nav="preise">Preise</a>
+      <a href="#/angebote" data-nav="angebote">Angebote</a>
+      <a href="#/park" data-nav="park">Der Park</a>
+      <a href="#/kontakt" data-nav="kontakt">Kontakt</a>
+      <a href="#/meine-buchungen" data-nav="meine-buchungen" class="nav-mine">Meine Buchungen <span class="count" id="mineCount" hidden>0</span></a>
+      <a href="#/buchen" data-nav="buchen" class="btn btn-accent nav-cta">Platz buchen</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ============ START ============ -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Tennis · Padel · Badminton · Touchtennis</p>
+          <h1>Vier Schlägersportarten.<br>Ein Dach. <em>Ein Klick zum Platz.</em></h1>
+          <p class="lead">Such dir Sportart, Tag und Uhrzeit aus – der Preis steht direkt am freien Platz. Du siehst jederzeit, ob du schon gebucht hast oder noch nicht.</p>
+          <div class="hero-actions">
+            <a class="btn btn-accent btn-lg" href="#/buchen">Freie Plätze ansehen</a>
+            <a class="btn btn-ghost-light btn-lg" href="#/preise">Alle Preise</a>
+          </div>
+        </div>
+        <aside class="status-card" aria-label="Öffnungszeiten">
+          <div class="status-pill" id="openPill"><i></i><span>…</span></div>
+          <dl class="hours" id="hoursList"></dl>
+          <p class="status-foot">Große Schulstraße 75a, 49078 Osnabrück<br><a href="tel:+49541441010">0541 4410-10</a></p>
+        </aside>
+      </div>
+    </div>
+
+    <div class="wrap section">
+      <div class="section-head">
+        <h2>Was möchtest du spielen?</h2>
+        <p>Preis und Spieldauer stehen gleich dabei. Ein Klick führt direkt in den Belegungsplan.</p>
+      </div>
+      <div class="sport-cards" id="homeSports"></div>
+    </div>
+
+    <div class="band">
+      <div class="wrap section">
+        <div class="section-head">
+          <h2>So läuft die Buchung</h2>
+          <p>Drei Schritte, klarer Abschluss.</p>
+        </div>
+        <ol class="steps-explain">
+          <li><span>1</span><h3>Platz &amp; Zeit wählen</h3><p>Freie Zeiten sind grün und zeigen den Preis. Belegte Zeiten sind ausgegraut.</p></li>
+          <li><span>2</span><h3>Mitspieler &amp; Leihmaterial</h3><p>Personenzahl, Ermäßigungen und Leihschläger angeben. Die Summe rechnet live mit.</p></li>
+          <li><span>3</span><h3>Prüfen &amp; verbindlich buchen</h3><p>Erst der letzte Knopf bucht. Danach bekommst du eine Bestätigung mit Buchungsnummer und Stornofrist.</p></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wrap section">
+      <div class="section-head">
+        <h2>Mehr im Park</h2>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="#/angebote">
+          <span class="tag">Für Kinder</span>
+          <h3>Geburtstag auf dem Badmintoncourt</h3>
+          <p>Ab 9 € pro Kind, Schläger und Bälle inklusive. Das Geburtstagskind spielt gratis.</p>
+        </a>
+        <a class="tile" href="#/angebote">
+          <span class="tag">Montags 18:15 Uhr</span>
+          <h3>Offener Badminton-Spielertreff</h3>
+          <p>Neue Spielpartner finden. Schläger und Bälle werden gestellt.</p>
+        </a>
+        <a class="tile" href="#/angebote">
+          <span class="tag">Hansefit</span>
+          <h3>Mit Hansefit spielen</h3>
+          <p>Eine Einheit pro Tag ist für Mitglieder enthalten.</p>
+        </a>
+        <a class="tile" href="#/park">
+          <span class="tag">Vor Ort</span>
+          <h3>Gastronomie, Biergarten &amp; Shop</h3>
+          <p>Nach dem Match etwas trinken, Schläger bespannen lassen oder neues Material testen.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPORTARTEN ============ -->
+  <section class="view" id="view-sportarten" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Sportarten</p>
+        <h1>Vier Sportarten, elf Plätze</h1>
+        <p class="lead-dark">3 Tennisplätze, 5 Badmintoncourts, 1 Padelcourt und 1 Touchtennis-Feld – alles in der Halle.</p>
+      </div>
+      <div class="sport-cards" id="allSports"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-sport" hidden></section>
+
+  <!-- ============ BUCHEN ============ -->
+  <section class="view" id="view-buchen" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Buchung</p>
+        <h1 id="bookTitle">Platz buchen</h1>
+      </div>
+      <div id="bookRoot"></div>
+    </div>
+  </section>
+
+  <!-- ============ MEINE BUCHUNGEN ============ -->
+  <section class="view" id="view-meine-buchungen" hidden>
+    <div class="wrap section narrow">
+      <div class="page-head">
+        <p class="eyebrow">Übersicht</p>
+        <h1>Meine Buchungen</h1>
+        <p class="lead-dark">Alles, was du verbindlich gebucht hast. Steht ein Termin hier nicht, ist er auch nicht gebucht.</p>
+      </div>
+      <div id="mineRoot"></div>
+    </div>
+  </section>
+
+  <!-- ============ PREISE ============ -->
+  <section class="view" id="view-preise" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Preise</p>
+        <h1>Alle Preise auf einen Blick</h1>
+        <p class="lead-dark">Keine Mitgliedschaft nötig. Im Belegungsplan steht der passende Preis direkt an jeder freien Zeit.</p>
+      </div>
+
+      <nav class="chip-nav" aria-label="Sprung zu Sportart">
+        <a href="#/preise" data-jump="p-padel">Padel</a>
+        <a href="#/preise" data-jump="p-tennis">Tennis</a>
+        <a href="#/preise" data-jump="p-badminton">Badminton</a>
+        <a href="#/preise" data-jump="p-touchtennis">Touchtennis</a>
+        <a href="#/preise" data-jump="p-leih">Leihmaterial</a>
+      </nav>
+
+      <div class="price-grid">
+        <article class="price-card" id="p-padel" style="--acc:var(--padel)">
+          <header><h2>Padel</h2><span>1 Einheit = 60 Min. · Preis pro Platz</span></header>
+          <table>
+            <thead><tr><th scope="col">Zeit</th><th scope="col">Platz / Std.</th><th scope="col">bei 4 Pers.</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Di–Do, 10–15 Uhr</th><td>20,00 €</td><td>5,00 € p. P.</td></tr>
+              <tr><th scope="row">Mo–Fr, 15–22 Uhr<br>Sa + So</th><td>24,00 €</td><td>6,00 € p. P.</td></tr>
+            </tbody>
+          </table>
+          <ul class="notes">
+            <li>Licht inklusive</li>
+            <li>Kinder bis 12 Jahre: 4,50 € je Stunde</li>
+            <li>Schüler bis 18 &amp; Studierende: −1 € je Stunde</li>
+          </ul>
+          <a class="btn btn-dark" href="#/buchen?sport=padel">Padel buchen</a>
+        </article>
+
+        <article class="price-card" id="p-tennis" style="--acc:var(--tennis)">
+          <header><h2>Tennis</h2><span>1 Einheit = 60 Min. · Preis pro Person</span></header>
+          <table>
+            <thead><tr><th scope="col">Besetzung</th><th scope="col">Di–Do 10–15 Uhr<br>Sa + So</th><th scope="col">Mo–Fr<br>15–22 Uhr</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Einzel (2 Pers.)</th><td>10 €</td><td>12 €</td></tr>
+              <tr><th scope="row">3 Personen</th><td>8 €</td><td>9 €</td></tr>
+              <tr><th scope="row">Doppel (4 Pers.)</th><td>7 €</td><td>8 €</td></tr>
+              <tr><th scope="row">Kinder bis 12</th><td>5 €</td><td>5 €</td></tr>
+            </tbody>
+          </table>
+          <ul class="notes">
+            <li>Zuzüglich Lichtgeld: 3 € pro Platz und Stunde</li>
+            <li>Schüler bis 18 &amp; Studierende: −1 €</li>
+            <li>Tennis-Abo: Preis auf Anfrage</li>
+          </ul>
+          <a class="btn btn-dark" href="#/buchen?sport=tennis">Tennis buchen</a>
+        </article>
+
+        <article class="price-card" id="p-badminton" style="--acc:var(--badminton)">
+          <header><h2>Badminton</h2><span>1 Einheit = 45 Min. · Preis pro Person</span></header>
+          <table>
+            <thead><tr><th scope="col">Besetzung</th><th scope="col">Mo–Fr 10–17:30 Uhr<br>Sa + So</th><th scope="col">Mo–Fr<br>17:30–22 Uhr</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">2 Personen</th><td>8 €</td><td>9 €</td></tr>
+              <tr><th scope="row">3 Personen</th><td>7 €</td><td>8 €</td></tr>
+              <tr><th scope="row">4 Personen</th><td>6 €</td><td>7 €</td></tr>
+              <tr><th scope="row">Jede weitere Person</th><td>6 €</td><td>7 €</td></tr>
+              <tr><th scope="row">Kinder bis 12</th><td>4,50 €</td><td>4,50 €</td></tr>
+            </tbody>
+          </table>
+          <ul class="notes">
+            <li>Licht inklusive</li>
+            <li>Schüler bis 18 &amp; Studierende: −1 €</li>
+          </ul>
+          <a class="btn btn-dark" href="#/buchen?sport=badminton">Badminton buchen</a>
+        </article>
+
+        <article class="price-card" id="p-touchtennis" style="--acc:var(--touch)">
+          <header><h2>Touchtennis</h2><span>1 Einheit = 60 Min. · Preis pro Person</span></header>
+          <table>
+            <thead><tr><th scope="col">Wer</th><th scope="col">Preis / Std.</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Pro Person</th><td>6,00 €</td></tr>
+              <tr><th scope="row">Kinder bis 12</th><td>4,50 €</td></tr>
+            </tbody>
+          </table>
+          <ul class="notes">
+            <li>Licht inklusive, gleicher Preis zu allen Zeiten</li>
+            <li>Der Touchtennisball wird gekauft: 6 €</li>
+          </ul>
+          <a class="btn btn-dark" href="#/buchen?sport=touchtennis">Touchtennis buchen</a>
+        </article>
+      </div>
+
+      <div class="info-row" id="p-leih">
+        <article class="info-card">
+          <h2>Leihmaterial</h2>
+          <table class="plain">
+            <tbody>
+              <tr><th scope="row">Schläger Tennis, Badminton, Touchtennis</th><td>2 € pro Person und Buchung</td></tr>
+              <tr><th scope="row">Schläger Padel</th><td>3 € pro Person und Buchung</td></tr>
+              <tr><th scope="row">Bälle Tennis, Padel</th><td>1 € pro Buchung</td></tr>
+              <tr><th scope="row">Tennisschuhe</th><td>3 € pro Person und Buchung</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="info-card">
+          <h2>Schuhe – bitte beachten</h2>
+          <ul class="checks">
+            <li><b>Tennis:</b> nur Teppich-Hallenschuhe ohne Profil. Leihschuhe gibt es vor Ort.</li>
+            <li><b>Padel, Badminton, Touchtennis:</b> saubere Hallenschuhe mit heller Sohle.</li>
+            <li><b>Joggingschuhe</b> sind auf allen Plätzen nicht erlaubt.</li>
+          </ul>
+        </article>
+        <article class="info-card">
+          <h2>Stornieren</h2>
+          <p>Bis 24 Stunden vor Spielbeginn kostenlos. Danach wird der Platz voll berechnet. Die genaue Frist steht in jeder Buchung.</p>
+          <a class="text-link" href="#/meine-buchungen">Zu meinen Buchungen</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ANGEBOTE ============ -->
+  <section class="view" id="view-angebote" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Angebote</p>
+        <h1>Feiern, mitspielen, günstiger spielen</h1>
+      </div>
+
+      <article class="offer">
+        <div class="offer-text">
+          <span class="tag">Kindergeburtstag</span>
+          <h2>Geburtstag auf dem Badmintoncourt</h2>
+          <p>Zwei Spieleinheiten Badminton mit Leihschlägern und Bällen. Das Geburtstagskind ist eingeladen. Ab 6 Kindern, bitte mindestens eine Woche vorher anmelden.</p>
+          <ul class="checks">
+            <li>Die Aufsicht bleibt bei den Begleitpersonen.</li>
+            <li>Saubere Hallenschuhe mit heller Sohle mitbringen.</li>
+          </ul>
+          <a class="btn btn-dark" href="#/kontakt">Geburtstag anfragen</a>
+        </div>
+        <div class="packages">
+          <div class="package">
+            <h3>Basic</h3>
+            <p class="price">9 € <small>pro Kind</small></p>
+            <ul>
+              <li>2 Spieleinheiten</li>
+              <li>Leihschläger &amp; Bälle</li>
+              <li>Eigener Kuchen und Getränke erlaubt</li>
+            </ul>
+          </div>
+          <div class="package featured">
+            <h3>Premium</h3>
+            <p class="price">13 € <small>pro Kind</small></p>
+            <ul>
+              <li>Alles aus Basic</li>
+              <li>Pommes &amp; Nuggets mit Dip</li>
+              <li>Ein Getränk (0,2 l) zum Essen</li>
+              <li>Dekorierter Tisch</li>
+              <li>Kaffee oder Softdrink für bis zu 2 Begleitpersonen</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <div class="info-row">
+        <article class="info-card">
+          <span class="tag">Montags 18:15–19:45 Uhr</span>
+          <h2>Offener Badminton-Spielertreff</h2>
+          <p>Für alle, die neue Spielpartner suchen. Schläger und Bälle sind inklusive.</p>
+          <table class="plain">
+            <tbody>
+              <tr><th scope="row">Gäste</th><td>14 € pro Treffen</td></tr>
+              <tr><th scope="row">Mit Racket-Abo</th><td>kostenlos</td></tr>
+              <tr><th scope="row">Mit Hansefit oder Sportnavi</th><td>4 € Zuzahlung</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">Bitte vorher per E-Mail anmelden.</p>
+        </article>
+        <article class="info-card">
+          <span class="tag">Hansefit</span>
+          <h2>Mit Hansefit spielen</h2>
+          <p>Pro Tag ist eine Einheit enthalten: Tennis, Badminton oder Touchtennis (Einzel oder Doppel) oder Padel im Doppel.</p>
+          <ul class="checks">
+            <li>Mitspieler ohne Hansefit zahlen ihren Platzanteil.</li>
+            <li>Leihmaterial und Lichtgeld beim Tennis (3 €) kommen dazu.</li>
+          </ul>
+        </article>
+        <article class="info-card">
+          <span class="tag">Tennis</span>
+          <h2>Abo &amp; Training</h2>
+          <p>Feste Wochenstunde gesucht oder Interesse an Training? Abo-Preise und Trainingszeiten gibt es auf Anfrage.</p>
+          <a class="text-link" href="#/kontakt">Anfrage stellen</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARK ============ -->
+  <section class="view" id="view-park" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Der Park</p>
+        <h1>Mehr als Plätze</h1>
+        <p class="lead-dark">Seit 2019 der Ort für Racketsport in Osnabrück – mit dem ersten Padelcourt der Stadt.</p>
+      </div>
+
+      <div class="info-row two">
+        <article class="info-card">
+          <h2>Gastronomie &amp; Biergarten</h2>
+          <p>Vor dem Spiel, danach oder einfach zum Zuschauen: Im Gastrobereich gibt es Getränke und Snacks, große Sportereignisse laufen auf dem Bildschirm. Bei gutem Wetter ist der Biergarten geöffnet.</p>
+        </article>
+        <article class="info-card">
+          <h2>Shop</h2>
+          <p>Schläger, Bälle, Schuhe und Kleidung für alle vier Sportarten. Testschläger kannst du ausprobieren, fehlende Größen und Mannschaftsausstattung werden bestellt. Der Park ist Babolat-Partner.</p>
+        </article>
+        <article class="info-card">
+          <h2>Besaitungsservice</h2>
+          <p>Bring deinen Schläger mit: Die Besaitung wird kostenlos geprüft. Neu bespannt wird auf einer elektronischen Maschine, inklusive Beratung zur passenden Saite.</p>
+        </article>
+        <article class="info-card">
+          <h2>Leihmaterial</h2>
+          <p>Schläger für alle Sportarten, Bälle und Tennisschuhe kannst du direkt bei der Buchung dazunehmen.</p>
+          <a class="text-link" href="#/preise" data-jump="p-leih">Leihpreise ansehen</a>
+        </article>
+      </div>
+
+      <div class="about">
+        <div>
+          <h2>Wer dahintersteckt</h2>
+          <p>Carolin und Henning Klostermann haben Ende 2018 den früheren Bahama-Sports-Standort übernommen und daraus den Racket Sport Park gemacht. Ihr Ziel: ein Ort für alle, vom ersten Ballwechsel bis zum Punktspiel.</p>
+          <p>Henning Klostermann ist DTB-B-Trainer und gibt seit 1994 Tennistraining – für Erwachsene, Kinder, Jugendliche und Mannschaften.</p>
+        </div>
+        <aside class="job">
+          <span class="tag">Job</span>
+          <h3>Theken- und Servicekraft (m/w/d), Minijob</h3>
+          <p>Gäste bedienen, Buchungen annehmen, kassieren. Freitags 15–22 Uhr, am Wochenende 10–20 Uhr. Die Plätze nutzt du kostenlos.</p>
+          <a class="text-link" href="mailto:info@racketsportpark.de">Per E-Mail bewerben</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section class="view" id="view-kontakt" hidden>
+    <div class="wrap section">
+      <div class="page-head">
+        <p class="eyebrow">Kontakt</p>
+        <h1>So erreichst du den Park</h1>
+      </div>
+      <div class="contact-grid">
+        <div class="info-card">
+          <h2>Adresse &amp; Telefon</h2>
+          <p>Racket Sport GmbH<br>Große Schulstraße 75a<br>49078 Osnabrück</p>
+          <p><a class="text-link" href="tel:+49541441010">0541 4410-10</a><br>
+             <a class="text-link" href="mailto:info@racketsportpark.de">info@racketsportpark.de</a></p>
+          <a class="btn btn-dark" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=Gro%C3%9Fe%20Schulstra%C3%9Fe%2075a%2C%2049078%20Osnabr%C3%BCck">Route in der Karte öffnen</a>
+          <h2 class="mt">Öffnungszeiten</h2>
+          <dl class="hours dark" id="hoursList2"></dl>
+        </div>
+        <form class="info-card form" id="contactForm" novalidate>
+          <h2>Nachricht schreiben</h2>
+          <label>Worum geht es?
+            <select name="topic">
+              <option>Allgemeine Frage</option>
+              <option>Kindergeburtstag</option>
+              <option>Tennis-Abo oder Training</option>
+              <option>Spielertreff-Anmeldung</option>
+              <option>Shop &amp; Besaitung</option>
+            </select>
+          </label>
+          <label>Name <input name="name" autocomplete="name" required></label>
+          <label>E-Mail <input name="email" type="email" autocomplete="email" required></label>
+          <label>Nachricht <textarea name="msg" rows="5" required></textarea></label>
+          <button class="btn btn-dark" type="submit">Nachricht senden</button>
+          <p class="form-note" id="contactNote" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <b>Racket Sport Park Osnabrück</b>
+      <p>Große Schulstraße 75a<br>49078 Osnabrück</p>
+    </div>
+    <div>
+      <b>Spielen</b>
+      <a href="#/buchen">Platz buchen</a>
+      <a href="#/preise">Preise</a>
+      <a href="#/meine-buchungen">Meine Buchungen</a>
+    </div>
+    <div>
+      <b>Park</b>
+      <a href="#/angebote">Angebote</a>
+      <a href="#/park">Gastronomie &amp; Shop</a>
+      <a href="#/kontakt">Kontakt</a>
+    </div>
+    <div>
+      <b>Rechtliches</b>
+      <a href="https://www.racketsportpark.de/impressum/" target="_blank" rel="noopener">Impressum (Originalseite)</a>
+      <a href="https://www.racketsportpark.de/datenschutz/" target="_blank" rel="noopener">Datenschutz (Originalseite)</a>
+    </div>
+  </div>
+  <p class="wrap footer-note">Dies ist ein unabhängiger Design-Entwurf und keine offizielle Seite der Racket Sport GmbH. Preise und Zeiten laut racketsportpark.de, Stand 10.11.2026.</p>
+</footer>
+
+<!-- Mobile Buchungsleiste -->
+<div class="book-bar" id="bookBar" hidden></div>
+
+<dialog id="dlg" class="dlg"></dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
