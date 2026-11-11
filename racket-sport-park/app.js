@@ -22,6 +22,14 @@
   const MAX_SLOTS = 4;
   const EMBED = !!window.RSP_EMBED; // eingebettete Vorschau: keine Datei-Downloads, fester Seitentitel
 
+  // Live-Modus: Ist eine Schnittstellen-Adresse gesetzt, kommen Zeiten und Preise aus dem
+  // Buchungssystem (ep-3 mit Bridge-Modul) und Buchungen werden dort eingetragen.
+  // <meta name="rsp-api" content="https://…/padel/public/bridge">, Sportart über name="rsp-api-sport".
+  const metaOf = n => { const el = document.querySelector('meta[name="' + n + '"]'); return el ? el.content : ''; };
+  const API = String(window.RSP_API || metaOf('rsp-api') || '').replace(/\/$/, '');
+  const LIVE = !!API;
+  const LIVE_SPORT = window.RSP_API_SPORT || metaOf('rsp-api-sport') || 'padel';
+
   const SPORTS = {
     padel: {
       name: 'Padel', color: 'var(--padel)', unit: 60, per: 'court',
@@ -94,6 +102,71 @@
   };
   let memory = [];
 
+  /* ---------------- Live-Anbindung ---------------- */
+  const live = { days: {}, busy: false };
+  const toMin = t => { const p = String(t).split(':'); return +p[0] * 60 + +p[1]; };
+
+  function api(path, body) {
+    const opt = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
+    return fetch(API + path, opt).then(r => r.json().catch(() => ({})).then(d => {
+      if (!r.ok) { const err = new Error(d.error || 'Der Buchungsserver hat einen Fehler gemeldet.'); err.status = r.status; throw err; }
+      return d;
+    }));
+  }
+  function loadDay(dateStr, force) {
+    const cur = live.days[dateStr];
+    if (cur && !force) return;
+    if (cur && cur.loading) return;
+    live.days[dateStr] = { loading: true };
+    api('/slots?date=' + dateStr)
+      .then(d => { live.days[dateStr] = { ready: true, squares: d.squares || [], slots: d.slots || [] }; },
+            () => { live.days[dateStr] = { error: 'Die freien Zeiten konnten nicht geladen werden.' }; })
+      .then(() => { if (B.date === dateStr && B.step === 1 && !$('#view-buchen').hidden) renderBooking(); });
+  }
+  const liveSlot = sl => {
+    const day = live.days[B.date]; if (!day || !day.ready || !day.squares[sl.court]) return null;
+    const sid = day.squares[sl.court].sid;
+    return day.slots.find(x => x.sid === sid && toMin(x.start) === sl.start) || null;
+  };
+
+  // Einheitliche Sicht auf einen Tag: Plätze, Zeiten und der Zustand jeder Zelle.
+  // Im Entwurf simuliert, im Live-Modus aus dem Buchungssystem.
+  function dayModel() {
+    const s = SPORTS[B.sport];
+    if (!LIVE) {
+      const short = s.courts.length > 1;
+      return {
+        ready: true, courts: s.courts, unit: s.unit, times: slotsFor(B.sport, B.date),
+        cell: (c, t) => ({
+          state: isPast(B.date, t) ? 'past' : isTaken(B.sport, B.date, c, t) ? 'taken' : 'free',
+          label: slotLabelPrice(B.sport, B.date, t, B.players, short), spoken: slotLabelPrice(B.sport, B.date, t, B.players)
+        })
+      };
+    }
+    const day = live.days[B.date];
+    if (!day) { loadDay(B.date); return { ready: false }; }
+    if (day.loading) return { ready: false };
+    if (day.error) return { ready: false, error: day.error };
+    const sids = day.squares.map(q => q.sid), map = {};
+    day.slots.forEach(x => { map[x.sid + '-' + toMin(x.start)] = x; });
+    const times = Array.from(new Set(day.slots.filter(x => x.state !== 'closed').map(x => toMin(x.start)))).sort((a, b) => a - b);
+    return {
+      ready: true, courts: day.squares.map(q => q.name), unit: day.squares[0] ? day.squares[0].block / 60 : s.unit, times,
+      cell: (c, t) => {
+        const x = map[sids[c] + '-' + t];
+        if (!x || x.state === 'closed') return { state: 'taken' };
+        const label = x.price == null ? 'frei' : eur(x.price / 100).replace(',00', '');
+        return { state: x.state, label, spoken: label };
+      }
+    };
+  }
+  // Stornofrist in Sekunden vor Spielbeginn (0 = online nicht stornierbar)
+  function cancelSeconds() {
+    if (!LIVE) return 86400;
+    const day = live.days[B.date];
+    return day && day.ready && day.squares[0] ? day.squares[0].cancelRange : 86400;
+  }
+
   /* ---------------- Zeiten, Belegung, Preise ---------------- */
   function slotsFor(sportKey, dateStr) {
     const unit = SPORTS[sportKey].unit, open = HOURS[parseDate(dateStr).getDay()], out = [];
@@ -158,10 +231,15 @@
   }
 
   function quote(b) {
-    const s = SPORTS[b.sport], lines = [];
+    const s = SPORTS[b.sport], lines = [], m = dayModel();
+    const courts = m.ready ? m.courts : s.courts, unit = m.ready ? m.unit : s.unit;
     b.slots.slice().sort((x, y) => x.start - y.start || x.court - y.court).forEach(sl => {
-      const c = slotCost(b.sport, b.date, sl.start, b);
-      lines.push({ kind: 'slot', slot: sl, label: hm(sl.start) + '–' + hm(sl.start + s.unit) + ' Uhr · ' + s.courts[sl.court], sub: c.detail, amount: c.amount });
+      let c;
+      if (LIVE) {
+        const x = liveSlot(sl), known = x && x.price != null;
+        c = { amount: known ? x.price / 100 : 0, detail: known ? 'Platzpreis laut Buchungssystem' : 'Preis an der Theke' };
+      } else c = slotCost(b.sport, b.date, sl.start, b);
+      lines.push({ kind: 'slot', slot: sl, label: hm(sl.start) + '–' + hm(sl.start + unit) + ' Uhr · ' + courts[sl.court], sub: c.detail, amount: c.amount });
     });
     if (b.rackets) lines.push({ label: b.rackets + ' × Leihschläger', sub: 'einmal pro Buchung', amount: b.rackets * s.rent.racket });
     if (b.shoes && s.rent.shoes) lines.push({ label: b.shoes + ' × Leihschuhe', sub: 'einmal pro Buchung', amount: b.shoes * s.rent.shoes });
@@ -175,6 +253,7 @@
   const B = { sport: 'padel', date: iso(new Date()), step: 1, players: 4, kids: 0, students: 0, slots: [], rackets: 0, shoes: 0, balls: false, ttball: false, name: '', email: '', phone: '', agree: false, errors: {}, last: null };
 
   function firstBookableDate() {
+    if (LIVE) return iso(new Date());
     const d = new Date();
     for (let i = 0; i < 14; i++) {
       const s = iso(d);
@@ -184,6 +263,7 @@
     return iso(new Date());
   }
   function setSport(key) {
+    if (LIVE) key = LIVE_SPORT;
     if (!SPORTS[key]) return;
     B.sport = key; B.slots = []; B.players = SPORTS[key].players.def; B.kids = 0; B.students = 0;
     B.rackets = 0; B.shoes = 0; B.balls = false; B.ttball = false; B.step = 1;
@@ -197,7 +277,7 @@
     B.shoes = Math.min(B.shoes, B.players);
   }
   const firstStart = () => Math.min.apply(null, B.slots.map(s => s.start));
-  function cancelDeadline(dateStr, start) { const d = slotDate(dateStr, start); d.setHours(d.getHours() - 24); return d; }
+  function cancelDeadline(dateStr, start) { const sec = cancelSeconds(); if (!sec) return new Date(0); const d = slotDate(dateStr, start); d.setSeconds(d.getSeconds() - sec); return d; }
 
   /* ---------------- Platz-Grafiken ---------------- */
   function courtSvg(key) {
@@ -223,7 +303,7 @@
           <div class="sport-price">${esc(s.from)} <small>${esc(s.fromUnit)}</small></div>
           <p>${esc(s.teaser)}</p>
           <div class="sport-actions">
-            <a class="btn btn-dark" href="#buchen-${k}">Buchen</a>
+            ${LIVE && k !== LIVE_SPORT ? '<span class="btn btn-ghost" aria-disabled="true">Nicht angebunden</span>' : `<a class="btn btn-dark" href="#buchen-${k}">Buchen</a>`}
             <a class="btn btn-ghost" href="#sport-${k}">Infos</a>
           </div>
         </div>
@@ -288,8 +368,9 @@
   }
 
   function step1() {
-    const s = SPORTS[B.sport];
-    const tabs = SPORT_KEYS.map(k => `<button type="button" class="sport-tab" data-sport="${k}" aria-pressed="${k === B.sport}">${esc(SPORTS[k].name)}<small>${esc(SPORTS[k].from)} ${SPORTS[k].per === 'court' ? '/ Platz' : 'p. P.'}</small></button>`).join('');
+    const s = SPORTS[B.sport], m = dayModel();
+    const courts = m.ready ? m.courts : s.courts, unit = m.ready ? m.unit : s.unit;
+    const tabs = (LIVE ? [LIVE_SPORT] : SPORT_KEYS).map(k => `<button type="button" class="sport-tab" data-sport="${k}" aria-pressed="${k === B.sport}">${esc(SPORTS[k].name)}<small>${esc(SPORTS[k].from)} ${SPORTS[k].per === 'court' ? '/ Platz' : 'p. P.'}</small></button>`).join('');
 
     let days = '';
     const d = new Date();
@@ -299,20 +380,21 @@
       d.setDate(d.getDate() + 1);
     }
 
-    const times = slotsFor(B.sport, B.date);
+    const times = m.ready ? m.times : [];
     const sel = (c, t) => B.slots.some(x => x.court === c && x.start === t);
     const cell = (c, t, showTime) => {
-      const past = isPast(B.date, t), taken = !past && isTaken(B.sport, B.date, c, t), on = sel(c, t);
-      const price = slotLabelPrice(B.sport, B.date, t, B.players, !showTime), spoken = slotLabelPrice(B.sport, B.date, t, B.players);
-      const time = hm(t) + '–' + hm(t + s.unit);
-      if (past || taken) return `<button type="button" class="slot" disabled aria-label="${time} Uhr, ${esc(s.courts[c])}, ${past ? 'vorbei' : 'belegt'}">${showTime ? `<span class="t">${time}</span>` : ''}<span class="p">${past ? 'vorbei' : 'belegt'}</span></button>`;
-      return `<button type="button" class="slot" data-court="${c}" data-start="${t}" aria-pressed="${on}" aria-label="${time} Uhr, ${esc(s.courts[c])}, frei, ${spoken}${on ? ', ausgewählt' : ''}">${showTime ? `<span class="t">${time}</span>` : ''}<span class="p">${on ? '✓ ' : ''}${price}</span></button>`;
+      const k = m.cell(c, t), on = sel(c, t), time = hm(t) + '–' + hm(t + unit);
+      if (k.state !== 'free') { const why = k.state === 'past' ? 'vorbei' : 'belegt'; return `<button type="button" class="slot" disabled aria-label="${time} Uhr, ${esc(courts[c])}, ${why}">${showTime ? `<span class="t">${time}</span>` : ''}<span class="p">${why}</span></button>`; }
+      return `<button type="button" class="slot" data-court="${c}" data-start="${t}" aria-pressed="${on}" aria-label="${time} Uhr, ${esc(courts[c])}, frei, ${k.spoken}${on ? ', ausgewählt' : ''}">${showTime ? `<span class="t">${time}</span>` : ''}<span class="p">${on ? '✓ ' : ''}${k.label}</span></button>`;
     };
 
     let grid;
-    if (!times.length) grid = `<div class="empty">An diesem Tag gibt es keine buchbaren Zeiten.</div>`;
-    else if (s.courts.length === 1) grid = `<div class="slot-tiles">${times.map(t => cell(0, t, true)).join('')}</div>`;
-    else grid = `<div class="grid-scroll"><table class="slot-grid"><thead><tr><th scope="col">Zeit</th>${s.courts.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${times.map(t => `<tr><th scope="row">${hm(t)}<span class="end">–${hm(t + s.unit)}</span></th>${s.courts.map((_, c) => `<td>${cell(c, t, false)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    if (!m.ready) grid = m.error
+      ? `<div class="empty"><p>${esc(m.error)}</p><button type="button" class="btn btn-dark" style="margin-top:12px" data-reload>Erneut versuchen</button></div>`
+      : `<div class="empty" role="status">Freie Zeiten werden geladen …</div>`;
+    else if (!times.length) grid = `<div class="empty">An diesem Tag gibt es keine buchbaren Zeiten.</div>`;
+    else if (courts.length === 1) grid = `<div class="slot-tiles">${times.map(t => cell(0, t, true)).join('')}</div>`;
+    else grid = `<div class="grid-scroll"><table class="slot-grid"><thead><tr><th scope="col">Zeit</th>${courts.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${times.map(t => `<tr><th scope="row">${hm(t)}<span class="end">–${hm(t + unit)}</span></th>${courts.map((_, c) => `<td>${cell(c, t, false)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 
     const dayIdx = parseDate(B.date).getDay();
     const playerBox = s.per === 'person'
@@ -323,13 +405,14 @@
         <h2>1. Sportart</h2>
         <div class="sport-tabs">${tabs}</div>
         ${playerBox ? `<div style="margin-top:16px">${playerBox}</div>` : ''}
+        ${LIVE ? `<p class="hint">Testbetrieb: Angebunden ist das Buchungssystem für ${esc(s.name)}. Zeiten und Preise kommen direkt von dort.</p>` : ''}
       </div>
       <div class="panel">
-        <div class="row-between"><h2 style="margin:0">2. Tag</h2><span class="open-note">${DAY_LONG[dayIdx]} geöffnet: ${hoursText(dayIdx)} Uhr</span></div>
+        <div class="row-between"><h2 style="margin:0">2. Tag</h2><span class="open-note">${LIVE ? 'Belegung live aus dem Buchungssystem' : DAY_LONG[dayIdx] + ' geöffnet: ' + hoursText(dayIdx) + ' Uhr'}</span></div>
         <div class="days" style="margin-top:14px">${days}</div>
       </div>
       <div class="panel">
-        <div class="row-between"><h2 style="margin:0">3. Uhrzeit${s.courts.length > 1 ? ' &amp; Platz' : ''}</h2><span class="open-note">${dateFull(B.date)} · ${s.unit} Min. je Einheit</span></div>
+        <div class="row-between"><h2 style="margin:0">3. Uhrzeit${courts.length > 1 ? ' &amp; Platz' : ''}</h2><span class="open-note">${dateFull(B.date)} · ${unit} Min. je Einheit</span></div>
         <div class="legend"><span><i class="lg-free"></i>frei, mit Preis${s.per === 'person' ? ' pro Person' : ' pro Platz'}</span><span><i class="lg-sel"></i>deine Auswahl</span><span><i class="lg-taken"></i>belegt oder vorbei</span></div>
         ${grid}
         <p class="hint">Tippe eine oder mehrere freie Zeiten an (maximal ${MAX_SLOTS}). Mit der Auswahl ist noch nichts gebucht.</p>
@@ -340,15 +423,15 @@
     const s = SPORTS[B.sport];
     let h = `<div class="panel"><h2>Wer spielt?</h2>
       <div class="opt"><div><b>Spieler insgesamt</b><span>${s.per === 'court' ? 'Der Platzpreis bleibt gleich und wird nur aufgeteilt.' : 'Der Preis pro Person hängt von der Gruppengröße ab.'}</span></div>${numStepper('players', B.players, s.players.min, s.players.max, 'Anzahl Spieler')}</div>
-      <div class="opt"><div><b>davon Kinder bis 12 Jahre</b><span>${B.sport === 'tennis' ? '5 € je Einheit' : '4,50 € je Einheit'}</span></div>${numStepper('kids', B.kids, 0, B.players - B.students, 'Kinder bis 12')}</div>`;
-    if (s.students) h += `<div class="opt"><div><b>davon Schüler bis 18 / Studierende</b><span>1 € Ermäßigung je Einheit, Ausweis mitbringen</span></div>${numStepper('students', B.students, 0, B.players - B.kids, 'Schüler und Studierende')}</div>`;
+      ${LIVE ? '' : `<div class="opt"><div><b>davon Kinder bis 12 Jahre</b><span>${B.sport === 'tennis' ? '5 € je Einheit' : '4,50 € je Einheit'}</span></div>${numStepper('kids', B.kids, 0, B.players - B.students, 'Kinder bis 12')}</div>`}`;
+    if (s.students && !LIVE) h += `<div class="opt"><div><b>davon Schüler bis 18 / Studierende</b><span>1 € Ermäßigung je Einheit, Ausweis mitbringen</span></div>${numStepper('students', B.students, 0, B.players - B.kids, 'Schüler und Studierende')}</div>`;
     h += `</div><div class="panel"><h2>Leihmaterial</h2>
       <div class="opt"><div><b>Leihschläger</b><span>${eur(s.rent.racket)} pro Person, einmal pro Buchung</span></div>${numStepper('rackets', B.rackets, 0, B.players, 'Leihschläger')}</div>`;
     if (s.rent.shoes) h += `<div class="opt"><div><b>Leih-Tennisschuhe</b><span>${eur(s.rent.shoes)} pro Person. Pflicht sind Teppichschuhe ohne Profil.</span></div>${numStepper('shoes', B.shoes, 0, B.players, 'Leihschuhe')}</div>`;
     if (s.rent.balls) h += `<div class="opt"><label class="check"><input type="checkbox" id="b-balls" data-flag="balls" ${B.balls ? 'checked' : ''}><span><b>Leihbälle</b> · ${eur(s.rent.balls)} pro Buchung</span></label></div>`;
     if (s.rent.ttball) h += `<div class="opt"><label class="check"><input type="checkbox" id="b-ttball" data-flag="ttball" ${B.ttball ? 'checked' : ''}><span><b>Touchtennisball kaufen</b> · ${eur(s.rent.ttball)}. Ohne eigenen Ball geht es nicht.</span></label></div>`;
     h += `</div>
-      <div class="notice info"><div><b>Hansefit-Mitglied?</b>Eine Einheit pro Tag ist für dich enthalten. Dein Anteil wird an der Theke abgezogen, Mitspieler zahlen ihren Anteil.</div></div>
+      ${LIVE ? '<div class="notice info"><div><b>Ermäßigungen</b>Kinder, Schüler, Studierende und Hansefit werden an der Theke abgezogen. Das Leihmaterial wird mit der Buchung vorgemerkt.</div></div>' : '<div class="notice info"><div><b>Hansefit-Mitglied?</b>Eine Einheit pro Tag ist für dich enthalten. Dein Anteil wird an der Theke abgezogen, Mitspieler zahlen ihren Anteil.</div></div>'}
       <div class="notice warn"><div><b>Schuhe</b>${esc(s.shoes)}</div></div>`;
     return h;
   }
@@ -365,7 +448,7 @@
         <p class="hint">Kein Kundenkonto nötig. Mit einem Konto könntest du später Stammdaten speichern.</p>
       </div>
       <div class="panel"><h2>Das gilt für deine Buchung</h2>
-        <div class="notice ${late ? 'warn' : 'ok'}"><div><b>${late ? 'Nicht mehr kostenlos stornierbar' : 'Kostenlos stornierbar bis ' + stamp(dl)}</b>${late ? 'Der Termin beginnt in weniger als 24 Stunden. Bei einer Absage wird der Platz voll berechnet.' : 'Danach wird der Platz voll berechnet.'}</div></div>
+        <div class="notice ${late ? 'warn' : 'ok'}"><div><b>${late ? 'Nicht mehr kostenlos stornierbar' : 'Kostenlos stornierbar bis ' + stamp(dl)}</b>${late ? (LIVE ? 'Die Stornofrist ist bereits abgelaufen. Eine Absage geht dann nur noch telefonisch, der Platz wird voll berechnet.' : 'Der Termin beginnt in weniger als 24 Stunden. Bei einer Absage wird der Platz voll berechnet.') : 'Danach wird der Platz voll berechnet.'}</div></div>
         <div class="notice info"><div><b>Bezahlung vor Ort</b>Du zahlst an der Theke. Online wird nichts abgebucht.</div></div>
         <div class="notice warn"><div><b>Schuhe</b>${esc(s.shoes)}</div></div>
         <label class="check" style="margin-top:16px"><input type="checkbox" id="b-agree" data-flag="agree" ${B.agree ? 'checked' : ''}><span>Ich habe die Stornoregel und die Schuhregel gelesen.</span></label>
@@ -375,7 +458,7 @@
 
   function summaryHtml() {
     const s = SPORTS[B.sport], q = quote(B), n = B.slots.length;
-    const btnLabel = B.step === 1 ? 'Weiter zu Mitspielern' : B.step === 2 ? 'Weiter zur Prüfung' : 'Jetzt verbindlich buchen · ' + eur(q.total);
+    const btnLabel = live.busy ? 'Wird gebucht …' : B.step === 1 ? 'Weiter zu Mitspielern' : B.step === 2 ? 'Weiter zur Prüfung' : 'Jetzt verbindlich buchen · ' + eur(q.total);
     const lines = q.lines.map(l => `<li><span>${esc(l.label)}<small>${esc(l.sub)}</small>${l.kind === 'slot' && B.step === 1 ? `<button type="button" class="rm" data-rm="${l.slot.court}-${l.slot.start}">entfernen</button>` : ''}</span><b>${eur(l.amount)}</b></li>`).join('');
     return `<div class="panel">
       <span class="state-chip"><i></i>Noch nicht gebucht</span>
@@ -384,7 +467,7 @@
       ${n ? `<ul class="sum-lines">${lines}</ul>
         <div class="sum-total"><span>Gesamt</span><b>${eur(q.total)}</b></div>
         <p class="sum-pp">${eur(q.total / B.players)} pro Person bei ${B.players} Personen</p>` : ''}
-      <button type="button" class="btn ${B.step === 3 ? 'btn-accent' : 'btn-dark'} btn-block ${B.step < 3 ? 'btn-next' : ''}" data-next ${n ? '' : 'disabled'}>${btnLabel}</button>
+      <button type="button" class="btn ${B.step === 3 ? 'btn-accent' : 'btn-dark'} btn-block ${B.step < 3 ? 'btn-next' : ''}" data-next ${n && !live.busy ? '' : 'disabled'}>${btnLabel}</button>
       <p class="sum-foot">${B.step === 3 ? 'Erst dieser Knopf bucht verbindlich. Bezahlt wird vor Ort.' : 'Gebucht wird erst im letzten Schritt.'}</p>
     </div>`;
   }
@@ -396,11 +479,11 @@
       <span class="state-chip ok"><i></i>Verbindlich gebucht</span>
       <h2 tabindex="-1" id="confirmTitle" style="margin-top:12px">Dein Platz ist gebucht.</h2>
       <p>Die Bestätigung geht an ${esc(bk.email)}.</p>
-      <div class="code" aria-label="Buchungsnummer">${esc(bk.id)}</div>
+      <div class="code" aria-label="Buchungsnummer">${bk.live ? 'Nr. ' : ''}${esc(bk.id)}</div>
       <div class="ticket"><dl>
         <dt>Sportart</dt><dd>${esc(s.name)}</dd>
         <dt>Tag</dt><dd>${dateFull(bk.date)}</dd>
-        <dt>Zeit &amp; Platz</dt><dd>${bk.slots.map(x => hm(x.start) + '–' + hm(x.start + s.unit) + ' · ' + esc(s.courts[x.court])).join('<br>')}</dd>
+        <dt>Zeit &amp; Platz</dt><dd>${bk.slots.map(x => hm(x.start) + '–' + hm(x.start + (bk.unit || s.unit)) + ' · ' + esc(x.name || s.courts[x.court])).join('<br>')}</dd>
         <dt>Personen</dt><dd>${bk.players}</dd>
         <dt>Zu zahlen vor Ort</dt><dd>${eur(bk.total)}</dd>
         <dt>Kostenlos stornierbar</dt><dd>${late ? 'nicht mehr möglich' : 'bis ' + stamp(dl)}</dd>
@@ -410,7 +493,8 @@
         <a class="btn ${EMBED ? 'btn-dark' : 'btn-ghost'}" href="#meine-buchungen">Meine Buchungen</a>
         <button type="button" class="btn btn-ghost" data-again>Weitere Zeit buchen</button>
       </div>
-      <p class="hint" style="margin-top:18px">Design-Entwurf: Es wurde nichts an den Racket Sport Park übermittelt und keine E-Mail verschickt.</p>
+      ${bk.failed && bk.failed.length ? `<div class="notice warn" style="margin-top:18px;text-align:left"><div><b>Nicht alles gebucht</b>${bk.failed.length === 1 ? 'Eine Zeit war' : bk.failed.length + ' Zeiten waren'} inzwischen belegt und wurde nicht gebucht: ${bk.failed.map(f => esc(f.start) + ' Uhr').join(', ')}.</div></div>` : ''}
+      <p class="hint" style="margin-top:18px">${bk.live ? 'Testbetrieb: Die Buchung ist im angebundenen Buchungssystem eingetragen und dort in der Verwaltung sichtbar.' : 'Design-Entwurf: Es wurde nichts an den Racket Sport Park übermittelt und keine E-Mail verschickt.'}</p>
     </div>`;
   }
 
@@ -455,11 +539,12 @@
     if (B.name.trim().length < 3) e.name = 'Bitte gib deinen Namen an.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(B.email.trim())) e.email = 'Bitte gib eine gültige E-Mail-Adresse an.';
     if (!B.agree) e.agree = 'Bitte bestätige die Regeln, bevor du buchst.';
-    // Zwischenzeitlich vergeben?
-    const gone = B.slots.filter(sl => isPast(B.date, sl.start) || isTaken(B.sport, B.date, sl.court, sl.start));
+    // Zwischenzeitlich vergeben? (Im Live-Modus prüft das der Server beim Buchen.)
+    const gone = LIVE ? [] : B.slots.filter(sl => isPast(B.date, sl.start) || isTaken(B.sport, B.date, sl.court, sl.start));
     if (gone.length) { B.slots = B.slots.filter(sl => gone.indexOf(sl) < 0); B.step = 1; renderBooking(); alertDlg('Zeit nicht mehr frei', 'Mindestens eine deiner Zeiten ist inzwischen vergeben oder vorbei. Bitte wähle neu. Es wurde nichts gebucht.'); return; }
     B.errors = e;
     if (Object.keys(e).length) { renderBooking(); const bad = $('.err') || $('[data-flag="agree"]'); if (bad) bad.focus(); return; }
+    if (LIVE) return submitLive();
     const q = quote(B), start = firstStart();
     const bk = {
       id: 'RSP-' + Math.random().toString(36).slice(2, 7).toUpperCase(),
@@ -473,11 +558,64 @@
     updateCount(); goStep(4);
   }
 
+  // Live: Buchung an das Buchungssystem senden. Erst die Antwort des Servers gilt als gebucht.
+  function submitLive() {
+    if (live.busy) return;
+    const m = dayModel(), day = live.days[B.date];
+    if (!m.ready) return;
+    const q = quote(B), sids = day.squares.map(x => x.sid), date = B.date;
+    const sorted = B.slots.slice().sort((a, b) => a.start - b.start || a.court - b.court);
+    const items = sorted.map(sl => ({ sid: sids[sl.court], start: hm(sl.start), end: hm(sl.start + m.unit) }));
+    const note = ['Spieler: ' + B.players, B.rackets ? 'Leihschläger: ' + B.rackets : '', B.shoes ? 'Leihschuhe: ' + B.shoes : '',
+      B.balls ? 'Leihbälle: ja' : '', B.ttball ? 'Touchtennisball: ja' : ''].filter(Boolean).join(' · ');
+    const extras = q.lines.filter(l => l.kind !== 'slot').reduce((a, l) => a + l.amount, 0);
+
+    live.busy = true; renderBooking();
+    api('/book', { date, name: B.name.trim(), email: B.email.trim(), phone: B.phone.trim(), note, items }).then(res => {
+      live.busy = false;
+      const done = res.bookings || [], deadlines = done.map(x => x.cancelUntil).filter(Boolean).sort();
+      const bk = {
+        id: done.map(x => x.bid).join(' / '), live: true, remote: done.map(x => ({ bid: x.bid, token: x.token })),
+        sport: B.sport, date, unit: m.unit, players: B.players,
+        slots: done.map(x => ({ court: Math.max(0, sids.indexOf(x.sid)), start: toMin(x.start), name: x.square })),
+        total: done.reduce((a, x) => a + (x.price || 0), 0) / 100 + extras,
+        name: B.name.trim(), email: B.email.trim(), status: 'confirmed', failed: res.failed || [],
+        created: new Date().toISOString(), deadline: deadlines[0] || new Date(0).toISOString()
+      };
+      const all = store.get(); all.unshift(bk); store.set(all);
+      delete live.days[date];
+      B.last = bk; B.slots = []; B.agree = false;
+      updateCount(); goStep(4);
+    }, err => {
+      live.busy = false; delete live.days[date];
+      if (err.status === 409) { B.slots = []; B.step = 1; renderBooking(); alertDlg('Zeit nicht mehr frei', err.message + ' Bitte wähle neu.'); }
+      else if (err.status) { renderBooking(); alertDlg('Buchung nicht möglich', err.message + ' Es wurde nichts gebucht.'); }
+      else { renderBooking(); alertDlg('Verbindung unterbrochen', 'Wir konnten nicht prüfen, ob deine Buchung angekommen ist. Schau bitte in dein Postfach oder ruf an der Theke an (0541 4410-10), bevor du es erneut versuchst.'); }
+    });
+  }
+
+  // Live: Status aus dem Buchungssystem nachziehen, z. B. wenn die Theke storniert hat.
+  function syncLive() {
+    const all = store.get(), pairs = [];
+    all.forEach(b => { if (b.live && b.status === 'confirmed') b.remote.forEach(r => pairs.push(r.bid + '.' + r.token)); });
+    if (!pairs.length) return;
+    api('/status?b=' + pairs.slice(0, 25).join(',')).then(res => {
+      const st = {}; (res.bookings || []).forEach(x => { st[x.bid] = x.status; });
+      let changed = false;
+      all.forEach(b => {
+        if (b.live && b.status === 'confirmed' && b.remote.length && b.remote.every(r => st[r.bid] === 'cancelled')) {
+          b.status = 'cancelled'; b.cancelledAt = new Date().toISOString(); b.byPark = true; changed = true;
+        }
+      });
+      if (changed) { store.set(all); updateCount(); if (!$('#view-meine-buchungen').hidden) renderMine(); }
+    }, () => {});
+  }
+
   /* ---------------- Meine Buchungen ---------------- */
   function bookingState(bk) {
     if (bk.status === 'cancelled') return 'cancelled';
     const s = SPORTS[bk.sport], last = bk.slots[bk.slots.length - 1];
-    return slotDate(bk.date, last.start + s.unit) < new Date() ? 'past' : 'confirmed';
+    return slotDate(bk.date, last.start + (bk.unit || s.unit)) < new Date() ? 'past' : 'confirmed';
   }
   function updateCount() {
     const n = store.get().filter(b => bookingState(b) === 'confirmed').length, el = $('#mineCount');
@@ -493,15 +631,15 @@
       const s = SPORTS[bk.sport], st = bookingState(bk), dl = new Date(bk.deadline), free = dl > new Date();
       const chip = st === 'confirmed' ? '<span class="state-chip ok"><i></i>Gebucht</span>' : st === 'cancelled' ? '<span class="state-chip bad"><i></i>Storniert</span>' : '<span class="state-chip past"><i></i>Vorbei</span>';
       const foot = st === 'confirmed'
-        ? `<span>${free ? 'Kostenlos stornierbar bis ' + stamp(dl) : 'Stornofrist abgelaufen: Absage wird voll berechnet'}</span><div>${EMBED ? '' : `<button type="button" class="btn btn-ghost" data-ics="${esc(bk.id)}">Kalender</button>`}<button type="button" class="btn btn-ghost" data-cancel="${esc(bk.id)}">Stornieren</button></div>`
-        : st === 'cancelled' ? `<span>Storniert am ${stamp(new Date(bk.cancelledAt))}${bk.fee ? ' · Platz wird berechnet' : ' · kostenlos'}</span>` : `<span>Dieser Termin liegt in der Vergangenheit.</span>`;
+        ? `<span>${free ? 'Kostenlos stornierbar bis ' + stamp(dl) : bk.live ? 'Stornofrist abgelaufen. Absage nur telefonisch: 0541 4410-10' : 'Stornofrist abgelaufen: Absage wird voll berechnet'}</span><div>${EMBED ? '' : `<button type="button" class="btn btn-ghost" data-ics="${esc(bk.id)}">Kalender</button>`}${bk.live && !free ? '' : `<button type="button" class="btn btn-ghost" data-cancel="${esc(bk.id)}">Stornieren</button>`}</div>`
+        : st === 'cancelled' ? `<span>Storniert am ${stamp(new Date(bk.cancelledAt))}${bk.byPark ? ' · im Buchungssystem storniert' : bk.fee ? ' · Platz wird berechnet' : ' · kostenlos'}</span>` : `<span>Dieser Termin liegt in der Vergangenheit.</span>`;
       return `<article class="booking ${st}" style="--acc:${s.color}">
         <div class="booking-head"><div>${chip}<h2>${esc(s.name)} · ${dateFull(bk.date)}</h2>
-          <p class="meta">${bk.slots.map(x => hm(x.start) + '–' + hm(x.start + s.unit) + ' Uhr · ' + esc(s.courts[x.court])).join(' | ')} · ${bk.players} Personen · Nr. ${esc(bk.id)}</p></div>
+          <p class="meta">${bk.slots.map(x => hm(x.start) + '–' + hm(x.start + (bk.unit || s.unit)) + ' Uhr · ' + esc(x.name || s.courts[x.court])).join(' | ')} · ${bk.players} Personen · Nr. ${esc(bk.id)}</p></div>
           <div class="total">${eur(bk.total)}</div></div>
         <div class="booking-foot">${foot}</div>
       </article>`;
-    }).join('') + `<p class="hint">Design-Entwurf: Die Buchungen liegen nur in diesem Browser.</p>`;
+    }).join('') + `<p class="hint">${LIVE ? 'Testbetrieb: Die Buchungen stehen im Buchungssystem. Diese Übersicht merkt sich dein Browser.' : 'Design-Entwurf: Die Buchungen liegen nur in diesem Browser.'}</p>`;
   }
 
   function askCancel(id) {
@@ -523,7 +661,7 @@
     const bk = store.get().find(b => b.id === id); if (!bk) return;
     const s = SPORTS[bk.sport];
     const f = d => d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
-    const ev = bk.slots.map((x, i) => ['BEGIN:VEVENT', 'UID:' + bk.id + '-' + i + '@rsp-entwurf', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(slotDate(bk.date, x.start)), 'DTEND:' + f(slotDate(bk.date, x.start + s.unit)), 'SUMMARY:' + s.name + ' – Racket Sport Park (' + s.courts[x.court] + ')', 'LOCATION:Große Schulstraße 75a\\, 49078 Osnabrück', 'DESCRIPTION:Buchungsnummer ' + bk.id, 'END:VEVENT'].join('\r\n')).join('\r\n');
+    const ev = bk.slots.map((x, i) => ['BEGIN:VEVENT', 'UID:' + bk.id + '-' + i + '@rsp-entwurf', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(slotDate(bk.date, x.start)), 'DTEND:' + f(slotDate(bk.date, x.start + (bk.unit || s.unit))), 'SUMMARY:' + s.name + ' – Racket Sport Park (' + (x.name || s.courts[x.court]) + ')', 'LOCATION:Große Schulstraße 75a\\, 49078 Osnabrück', 'DESCRIPTION:Buchungsnummer ' + bk.id, 'END:VEVENT'].join('\r\n')).join('\r\n');
     const blob = new Blob(['BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//RSP Entwurf//DE\r\n' + ev + '\r\nEND:VCALENDAR\r\n'], { type: 'text/calendar' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = bk.id + '.ics';
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -549,9 +687,11 @@
       if (sp && SPORTS[sp] && (sp !== B.sport || B.step === 4)) { setSport(sp); B.date = firstBookableDate(); }
       else if (B.step === 4) { B.step = 1; }
       if (isPast(B.date, GRID_END)) B.date = firstBookableDate();
+      if (LIVE && B.step === 1) loadDay(B.date, true);
       renderBooking();
+      if (LIVE && sp && sp !== LIVE_SPORT && SPORTS[sp]) alertDlg('Nur ' + SPORTS[LIVE_SPORT].name + ' angebunden', 'Im Testbetrieb ist nur das Buchungssystem für ' + SPORTS[LIVE_SPORT].name + ' verbunden. Du siehst deshalb diesen Plan.');
     } else { $('#bookBar').classList.remove('show'); document.body.classList.remove('has-bar'); }
-    if (view === 'meine-buchungen') renderMine();
+    if (view === 'meine-buchungen') { renderMine(); if (LIVE) syncLive(); }
 
     VIEWS.forEach(v => { const el = $('#view-' + v); if (el) el.hidden = v !== view; });
     $$('.nav a[data-nav]').forEach(a => {
@@ -577,7 +717,8 @@
     }
     if (t.id === 'menuBtn') { const open = $('#nav').classList.toggle('open'); t.setAttribute('aria-expanded', open); return; }
     if (t.dataset.sport) { setSport(t.dataset.sport); B.date = firstBookableDate(); return renderBooking(); }
-    if (t.dataset.date) { B.date = t.dataset.date; B.slots = []; return renderBooking(); }
+    if (t.dataset.date) { B.date = t.dataset.date; B.slots = []; if (LIVE) loadDay(B.date, true); return renderBooking(); }
+    if (t.hasAttribute('data-reload')) { loadDay(B.date, true); return renderBooking(); }
     if (t.dataset.start !== undefined && t.classList.contains('slot')) {
       const c = +t.dataset.court, st = +t.dataset.start, i = B.slots.findIndex(x => x.court === c && x.start === st);
       if (i >= 0) B.slots.splice(i, 1);
@@ -599,6 +740,14 @@
     if (t.hasAttribute('data-close')) return $('#dlg').close();
     if (t.dataset.doCancel) {
       const all = store.get(), bk = all.find(b => b.id === t.dataset.doCancel);
+      if (bk && bk.live) {
+        t.disabled = true; t.textContent = 'Wird storniert …';
+        Promise.all(bk.remote.map(r => api('/cancel', r))).then(() => {
+          bk.fee = false; bk.status = 'cancelled'; bk.cancelledAt = new Date().toISOString(); store.set(all);
+          delete live.days[bk.date]; $('#dlg').close(); updateCount(); renderMine();
+        }, err => { $('#dlg').close(); alertDlg('Stornierung nicht möglich', err.status ? err.message : 'Der Buchungsserver ist gerade nicht erreichbar. Bitte versuch es erneut.'); });
+        return;
+      }
       if (bk) { bk.fee = new Date(bk.deadline) <= new Date(); bk.status = 'cancelled'; bk.cancelledAt = new Date().toISOString(); store.set(all); }
       $('#dlg').close(); updateCount(); renderMine();
     }
@@ -625,6 +774,11 @@
 
   /* ---------------- Start ---------------- */
   memory = store.get();
+  if (LIVE) {
+    setSport(LIVE_SPORT);
+    const bar = $('.demo-bar');
+    if (bar) bar.innerHTML = '<strong>Testbetrieb</strong> · keine offizielle Seite<span class="long"> des Racket Sport Park</span> · verbunden mit einer Test-Installation des Buchungssystems';
+  }
   $('#homeSports').innerHTML = sportCards();
   $('#allSports').innerHTML = sportCards();
   renderHours(); updateCount();

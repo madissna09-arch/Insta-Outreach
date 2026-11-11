@@ -399,3 +399,4 @@ input.err{border-color:var(--bad)}
   .slot-grid .slot .p{font-size:12.5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.btn[aria-disabled="true"]{opacity:.55;cursor:default;pointer-events:none;font-weight:600}
